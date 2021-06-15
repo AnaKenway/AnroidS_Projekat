@@ -1,22 +1,24 @@
 package com.example.traveller.models;
 
 import com.example.traveller.util.Location;
+import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@IgnoreExtraProperties
 public class User {
-    private String username;
-    private String password;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private String imgUrl;
-    private String phoneNumber;
-    private Location myLocation;
-    private List<String> friends;
-    private List<Location> visited;
-    private List<Location> favoriteLocation;
+    public String username;
+    public String password;
+    public String email;
+    public String firstName;
+    public String lastName;
+    public String imgUrl;
+    public String phoneNumber;
+    public Location myLocation;
+    public List<String> friends;
+    public List<Location> visited;
+    public List<Location> favoriteLocation;
 
     public User(){}
 
@@ -31,6 +33,17 @@ public class User {
         imgUrl=i;
         phoneNumber=ph;
         myLocation=loc;
+        friends=new ArrayList<String>();
+        visited= new ArrayList<Location>();
+        favoriteLocation=new ArrayList<Location>();
+    }
+    public User(String p, String e, String f, String l, String i, String ph){
+        password=p;
+        email=e;
+        firstName=f;
+        lastName=l;
+        imgUrl=i;
+        phoneNumber=ph;
         friends=new ArrayList<String>();
         visited= new ArrayList<Location>();
         favoriteLocation=new ArrayList<Location>();

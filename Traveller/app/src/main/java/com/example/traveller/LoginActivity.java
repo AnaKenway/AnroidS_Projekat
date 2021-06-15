@@ -1,6 +1,7 @@
 package com.example.traveller;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -9,24 +10,34 @@ import android.text.Layout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.example.traveller.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
-    private static final String FIREBASE_CHILD ="traveller-users";
-
+    private static final String FIREBASE_CHILD ="users";
+    private String imgURI=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +66,11 @@ public class LoginActivity extends AppCompatActivity {
 
                     //logika
                     //myRef.child("traveller-user").
+                    //myRef.child("users").orderByKey().equalTo(usernameEditText.getText().toString()).addChildEventListener
+
 
                     //zameniti usernameEditText sa email
-                    signIn(usernameEditText.getText().toString(),passwordEditText.getText().toString());
+                    //signIn(usernameEditText.getText().toString(),passwordEditText.getText().toString());
 
                 }
             });
@@ -67,6 +80,42 @@ public class LoginActivity extends AppCompatActivity {
         else{
             loginLayout.setVisibility(View.GONE);
             registerLayout.setVisibility(View.VISIBLE);
+
+            ImageView camera=(ImageView)findViewById(R.id.imgViewTakeAPhoto);
+            camera.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //otvoriti kameru
+                    //slikati
+                    //snimiti sliku na serveru
+                    //preuzeti uri
+                    //i sacuvati u imgURI
+                    Toast.makeText(getApplicationContext(),"Kliknuta kamera",Toast. LENGTH_SHORT).show();
+                }
+            });
+
+            Button register=(Button) findViewById(R.id.cirRegisterButton);
+            register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EditText etUsername=(EditText) findViewById(R.id.editTextUsername);
+                    EditText etEmail=(EditText) findViewById(R.id.editTextEmail);
+                    EditText etPassword=(EditText) findViewById(R.id.editTextPassword);
+                    EditText etFirstName=(EditText) findViewById(R.id.editTextFirstName);
+                    EditText etLastName=(EditText) findViewById(R.id.editTextLastName);
+                    EditText etPhoneNumber=(EditText) findViewById(R.id.editTextPhoneNumber);
+
+                    User user=new User(etPassword.getText().toString(),
+                            etEmail.getText().toString(),etFirstName.getText().toString(),etLastName.getText().toString(),
+                            imgURI,etPhoneNumber.getText().toString());
+
+                    //dodati logiku za proveru postojeceg username-a
+
+                    myRef.child("users").child(etUsername.getText().toString()).setValue(user);
+                    Toast.makeText(getApplicationContext(),"Successfully registered!",Toast. LENGTH_SHORT).show();
+                    finish();
+                }
+            });
         }
     }
 
