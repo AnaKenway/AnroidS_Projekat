@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                     myRef.child("users").child(userName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            if (!task.isSuccessful()) {
+                            if (!task.getResult().exists()) {
                                 Toast.makeText(getApplicationContext(),"Couldn't login",Toast.LENGTH_LONG).show();
                             }
                             else {
@@ -114,14 +114,41 @@ public class LoginActivity extends AppCompatActivity {
                     EditText etLastName=(EditText) findViewById(R.id.editTextLastName);
                     EditText etPhoneNumber=(EditText) findViewById(R.id.editTextPhoneNumber);
 
+                    String username=etUsername.getText().toString();
+                    String password=etPassword.getText().toString();
+                    String email=etEmail.getText().toString();
+
                     User user=new User(etPassword.getText().toString(),
                             etEmail.getText().toString(),etFirstName.getText().toString(),etLastName.getText().toString(),
                             imgURI,etPhoneNumber.getText().toString());
 
-                    //dodati logiku za proveru postojeceg username-a
-
-                    myRef.child("users").child(etUsername.getText().toString()).setValue(user);
-                    register(etEmail.getText().toString(),etPassword.getText().toString());
+                    myRef.child("users").child(username).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if (!task.getResult().exists()) {
+                                mAuth.createUserWithEmailAndPassword(email,password)
+                                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                                if(task.isSuccessful()) {
+                                                    myRef.child("users").child(username).setValue(user);
+                                                    Toast.makeText(getApplicationContext(),"Successfully registered!",Toast. LENGTH_LONG).show();
+                                                    finish();
+                                                }
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener(){
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(LoginActivity.this, e.getLocalizedMessage(),
+                                                Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(),"User with that username already exists!",Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
                 }
             });
         }
@@ -136,7 +163,6 @@ public class LoginActivity extends AppCompatActivity {
             reload();
         }
     }
-
 
 
     private void reload() { }
@@ -157,25 +183,12 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             // Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                   // Toast.LENGTH_SHORT).show();
                             //updateUI(null);
                         }
                     }
-                });
-    }
-
-    private void register(String email, String password){
-        mAuth.createUserWithEmailAndPassword(email,password)
-                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(),"Successfully registered!",Toast. LENGTH_LONG).show();
-                            finish();
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener(){
+                }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
                 Toast.makeText(LoginActivity.this, e.getLocalizedMessage(),
@@ -183,4 +196,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
 }
