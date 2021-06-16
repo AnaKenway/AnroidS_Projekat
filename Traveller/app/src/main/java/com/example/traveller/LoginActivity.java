@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.traveller.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,16 +63,24 @@ public class LoginActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
                     final EditText usernameEditText = findViewById(R.id.editTextLoginUsername);
-                    final EditText passwordEditText = findViewById(R.id.editTextPassword);
-
+                    final EditText passwordEditText = findViewById(R.id.editTextLoginPassword);
+                    String userName=usernameEditText.getText().toString();
+                    String password=passwordEditText.getText().toString();
                     //logika
                     //myRef.child("traveller-user").
-                    //myRef.child("users").orderByKey().equalTo(usernameEditText.getText().toString()).addChildEventListener
-
-
-                    //zameniti usernameEditText sa email
-                    //signIn(usernameEditText.getText().toString(),passwordEditText.getText().toString());
-
+                    myRef.child("users").child(userName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if (!task.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(),"Couldn't login",Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                Object u=task.getResult().getValue();
+                                HashMap<String,String> hm=(HashMap<String, String>) u;
+                                signIn(hm.get("email"),password);
+                            }
+                        }
+                    });
                 }
             });
 
@@ -112,8 +121,7 @@ public class LoginActivity extends AppCompatActivity {
                     //dodati logiku za proveru postojeceg username-a
 
                     myRef.child("users").child(etUsername.getText().toString()).setValue(user);
-                    Toast.makeText(getApplicationContext(),"Successfully registered!",Toast. LENGTH_SHORT).show();
-                    finish();
+                    register(etEmail.getText().toString(),etPassword.getText().toString());
                 }
             });
         }
@@ -155,5 +163,24 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    private void register(String email, String password){
+        mAuth.createUserWithEmailAndPassword(email,password)
+                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(),"Successfully registered!",Toast. LENGTH_LONG).show();
+                            finish();
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener(){
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(LoginActivity.this, e.getLocalizedMessage(),
+                        Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
