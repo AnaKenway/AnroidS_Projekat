@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
                             else {
                                 Object u=task.getResult().getValue();
                                 HashMap<String,String> hm=(HashMap<String, String>) u;
-                                signIn(hm.get("email"),password);
+                                signIn(hm.get("email"), password, userName);
                             }
                         }
                     });
@@ -122,7 +122,6 @@ public class LoginActivity extends AppCompatActivity {
                     //snimiti sliku na serveru
                     //preuzeti uri
                     //i sacuvati u imgURI
-                    Toast.makeText(getApplicationContext(),"Kliknuta kamera",Toast. LENGTH_SHORT).show();
                     dispatchTakePictureIntent();
 
                 }
@@ -159,6 +158,9 @@ public class LoginActivity extends AppCompatActivity {
                                                 if(task.isSuccessful()) {
                                                     myRef.child("users").child(username).setValue(user);
                                                     Toast.makeText(getApplicationContext(),"Successfully registered!",Toast. LENGTH_LONG).show();
+                                                    Intent i=new Intent(LoginActivity.this,UsersMapsActivity.class);
+                                                    i.putExtra("Username", username);
+                                                    startActivity(i);
                                                     finish();
                                                 }
                                             }
@@ -193,7 +195,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void reload() { }
 
-    private void signIn(String email, String password){
+    private void signIn(String email, String password, String username){
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -204,6 +206,9 @@ public class LoginActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(LoginActivity.this, "Successfully logged in",
                                     Toast.LENGTH_SHORT).show();
+                            Intent i=new Intent(LoginActivity.this,UsersMapsActivity.class);
+                            i.putExtra("Username", username);
+                            startActivity(i);
                             finish();
                             // updateUI(user);
                         } else {

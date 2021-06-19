@@ -12,4 +12,5 @@
     <string name="login_Lastname_hint">Last Name</string>
     <string name="login_username_hint">Username</string>
     <string name="login_mobile_number_hint">Mobile Number</string>
+    <string name="title_activity_users_maps">Map</string>
 </resources>

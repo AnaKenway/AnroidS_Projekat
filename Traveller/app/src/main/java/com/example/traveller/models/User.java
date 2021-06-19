@@ -15,7 +15,9 @@ public class User {
     public String lastName;
     public String imgUrl;
     public String phoneNumber;
-    public Location myLocation;
+    //public Location myLocation;
+    public String latitude;
+    public String longitude;
     public List<String> friends;
     public List<Location> visited;
     public List<Location> favoriteLocation;
@@ -24,7 +26,7 @@ public class User {
 
     //ovde izbrisati lokaciju, ako slucajno treba naknadno da se doda lokacija
     //koristiti get i set za my Location
-    public User(String u, String p, String e, String f, String l, String i, String ph, Location loc){
+    public User(String u, String p, String e, String f, String l, String i, String ph,String lat, String lon){
         username=u;
         password=p;
         email=e;
@@ -32,7 +34,9 @@ public class User {
         lastName=l;
         imgUrl=i;
         phoneNumber=ph;
-        myLocation=loc;
+        //myLocation=loc;
+        setLatitude(lat);
+        setLongitude(lon);
         friends=new ArrayList<String>();
         visited= new ArrayList<Location>();
         favoriteLocation=new ArrayList<Location>();
@@ -47,6 +51,8 @@ public class User {
         friends=new ArrayList<String>();
         visited= new ArrayList<Location>();
         favoriteLocation=new ArrayList<Location>();
+        setLatitude("");
+        setLongitude("");
     }
 
 
@@ -130,11 +136,27 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public Location getMyLocation() {
-        return myLocation;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setMyLocation(Location myLocation) {
-        this.myLocation = myLocation;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+//    public Location getMyLocation() {
+//        return myLocation;
+//    }
+//
+//    public void setMyLocation(Location myLocation) {
+//        this.myLocation = myLocation;
+//    }
 }

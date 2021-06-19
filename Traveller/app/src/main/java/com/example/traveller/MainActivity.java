@@ -36,5 +36,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button bMaps=(Button) findViewById(R.id.btnMap);
+        bMaps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i3=new Intent(MainActivity.this,UsersMapsActivity.class);
+                startActivity(i3);
+            }
+        });
+
     }
 }
