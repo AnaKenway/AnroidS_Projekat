@@ -21,12 +21,13 @@ public class User {
     public List<String> friends;
     public List<Location> visited;
     public List<Location> favoriteLocation;
+    public String points;
 
     public User(){}
 
     //ovde izbrisati lokaciju, ako slucajno treba naknadno da se doda lokacija
     //koristiti get i set za my Location
-    public User(String u, String p, String e, String f, String l, String i, String ph,String lat, String lon){
+    public User(String u, String p, String e, String f, String l, String i, String ph,String lat, String lon, String points){
         username=u;
         password=p;
         email=e;
@@ -40,8 +41,9 @@ public class User {
         friends=new ArrayList<String>();
         visited= new ArrayList<Location>();
         favoriteLocation=new ArrayList<Location>();
+        this.points=points;
     }
-    public User(String p, String e, String f, String l, String i, String ph){
+    public User(String p, String e, String f, String l, String i, String ph,String points){
         password=p;
         email=e;
         firstName=f;
@@ -53,6 +55,7 @@ public class User {
         favoriteLocation=new ArrayList<Location>();
         setLatitude("");
         setLongitude("");
+        this.points=points;
     }
 
 
@@ -150,6 +153,14 @@ public class User {
 
     public void setLongitude(String longitude) {
         this.longitude = longitude;
+    }
+
+    public String getPoints() {
+        return points;
+    }
+
+    public void setPoints(String points) {
+        this.points = points;
     }
 
 //    public Location getMyLocation() {
