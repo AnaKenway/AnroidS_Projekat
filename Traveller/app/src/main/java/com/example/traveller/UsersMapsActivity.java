@@ -10,11 +10,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -33,6 +39,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -43,6 +50,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 
 import java.util.HashMap;
@@ -56,6 +65,9 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
     private String userName;
     private Marker userMarker;
     private LocationManager locationManager;
+    private FirebaseStorage storage=FirebaseStorage.getInstance();
+    private StorageReference storageRef;
+    private String URI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +82,28 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 1, this);
+
+        myRef.child("users").child(userName).child("imgUrl").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.getResult().exists())
+                {
+                    Toast.makeText(getApplicationContext(),"Couldn't find image URI",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    URI=(String) task.getResult().getValue();
+                    storageRef = storage.getReference(URI);
+                }
+            }
+        });
+
     }
     static final int PERMISSION_ACCESS_FINE_LOCATION = 1;
 
@@ -121,13 +150,41 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
         }
     }
 
+    Bitmap bmp;
+    Canvas canvas;
     @Override
     public void onLocationChanged(@NonNull Location location) {
 
         if (location != null && userMarker!=null) {
+
             userMarker.remove();
             LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
-            userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).title("My location"));
+            final long ONE_MEGABYTE = 1024 * 1024;
+
+
+            storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                @Override
+                public void onSuccess(byte[] bytes) {
+                    bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    Bitmap mutableBitmap = bmp.copy(Bitmap.Config.ARGB_8888, true);
+                    canvas = new Canvas(mutableBitmap);
+
+                    Paint color = new Paint();
+                    color.setTextSize(35);
+                    color.setColor(Color.BLACK);
+
+                    canvas.drawBitmap(bmp, 0,0, color);
+                    canvas.drawText(userName, 30, 40, color);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    Log.e("MYAPP",exception.getLocalizedMessage());
+                }
+            });
+
+            userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).icon(BitmapDescriptorFactory.fromBitmap(bmp)).anchor(0.5f,1));
+            // pogledati zasto je bmp null!!!
             float zoomLevel = 16.0f; //This goes up to 21
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, zoomLevel));
 

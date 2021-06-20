@@ -63,7 +63,6 @@ public class LoginActivity extends AppCompatActivity {
 
     // Create a Cloud Storage reference from the app
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,7 +144,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     User user=new User(etPassword.getText().toString(),
                             etEmail.getText().toString(),etFirstName.getText().toString(),etLastName.getText().toString(),
-                            imgURI,etPhoneNumber.getText().toString());
+                            imgURI,etPhoneNumber.getText().toString(),"0");
 
                     myRef.child("users").child(username).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
