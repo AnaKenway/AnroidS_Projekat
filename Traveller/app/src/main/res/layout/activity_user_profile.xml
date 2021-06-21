@@ -92,7 +92,7 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonBack"
         app:layout_constraintEnd_toStartOf="@+id/imageViewNearbyFriends"
         app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@drawable/AllFriends"/>
+        android:src="@drawable/all_friends"/>
 
     <ImageView
         android:id="@+id/imageViewNearbyFriends"
@@ -104,7 +104,7 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonLogOut"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
-        tools:srcCompat="@drawable/NearbyFriends"/>
+        android:src="@drawable/nearby_friends"/>
 
     <ImageView
         android:id="@+id/imageViewMonuments"
@@ -116,7 +116,7 @@
         app:layout_constraintBottom_toTopOf="@+id/textViewMonuments"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:srcCompat="@drawable/visitedplaces"/>
+        android:src="@drawable/visited_places"/>
 
     <TextView
         android:id="@+id/textViewMonuments"
