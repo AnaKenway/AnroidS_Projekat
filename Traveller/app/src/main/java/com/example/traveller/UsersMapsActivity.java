@@ -23,6 +23,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.traveller.models.User;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderApi;
@@ -180,8 +181,26 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
 
                     canvas.drawBitmap(smallMarker, 0,0, color);
                     canvas.drawText(userName, 30, 40, color);
-                    userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).anchor(0.5f,1));
+                    userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).title(userName).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).anchor(0.5f,1));
 
+                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                        @Override
+                        public boolean onMarkerClick(@NonNull Marker marker) {
+                            if(marker.getTitle().toString().equals(userName))
+                            {
+                                Intent i = new Intent(UsersMapsActivity.this, UserProfileActivity.class);
+                                i.putExtra("userName", userName);
+                                startActivity(i);
+                            }
+                            else
+                            {
+                                Intent i = new Intent(UsersMapsActivity.this, FriendProfileActivity.class);
+                                i.putExtra("userName", marker.getTitle());
+                                startActivity(i);
+                            }
+                            return false;
+                        }
+                    });
                     float zoomLevel = 16.0f; //This goes up to 21
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, zoomLevel));
 

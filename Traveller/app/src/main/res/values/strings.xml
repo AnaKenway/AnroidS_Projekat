@@ -13,4 +13,10 @@
     <string name="login_username_hint">Username</string>
     <string name="login_mobile_number_hint">Mobile Number</string>
     <string name="title_activity_users_maps">Map</string>
+    <string name="btnEditProfile">Edit Profile</string>
+    <string name="textViewAllFriends">All Friends</string>
+    <string name="textViewNearbyFriends">Nearby Friends</string>
+    <string name="textViewVisitedPlaces">Visited Locations</string>
+    <string name="buttonBack">Back</string>
+    <string name="buttonLogOut">Logout</string>
 </resources>
