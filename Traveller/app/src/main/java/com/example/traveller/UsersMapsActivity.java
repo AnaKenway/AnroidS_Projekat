@@ -65,7 +65,7 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
     private String userName;
     private Marker userMarker;
     private LocationManager locationManager;
-    private FirebaseStorage storage=FirebaseStorage.getInstance();
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef;
     private String URI;
 
@@ -82,29 +82,8 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 1, this);
-
-        myRef.child("users").child(userName).child("imgUrl").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.getResult().exists())
-                {
-                    Toast.makeText(getApplicationContext(),"Couldn't find image URI",Toast.LENGTH_LONG).show();
-                }
-                else
-                {
-                    URI=(String) task.getResult().getValue();
-                    storageRef = storage.getReference(URI);
-                }
-            }
-        });
-
     }
+
     static final int PERMISSION_ACCESS_FINE_LOCATION = 1;
 
     @Override
@@ -117,6 +96,8 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
         } else {
             mMap.setMyLocationEnabled(true);
         }
+
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
@@ -131,6 +112,30 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
 
                             myRef.child("users").child(userName).child("latitude").setValue(Double.toString(location.getLatitude()));
                             myRef.child("users").child(userName).child("longitude").setValue(Double.toString(location.getLongitude()));
+
+                            myRef.child("users").child(userName).child("imgUrl").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                                    if (!task.getResult().exists()) {
+                                        Toast.makeText(getApplicationContext(), "Couldn't find image URI", Toast.LENGTH_LONG).show();
+                                    }
+                                    else
+                                    {
+                                        URI = (String) task.getResult().getValue();
+                                        storageRef = storage.getReference(URI);
+                                    }
+                                    try {
+                                        if (ActivityCompat.checkSelfPermission(UsersMapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(UsersMapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                                            return;
+                                        }
+                                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 1, UsersMapsActivity.this);
+                                    }
+                                    catch(Exception e)
+                                    {
+                                        Log.e("MYAPP",e.getLocalizedMessage());
+                                    }
+                                }
+                            });
                         }
                     }
                 });
@@ -161,35 +166,40 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
             LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
             final long ONE_MEGABYTE = 1024 * 1024;
 
-
             storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
                     bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     Bitmap mutableBitmap = bmp.copy(Bitmap.Config.ARGB_8888, true);
+                    Bitmap smallMarker = Bitmap.createScaledBitmap(mutableBitmap, 150, 150, false);
                     canvas = new Canvas(mutableBitmap);
 
                     Paint color = new Paint();
                     color.setTextSize(35);
                     color.setColor(Color.BLACK);
 
-                    canvas.drawBitmap(bmp, 0,0, color);
+                    canvas.drawBitmap(smallMarker, 0,0, color);
                     canvas.drawText(userName, 30, 40, color);
+                    userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).anchor(0.5f,1));
+
+                    float zoomLevel = 16.0f; //This goes up to 21
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, zoomLevel));
+
+                    myRef.child("users").child(userName).child("latitude").setValue(Double.toString(location.getLatitude()));
+                    myRef.child("users").child(userName).child("longitude").setValue(Double.toString(location.getLongitude()));
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     Log.e("MYAPP",exception.getLocalizedMessage());
+                    userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).title("My loc"));
+                    float zoomLevel = 16.0f; //This goes up to 21
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, zoomLevel));
+
+                    myRef.child("users").child(userName).child("latitude").setValue(Double.toString(location.getLatitude()));
+                    myRef.child("users").child(userName).child("longitude").setValue(Double.toString(location.getLongitude()));
                 }
             });
-
-            userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).icon(BitmapDescriptorFactory.fromBitmap(bmp)).anchor(0.5f,1));
-            // pogledati zasto je bmp null!!!
-            float zoomLevel = 16.0f; //This goes up to 21
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, zoomLevel));
-
-            myRef.child("users").child(userName).child("latitude").setValue(Double.toString(location.getLatitude()));
-            myRef.child("users").child(userName).child("longitude").setValue(Double.toString(location.getLongitude()));
         }
     }
 }
