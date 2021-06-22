@@ -19,6 +19,7 @@ public class User {
     public String latitude;
     public String longitude;
     public List<String> friends;
+    public List<String> friendRequests;
     public List<Location> visited;
     public List<Location> favoriteLocation;
     public String points;
@@ -38,9 +39,10 @@ public class User {
         //myLocation=loc;
         setLatitude(lat);
         setLongitude(lon);
-        friends=new ArrayList<String>();
+        friends= new ArrayList<String>();
         visited= new ArrayList<Location>();
-        favoriteLocation=new ArrayList<Location>();
+        favoriteLocation= new ArrayList<Location>();
+        setFriendRequests(new ArrayList<String>());
         this.points=points;
     }
     public User(String p, String e, String f, String l, String i, String ph,String points){
@@ -50,9 +52,10 @@ public class User {
         lastName=l;
         imgUrl=i;
         phoneNumber=ph;
-        friends=new ArrayList<String>();
+        friends= new ArrayList<String>();
         visited= new ArrayList<Location>();
-        favoriteLocation=new ArrayList<Location>();
+        favoriteLocation= new ArrayList<Location>();
+        setFriendRequests(new ArrayList<String>());
         setLatitude("");
         setLongitude("");
         this.points=points;
@@ -161,6 +164,14 @@ public class User {
 
     public void setPoints(String points) {
         this.points = points;
+    }
+
+    public List<String> getFriendRequests() {
+        return friendRequests;
+    }
+
+    public void setFriendRequests(List<String> friendRequests) {
+        this.friendRequests = friendRequests;
     }
 
 //    public Location getMyLocation() {

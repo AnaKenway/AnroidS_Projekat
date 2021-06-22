@@ -67,47 +67,15 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewFriendFullName" />
 
     <Button
-        android:id="@+id/buttonUnfriend"
+        android:id="@+id/buttonAddFriend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="152dp"
         android:layout_marginTop="45dp"
         android:layout_marginEnd="152dp"
-        android:layout_marginBottom="93dp"
-        android:text="@string/buttonUnfriend"
-        app:backgroundTint="@color/design_default_color_error"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        android:text="@string/buttonUAddFriend"
+        app:backgroundTint="#53D3DF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewFriendUserName" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="112dp"
-        android:layout_height="99dp"
-        android:layout_marginStart="149dp"
-        android:layout_marginTop="96dp"
-        android:layout_marginEnd="150dp"
-        android:src="@drawable/visited_places"
-        app:tint="#2FD5C7"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonUnfriend" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="178dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="175dp"
-        android:layout_marginBottom="95dp"
-        android:text="@string/textViewVisitedPlaces"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.54"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,4 +19,7 @@
     <string name="textViewVisitedPlaces">Visited Locations</string>
     <string name="buttonBack">Back</string>
     <string name="buttonLogOut">Logout</string>
+    <string name="buttonAddPlace">+ Add Place</string>
+    <string name="buttonUnfriend">Unfriend</string>
+    <string name="buttonUAddFriend">Add Friend</string>
 </resources>

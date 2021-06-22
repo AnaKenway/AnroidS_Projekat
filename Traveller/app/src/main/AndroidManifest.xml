@@ -23,7 +23,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Traveller">
-        <activity android:name=".FriendProfileActivity"></activity>
+        <activity android:name=".AddPlaceActivity"></activity>
+        <activity android:name=".AllFriendsActivity" />
+        <activity android:name=".EditProfileActivity" />
+        <activity android:name=".FriendProfileActivity" />
         <activity android:name=".UserProfileActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

@@ -25,10 +25,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="176dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="177dp"
+        android:fontFamily="sans-serif-black"
         android:text="TextView"
+        android:textSize="18sp"
+        android:typeface="normal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgViewProfilePicture" />
 
@@ -40,7 +44,11 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="177dp"
         android:layout_marginBottom="24dp"
+        android:fontFamily="casual"
         android:text="TextView"
+        android:textSize="36sp"
+        android:textStyle="italic"
+        android:typeface="normal"
         app:layout_constraintBottom_toTopOf="@+id/buttonEditProfile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,6 +62,7 @@
         android:layout_marginEnd="159dp"
         android:layout_marginBottom="118dp"
         android:text="@string/btnEditProfile"
+        app:backgroundTint="@color/colorAccent"
         app:layout_constraintBottom_toTopOf="@+id/imageViewMonuments"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -89,10 +98,11 @@
         android:layout_marginStart="50dp"
         android:layout_marginEnd="171dp"
         android:layout_marginBottom="175dp"
+        android:src="@drawable/all_friends"
+        app:tint="#51B8B8"
         app:layout_constraintBottom_toTopOf="@+id/buttonBack"
         app:layout_constraintEnd_toStartOf="@+id/imageViewNearbyFriends"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/all_friends"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/imageViewNearbyFriends"
@@ -101,10 +111,11 @@
         android:layout_marginTop="6dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="170dp"
+        android:src="@drawable/nearby_friends"
+        app:tint="#51B8B8"
         app:layout_constraintBottom_toTopOf="@+id/buttonLogOut"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
-        android:src="@drawable/nearby_friends"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <ImageView
         android:id="@+id/imageViewMonuments"
@@ -113,10 +124,12 @@
         android:layout_marginStart="170dp"
         android:layout_marginEnd="170dp"
         android:layout_marginBottom="10dp"
+        android:background="#FFFFFF"
+        android:src="@drawable/visited_places"
+        app:tint="#009688"
         app:layout_constraintBottom_toTopOf="@+id/textViewMonuments"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/visited_places"/>
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textViewMonuments"
@@ -137,6 +150,7 @@
         android:layout_marginStart="50dp"
         android:layout_marginBottom="30dp"
         android:text="@string/buttonBack"
+        app:backgroundTint="@color/design_default_color_secondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -147,6 +161,7 @@
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="30dp"
         android:text="@string/buttonLogOut"
+        app:backgroundTint="@color/design_default_color_error"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

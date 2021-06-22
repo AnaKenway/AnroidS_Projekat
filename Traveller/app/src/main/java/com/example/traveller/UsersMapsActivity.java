@@ -48,6 +48,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -55,6 +57,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
@@ -69,11 +72,13 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private StorageReference storageRef;
     private String URI;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        mAuth = FirebaseAuth.getInstance();
         Intent i = getIntent();
         userName = i.getStringExtra("Username");
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -83,6 +88,16 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser == null){
+            finish();
+        }
     }
 
     static final int PERMISSION_ACCESS_FINE_LOCATION = 1;
@@ -107,7 +122,7 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
-                            userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).title("My location"));
+                            userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).title(userName));
                             float zoomLevel = 16.0f; //This goes up to 21
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, zoomLevel));
 
@@ -158,15 +173,19 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
 
     Bitmap bmp;
     Canvas canvas;
+    String friendUserName;
+    String notFriend;
     @Override
     public void onLocationChanged(@NonNull Location location) {
 
         if (location != null && userMarker!=null) {
 
-            userMarker.remove();
+            //userMarker.remove();
+            mMap.clear(); // izbrisati stare markere
             LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
             final long ONE_MEGABYTE = 1024 * 1024;
 
+            storageRef = storage.getReference(URI);
             storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                 @Override
                 public void onSuccess(byte[] bytes) {
@@ -195,7 +214,8 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
                             else
                             {
                                 Intent i = new Intent(UsersMapsActivity.this, FriendProfileActivity.class);
-                                i.putExtra("userName", marker.getTitle());
+                                i.putExtra("friendUserName", marker.getTitle());
+                                i.putExtra("userName", userName);
                                 startActivity(i);
                             }
                             return false;
@@ -211,7 +231,7 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     Log.e("MYAPP",exception.getLocalizedMessage());
-                    userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).title("My loc"));
+                    userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).title(userName));
                     float zoomLevel = 16.0f; //This goes up to 21
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, zoomLevel));
 
@@ -220,5 +240,71 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
                 }
             });
         }
+
+
+        myRef.child("users").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.getResult().exists()) {
+                    Toast.makeText(getApplicationContext(),"Couldn't find users",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Object u=task.getResult().getValue();
+                    HashMap<String, HashMap<String, ArrayList<String>>> hm=(HashMap<String, HashMap<String,ArrayList<String>>>) u;
+                    HashMap<String, HashMap<String, String>> hm2=(HashMap<String, HashMap<String, String>>) u;
+                    ArrayList<String> friends = hm.get(userName).get("friends");
+                    String imgURI;
+                    String latitude, longitude;
+
+                    for(int i = 0; i < friends.size(); i++)
+                    {
+                        friendUserName = friends.get(i);
+                        latitude = hm2.get(friendUserName).get("latitude");
+                        longitude =  hm2.get(friendUserName).get("longitude");
+                        imgURI = hm2.get(friendUserName).get("imgUrl");
+                        LatLng friendLoc = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+                        hm2.remove(friends.get(i));
+
+                        final long ONE_MEGABYTE = 1024 * 1024;
+
+                        storageRef = storage.getReference(imgURI);
+                        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            @Override
+                            public void onSuccess(byte[] bytes) {
+                                bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                Bitmap mutableBitmap = bmp.copy(Bitmap.Config.ARGB_8888, true);
+                                Bitmap smallMarker = Bitmap.createScaledBitmap(mutableBitmap, 150, 150, false);
+                                canvas = new Canvas(mutableBitmap);
+
+                                Paint color = new Paint();
+                                color.setTextSize(35);
+                                color.setColor(Color.BLACK);
+
+                                canvas.drawBitmap(smallMarker, 0,0, color);
+                                canvas.drawText(friendUserName, 30, 40, color);
+                                mMap.addMarker(new MarkerOptions().position(friendLoc).title(friendUserName).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).anchor(0.5f,1));
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                Log.e("MYAPP",exception.getLocalizedMessage());
+                                 mMap.addMarker(new MarkerOptions().position(friendLoc).title(friendUserName));
+                            }
+                        });
+                    }
+
+                    hm2.remove(userName);
+                    for (String key: hm2.keySet()) {
+
+                        notFriend = key;
+                        latitude = hm2.get(notFriend).get("latitude");
+                        longitude =  hm2.get(notFriend).get("longitude");
+                        LatLng notFriendLoc = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+                        mMap.addMarker(new MarkerOptions().position(notFriendLoc).title(notFriend));
+                    }
+                }
+            }
+        });
     }
 }
