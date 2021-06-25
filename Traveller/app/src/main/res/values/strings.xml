@@ -22,4 +22,6 @@
     <string name="buttonAddPlace">+ Add Place</string>
     <string name="buttonUnfriend">Unfriend</string>
     <string name="buttonUAddFriend">Add Friend</string>
+    <string name="buttonAccept">Accept</string>
+    <string name="buttonDecline">Decline</string>
 </resources>

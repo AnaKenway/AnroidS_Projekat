@@ -1,6 +1,7 @@
 package com.example.traveller;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -10,6 +11,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,6 +48,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private String firstName;
     private String lastName;
     private Bitmap bmp;
+    private Integer numberOfRequests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +57,8 @@ public class UserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
         Intent i = getIntent();
         userName = i.getStringExtra("userName");
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         final TextView fullNameTextView = findViewById(R.id.textViewFullName);
         final TextView userNameTextView = findViewById(R.id.textViewUserName);
@@ -63,7 +69,8 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i=new Intent(UserProfileActivity.this, AllFriendsActivity.class);
-                //i.putExtra("isLogin",true);
+                i.putExtra("isAllFriends",true);
+                i.putExtra("userName", userName);
                 startActivity(i);
             }
         });
@@ -80,6 +87,10 @@ public class UserProfileActivity extends AppCompatActivity {
                     lastName = hm.get("lastName");
                     URI = hm.get("imgUrl");
                     storageRef = storage.getReference(URI);
+
+//                    HashMap<String, HashMap<String, String>> hm2 = (HashMap<String, HashMap<String, String>>) u;
+//                    HashMap<String, String> hm3 = hm2.get("friendRequests");
+//                    numberOfRequests = hm3.size();
 
                     fullNameTextView.setText(firstName + " " + lastName);
                     userNameTextView.setText("@"+userName);
@@ -124,5 +135,50 @@ public class UserProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_toolbar_user_profile, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            case R.id.itemRequests:
+                Intent i=new Intent(UserProfileActivity.this, AllFriendsActivity.class);
+                i.putExtra("isAllFriends",false);
+                i.putExtra("userName", userName);
+                startActivity(i);
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem myItem = menu.findItem(R.id.itemNumberOfRequests);
+
+        myRef.child("users").child(userName).child("friendRequests").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.getResult().exists()) {
+                    Toast.makeText(getApplicationContext(),"You don't have any requests.",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Object u=task.getResult().getValue();
+                    HashMap<String, String> hm1 = (HashMap<String, String>) u;
+                    numberOfRequests = hm1.size();
+                    myItem.setTitle(numberOfRequests.toString());
+
+                }
+            }
+        });
+        return true;
     }
 }

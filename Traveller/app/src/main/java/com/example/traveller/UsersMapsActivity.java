@@ -1,6 +1,8 @@
 package com.example.traveller;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -21,6 +23,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.traveller.models.User;
@@ -60,7 +63,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
+public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
 
     private GoogleMap mMap;
     private FusedLocationProviderClient fusedLocationClient;
@@ -87,7 +90,6 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
     }
 
     @Override
@@ -255,53 +257,54 @@ public class UsersMapsActivity extends FragmentActivity implements OnMapReadyCal
                     ArrayList<String> friends = hm.get(userName).get("friends");
                     String imgURI;
                     String latitude, longitude;
-
-                    for(int i = 0; i < friends.size(); i++)
+                    if(friends!=null)
                     {
-                        friendUserName = friends.get(i);
-                        latitude = hm2.get(friendUserName).get("latitude");
-                        longitude =  hm2.get(friendUserName).get("longitude");
-                        imgURI = hm2.get(friendUserName).get("imgUrl");
-                        LatLng friendLoc = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
-                        hm2.remove(friends.get(i));
+                        for (int i = 0; i < friends.size(); i++) {
+                            friendUserName = friends.get(i);
+                            latitude = hm2.get(friendUserName).get("latitude");
+                            longitude = hm2.get(friendUserName).get("longitude");
+                            imgURI = hm2.get(friendUserName).get("imgUrl");
+                            LatLng friendLoc = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+                            hm2.remove(friends.get(i));
 
-                        final long ONE_MEGABYTE = 1024 * 1024;
+                            final long ONE_MEGABYTE = 1024 * 1024;
 
-                        storageRef = storage.getReference(imgURI);
-                        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                            @Override
-                            public void onSuccess(byte[] bytes) {
-                                bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                Bitmap mutableBitmap = bmp.copy(Bitmap.Config.ARGB_8888, true);
-                                Bitmap smallMarker = Bitmap.createScaledBitmap(mutableBitmap, 150, 150, false);
-                                canvas = new Canvas(mutableBitmap);
+                            storageRef = storage.getReference(imgURI);
+                            storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                @Override
+                                public void onSuccess(byte[] bytes) {
+                                    bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                    Bitmap mutableBitmap = bmp.copy(Bitmap.Config.ARGB_8888, true);
+                                    Bitmap smallMarker = Bitmap.createScaledBitmap(mutableBitmap, 150, 150, false);
+                                    canvas = new Canvas(mutableBitmap);
 
-                                Paint color = new Paint();
-                                color.setTextSize(35);
-                                color.setColor(Color.BLACK);
+                                    Paint color = new Paint();
+                                    color.setTextSize(35);
+                                    color.setColor(Color.BLACK);
 
-                                canvas.drawBitmap(smallMarker, 0,0, color);
-                                canvas.drawText(friendUserName, 30, 40, color);
-                                mMap.addMarker(new MarkerOptions().position(friendLoc).title(friendUserName).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).anchor(0.5f,1));
+                                    canvas.drawBitmap(smallMarker, 0, 0, color);
+                                    canvas.drawText(friendUserName, 30, 40, color);
+                                    mMap.addMarker(new MarkerOptions().position(friendLoc).title(friendUserName).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).anchor(0.5f, 1));
 
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                                Log.e("MYAPP",exception.getLocalizedMessage());
-                                 mMap.addMarker(new MarkerOptions().position(friendLoc).title(friendUserName));
-                            }
-                        });
-                    }
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    Log.e("MYAPP", exception.getLocalizedMessage());
+                                    mMap.addMarker(new MarkerOptions().position(friendLoc).title(friendUserName));
+                                }
+                            });
+                        }
 
-                    hm2.remove(userName);
-                    for (String key: hm2.keySet()) {
+                        hm2.remove(userName);
+                        for (String key : hm2.keySet()) {
 
-                        notFriend = key;
-                        latitude = hm2.get(notFriend).get("latitude");
-                        longitude =  hm2.get(notFriend).get("longitude");
-                        LatLng notFriendLoc = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
-                        mMap.addMarker(new MarkerOptions().position(notFriendLoc).title(notFriend));
+                            notFriend = key;
+                            latitude = hm2.get(notFriend).get("latitude");
+                            longitude = hm2.get(notFriend).get("longitude");
+                            LatLng notFriendLoc = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+                            mMap.addMarker(new MarkerOptions().position(notFriendLoc).title(notFriend));
+                        }
                     }
                 }
             }
