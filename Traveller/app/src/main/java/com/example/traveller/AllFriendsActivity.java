@@ -99,6 +99,7 @@ public class AllFriendsActivity extends AppCompatActivity {
                                 intent.putExtra("userName", userName);
                                 intent.putExtra("isEnteredFromRequests",true);
                                 startActivity(intent);
+                                finish();
                             }
                         });
                     }

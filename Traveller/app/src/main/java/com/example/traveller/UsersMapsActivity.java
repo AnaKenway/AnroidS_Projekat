@@ -23,6 +23,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -257,8 +258,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                     ArrayList<String> friends = hm.get(userName).get("friends");
                     String imgURI;
                     String latitude, longitude;
-                    if(friends!=null)
-                    {
+                    if(friends!=null) {
                         for (int i = 0; i < friends.size(); i++) {
                             friendUserName = friends.get(i);
                             latitude = hm2.get(friendUserName).get("latitude");
@@ -295,7 +295,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                                 }
                             });
                         }
-
+                    }
                         hm2.remove(userName);
                         for (String key : hm2.keySet()) {
 
@@ -305,9 +305,28 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                             LatLng notFriendLoc = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
                             mMap.addMarker(new MarkerOptions().position(notFriendLoc).title(notFriend));
                         }
-                    }
                 }
             }
         });
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_toolbar_users_maps, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+            case R.id.itemProfileUserMaps:
+                Intent i = new Intent(UsersMapsActivity.this, UserProfileActivity.class);
+                i.putExtra("userName", userName);
+                startActivity(i);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
