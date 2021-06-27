@@ -107,14 +107,33 @@ public class FriendProfileActivity extends AppCompatActivity {
                                     myRef.child("users").child(userName).child("friendRequests").child(friendUserName).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
-                                            myRef.child("users").child(userName).child("friends").child(friendUserName).setValue("true").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            //ovde
+                                            myRef.child("users").child(userName).child("friends").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
                                                 @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    myRef.child("users").child(friendUserName).child("friends").child(userName).setValue("true").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
+                                                    ArrayList<String> myfriendList=(ArrayList<String>) dataSnapshot.getValue();
+                                                    if(myfriendList==null)
+                                                        myfriendList=new ArrayList<String>();
+                                                    myfriendList.add(friendUserName);
+                                                    myRef.child("users").child(userName).child("friends").setValue(myfriendList).addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                            Toast.makeText(getApplicationContext(), "Friend request accepted", Toast.LENGTH_LONG).show();
-                                                            finish();
+                                                        public void onSuccess(@NonNull Void aVoid) {
+                                                            myRef.child("users").child(friendUserName).child("friends").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                                                                @Override
+                                                                public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
+                                                                    ArrayList<String> friendList=(ArrayList<String>) dataSnapshot.getValue();
+                                                                    if(friendList==null)
+                                                                        friendList=new ArrayList<String>();
+                                                                    friendList.add(userName);
+                                                                    myRef.child("users").child(friendUserName).child("friends").setValue(friendList).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                                        @Override
+                                                                        public void onSuccess(@NonNull Void aVoid) {
+                                                                            Toast.makeText(getApplicationContext(), "Friend request accepted", Toast.LENGTH_LONG).show();
+                                                                            finish();
+                                                                        }
+                                                                    });
+                                                                }
+                                                            });
                                                         }
                                                     });
                                                 }

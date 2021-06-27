@@ -146,8 +146,6 @@ public class LoginActivity extends AppCompatActivity {
                     User user=new User(etPassword.getText().toString(),
                             etEmail.getText().toString(),etFirstName.getText().toString(),etLastName.getText().toString(),
                             imgURI,etPhoneNumber.getText().toString(),"0");
-                    user.friends.add("Ema");
-                    user.friends.add("Marjan");
                     myRef.child("users").child(username).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DataSnapshot> task) {

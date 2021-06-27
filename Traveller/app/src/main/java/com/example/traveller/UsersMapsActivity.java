@@ -77,6 +77,8 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
     private StorageReference storageRef;
     private String URI;
     private FirebaseAuth mAuth;
+    private ArrayList<Marker> friendMarkers;
+    private ArrayList<Marker> monumentMarkers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +93,8 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        friendMarkers=new ArrayList<Marker>();
+        monumentMarkers=new ArrayList<Marker>();
     }
 
     @Override
@@ -183,8 +187,14 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
 
         if (location != null && userMarker!=null) {
 
-            //userMarker.remove();
-            mMap.clear(); // izbrisati stare markere
+            userMarker.remove();
+            //mMap.clear(); // izbrisati stare markere
+            if(!friendMarkers.isEmpty())
+            {
+                for(int i=0;i<friendMarkers.size();i++){
+                    friendMarkers.get(i).remove();
+                }
+            }
             LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
             final long ONE_MEGABYTE = 1024 * 1024;
 
@@ -284,7 +294,8 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
 
                                     canvas.drawBitmap(smallMarker, 0, 0, color);
                                     canvas.drawText(friendUserName, 30, 40, color);
-                                    mMap.addMarker(new MarkerOptions().position(friendLoc).title(friendUserName).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).anchor(0.5f, 1));
+                                    Marker m=mMap.addMarker(new MarkerOptions().position(friendLoc).title(friendUserName).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).anchor(0.5f, 1));
+                                    friendMarkers.add(m);
 
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
@@ -303,7 +314,8 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                             latitude = hm2.get(notFriend).get("latitude");
                             longitude = hm2.get(notFriend).get("longitude");
                             LatLng notFriendLoc = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
-                            mMap.addMarker(new MarkerOptions().position(notFriendLoc).title(notFriend));
+                            Marker m2=mMap.addMarker(new MarkerOptions().position(notFriendLoc).title(notFriend));
+                            friendMarkers.add(m2);
                         }
                 }
             }
@@ -319,6 +331,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                mAuth.signOut();
                 this.finish();
                 return true;
             case R.id.itemProfileUserMaps:

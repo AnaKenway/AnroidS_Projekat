@@ -29,8 +29,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -160,9 +162,32 @@ public class UserProfileActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    ValueEventListener numOfRequestsListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            // Get Post object and use the values to update the UI
+            Object u=dataSnapshot.getValue();
+            HashMap<String, String> hm1 = (HashMap<String, String>) u;
+            numberOfRequests = hm1.size();
+
+            MenuItem myItem=findViewById(R.id.itemNumberOfRequests);
+
+            myItem.setTitle(numberOfRequests.toString());
+            // ..
+        }
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            // Getting Post failed, log a message
+
+        }
+    };
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem myItem = menu.findItem(R.id.itemNumberOfRequests);
+
+        DatabaseReference friendRequests= myRef.child("users").child(userName).child("friendRequests").getRef();
+        friendRequests.addValueEventListener(numOfRequestsListener);
 
         myRef.child("users").child(userName).child("friendRequests").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
