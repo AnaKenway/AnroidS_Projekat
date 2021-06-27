@@ -51,6 +51,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private String lastName;
     private Bitmap bmp;
     private Integer numberOfRequests;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +117,7 @@ public class UserProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(UserProfileActivity.this,EditProfileActivity.class);
-                //i.putExtra("isLogin",true);
+                i.putExtra("userName",userName);
                 startActivity(i);
             }
         });
@@ -143,6 +144,7 @@ public class UserProfileActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_toolbar_user_profile, menu);
+        this.menu=menu;
         return true;
     }
     @Override
@@ -170,7 +172,8 @@ public class UserProfileActivity extends AppCompatActivity {
             HashMap<String, String> hm1 = (HashMap<String, String>) u;
             numberOfRequests = hm1.size();
 
-            MenuItem myItem=findViewById(R.id.itemNumberOfRequests);
+
+            MenuItem myItem=menu.findItem(R.id.itemNumberOfRequests);
 
             myItem.setTitle(numberOfRequests.toString());
             // ..

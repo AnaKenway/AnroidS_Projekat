@@ -299,22 +299,7 @@ public class LoginActivity extends AppCompatActivity {
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                        // ...
-                        /*storageRef.getDownloadUrl().addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(LoginActivity.this, "Couldn't get image URL from Firebase Cloud",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        }).addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                imgURI=uri.toString();
-                            }
-                        });*/
-                        //ukoliko nam treba nesto drugo kao img URI, vratiti se i ppogledati
-                        //================OVDE===================   
+
                         imgURI=taskSnapshot.getMetadata().getPath();
                     }
                 });

@@ -24,4 +24,7 @@
     <string name="buttonUAddFriend">Add Friend</string>
     <string name="buttonAccept">Accept</string>
     <string name="buttonDecline">Decline</string>
+    <string name="editProfile">Edit Profile</string>
+    <string name="Save">Save</string>
+    <string name="Cancel">Cancel</string>
 </resources>
