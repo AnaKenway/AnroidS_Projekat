@@ -37,4 +37,9 @@
     <string name="address">Address</string>
     <string name="age">Age</string>
     <string name="add">Add</string>
+    <string name="visitingHours">Visiting Hours</string>
+    <string name="petFriendly">Pet Friendly?</string>
+    <string name="hasWifi">Wifi?</string>
+    <string name="cardPay">Card Pay?</string>
+    <string name="cuisine">Cuisine</string>
 </resources>
