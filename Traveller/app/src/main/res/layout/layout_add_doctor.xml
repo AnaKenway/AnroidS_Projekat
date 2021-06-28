@@ -1,6 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".AddPlaceActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        style="@style/loginHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/loginViewsMargin"
+        android:text="@string/addDoctor"
+        android:layout_gravity="center_horizontal"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputPlaceName"
+        style="@style/parent"
+        android:layout_marginTop="@dimen/loginViewsMargin">
+
+        <EditText
+            android:id="@+id/editTextPlaceName"
+            style="@style/modifiedEditProfileText"
+            android:hint="@string/name"
+            android:inputType="textPersonName"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputPlaceDesc"
+        style="@style/parent"
+        android:layout_marginTop="@dimen/loginViewsMargin">
+
+        <EditText
+            android:id="@+id/editTextPlaceDesc"
+            style="@style/modifiedEditProfileText"
+            android:hint="@string/description"
+            android:inputType="textPersonName"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputPlaceAddress"
+        style="@style/parent"
+        android:layout_marginTop="@dimen/loginViewsMargin">
+
+        <EditText
+            android:id="@+id/editTextPlaceAdress"
+            style="@style/modifiedEditProfileText"
+            android:hint="@string/address"
+            android:inputType="textPersonName"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputDoctorFieldOfWork"
+        style="@style/parent"
+        android:layout_marginTop="@dimen/loginViewsMargin">
+
+        <EditText
+            android:id="@+id/editTextDoctorFieldOfWork"
+            style="@style/modifiedEditProfileText"
+            android:hint="@string/fieldOfWork"
+            android:inputType="textPersonName"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputDoctorWorkingHours"
+        style="@style/parent"
+        android:layout_marginTop="@dimen/loginViewsMargin">
+
+        <EditText
+            android:id="@+id/editTextDoctorWorkingHours"
+            style="@style/modifiedEditProfileText"
+            android:hint="@string/workingHours"
+            android:inputType="textPersonName"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputDoctorPhoneNumber"
+        style="@style/parent"
+        android:layout_marginTop="@dimen/loginViewsMargin">
+
+        <EditText
+            android:id="@+id/editTextDoctorPhoneNumber"
+            style="@style/modifiedEditProfileText"
+            android:hint="@string/login_mobile_number_hint"
+            android:inputType="phone"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageButton
+        android:id="@+id/imgBtnCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/loginViewsMargin"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="89dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnCancelPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:text="@string/Cancel"
+            app:backgroundTint="#DF6969" />
+
+        <Button
+            android:id="@+id/btnAddPlace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:background="#51E4D8"
+            android:text="@string/add"
+            app:backgroundTint="#00BCD4" />
+    </LinearLayout>
+
+</LinearLayout>

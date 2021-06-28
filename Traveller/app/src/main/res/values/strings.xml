@@ -42,4 +42,6 @@
     <string name="hasWifi">Wifi?</string>
     <string name="cardPay">Card Pay?</string>
     <string name="cuisine">Cuisine</string>
+    <string name="fieldOfWork">Field of Work</string>
+    <string name="workingHours">Wokring Hours</string>
 </resources>
