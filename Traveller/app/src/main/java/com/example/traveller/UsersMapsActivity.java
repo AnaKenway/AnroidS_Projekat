@@ -46,8 +46,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -71,11 +73,12 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
     private String URI;
     private FirebaseAuth mAuth;
     private ArrayList<Marker> friendMarkers;
-    private ArrayList<Marker> monumentMarkers;
+    private ArrayList<Marker> placesMarkers;
     private MenuItem switchShowUsers;
     private boolean showUsers=false;
     private Location currLoc;
     private String selectedItem;
+    private boolean showMonuments=true, showRestaurants=true, showDoctors=true, showTravelAgencies=true, showCoffeeShop=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,12 +94,12 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         friendMarkers=new ArrayList<Marker>();
-        monumentMarkers=new ArrayList<Marker>();
+        placesMarkers=new ArrayList<Marker>();
 
         final String[] listItems = new String[]{"Monument", "Coffee Shop", "Doctor", "Restaurant","Travel Agency"};
         final List<String> selectedItems = Arrays.asList(listItems);
         final boolean[] checkedItems = new boolean[listItems.length];
-
+        selectedItem = listItems[0];
 
         Button btnAddPlace=findViewById(R.id.buttonAddPlace);
         btnAddPlace.setOnClickListener(new View.OnClickListener() {
@@ -107,7 +110,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                 // set the title for the alert dialog
                 builder.setTitle("Choose a place to add:");
 
-                builder.setSingleChoiceItems(listItems, 1, new DialogInterface.OnClickListener() {
+                builder.setSingleChoiceItems(listItems, 0, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(getApplicationContext(), listItems[which], Toast.LENGTH_LONG).show();
@@ -173,6 +176,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                         if (location != null) {
                             LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
                             userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).title(userName));
+                            userMarker.setTag("user");
                             float zoomLevel = 16.0f; //This goes up to 21
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, zoomLevel));
 
@@ -205,6 +209,87 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                         }
                     }
                 });
+        myRef.child("places").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                HashMap<String,HashMap<String,HashMap<String,String>>> hm = (HashMap<String,HashMap<String,HashMap<String,String>>>) snapshot.getValue();
+
+                if(!placesMarkers.isEmpty())
+                    for(int i = 0; i < placesMarkers.size(); i++)
+                        placesMarkers.get(i).remove();
+
+                if(showMonuments){
+                    HashMap<String,HashMap<String,String>> hashmonuments = hm.get("monuments");
+
+                    if(hashmonuments!=null)
+                    for(String key: hashmonuments.keySet()){
+                        String lat = hashmonuments.get(key).get("latitude");
+                        String lon = hashmonuments.get(key).get("longitude");
+                        Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat),Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_museum_black_48dp)).title(key));
+                        m.setTag("monument");
+                        placesMarkers.add(m);
+                    }
+                }
+
+                if(showCoffeeShop){
+                    HashMap<String,HashMap<String,String>> hashCoffee = hm.get("coffee_shops");
+
+                    if(hashCoffee!=null)
+                    for(String key: hashCoffee.keySet()){
+                        String lat = hashCoffee.get(key).get("latitude");
+                        String lon = hashCoffee.get(key).get("longitude");
+                        Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat),Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_local_cafe_black_48dp)).title(key));
+                        m.setTag("coffeeShop");
+                        placesMarkers.add(m);
+                    }
+                }
+
+                if(showDoctors){
+                    HashMap<String,HashMap<String,String>> hashDoctors = hm.get("doctors");
+
+                    if(hashDoctors!=null)
+                    for(String key: hashDoctors.keySet()){
+                        String lat = hashDoctors.get(key).get("latitude");
+                        String lon = hashDoctors.get(key).get("longitude");
+                        Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat),Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_medical_services_black_48dp)).title(key));
+                        m.setTag("doctor");
+                        placesMarkers.add(m);
+                    }
+                }
+
+                if(showRestaurants) {
+                    HashMap<String, HashMap<String, String>> hashRestaurants = hm.get("restaurants");
+
+                    if(hashRestaurants!=null)
+                    for (String key : hashRestaurants.keySet()) {
+                        String lat = hashRestaurants.get(key).get("latitude");
+                        String lon = hashRestaurants.get(key).get("longitude");
+                        Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat), Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_restaurant_black_48dp)).title(key));
+                        m.setTag("restaurant");
+                        placesMarkers.add(m);
+                    }
+                }
+
+                if(showTravelAgencies){
+                    HashMap<String, HashMap<String, String>> hashTravelAgencies = hm.get("travel_agencies");
+
+                    if(hashTravelAgencies!=null)
+                    for (String key : hashTravelAgencies.keySet()) {
+                        String lat = hashTravelAgencies.get(key).get("latitude");
+                        String lon = hashTravelAgencies.get(key).get("longitude");
+                        Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat), Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_travel_explore_black_48dp)).title(key));
+                        m.setTag("travelAgency");
+                        placesMarkers.add(m);
+                    }
+                }
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @SuppressLint("MissingPermission")
@@ -258,11 +343,30 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                     canvas.drawBitmap(smallMarker, 0,0, color);
                     canvas.drawText(userName, 30, 40, color);
                     userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).title(userName).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).anchor(0.5f,1));
+                    userMarker.setTag("user");
 
                     mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         @Override
                         public boolean onMarkerClick(@NonNull Marker marker) {
-                            if(marker.getTitle().toString().equals(userName))
+
+                            if(marker.getTag().equals("monument")) {
+
+//                                Intent i = new Intent(UsersMapsActivity.this, UserProfileActivity.class);
+//                                i.putExtra("userName", userName);
+//                                startActivity(i);
+
+                            }else if(marker.getTag().equals("coffeeShop")){
+
+                            }else if(marker.getTag().equals("restaurant")){
+
+                            }
+                            else if(marker.getTag().equals("doctor")){
+
+                            }
+                            else if(marker.getTag().equals("travelAgency")){
+
+                            }
+                            else if(marker.getTitle().toString().equals(userName))
                             {
                                 Intent i = new Intent(UsersMapsActivity.this, UserProfileActivity.class);
                                 i.putExtra("userName", userName);
@@ -288,7 +392,9 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     Log.e("MYAPP",exception.getLocalizedMessage());
+
                     userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).title(userName));
+                    userMarker.setTag("user");
                     float zoomLevel = 16.0f; //This goes up to 21
                     //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, zoomLevel));
 
@@ -340,6 +446,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                                     canvas.drawBitmap(smallMarker, 0, 0, color);
                                     canvas.drawText(friendUserName, 30, 40, color);
                                     Marker m=mMap.addMarker(new MarkerOptions().position(friendLoc).title(friendUserName).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).anchor(0.5f, 1));
+                                    m.setTag("friend");
                                     friendMarkers.add(m);
 
                                 }
@@ -347,7 +454,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                                 @Override
                                 public void onFailure(@NonNull Exception exception) {
                                     Log.e("MYAPP", exception.getLocalizedMessage());
-                                    mMap.addMarker(new MarkerOptions().position(friendLoc).title(friendUserName));
+                                    mMap.addMarker(new MarkerOptions().position(friendLoc).title(friendUserName)).setTag("friend");
                                 }
                             });
                         }
@@ -360,6 +467,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                             longitude = hm2.get(notFriend).get("longitude");
                             LatLng notFriendLoc = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
                             Marker m2=mMap.addMarker(new MarkerOptions().position(notFriendLoc).title(notFriend));
+                            m2.setTag("notFriend");
                             friendMarkers.add(m2);
                         }
                 }

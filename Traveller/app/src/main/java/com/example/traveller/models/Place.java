@@ -10,21 +10,25 @@ public abstract class Place {
     protected String name;
     protected String description;
     protected String address;
-    protected Location location;
+    protected String latitude;
+    protected String longitude;
     protected float rating;
-    protected Type type;
     protected List<String> imgUrls;
+    protected String imgUrl;
+    protected int numOfRaters;
 
     public Place(){}
 
-    public Place(String n, String d, String a, Location l, float rating, Type t){
+    public Place(String n, String d, String a, String lat,String lon, float rating,String imgUrl){
         name=n;
         description=d;
         address=a;
-        location=l;
+        latitude=lat;
+        longitude = lon;
         this.rating = rating;
-        type=t;
         imgUrls=new ArrayList<String>();
+        this.imgUrl = imgUrl;
+        numOfRaters = 0;
     }
 
     public String getName() {
@@ -51,15 +55,6 @@ public abstract class Place {
         this.address = address;
     }
 
-
-    public Type getType() {
-        return type;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
-
     public float getRating() {
         return rating;
     }
@@ -68,19 +63,43 @@ public abstract class Place {
         this.rating = rating;
     }
 
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
     public List<String> getImgUrls() {
         return imgUrls;
     }
 
     public void setImgUrls(List<String> imgUrls) {
         this.imgUrls = imgUrls;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public int getNumOfRaters() {
+        return numOfRaters;
+    }
+
+    public void setNumOfRaters(int numOfRaters) {
+        this.numOfRaters = numOfRaters;
     }
 }

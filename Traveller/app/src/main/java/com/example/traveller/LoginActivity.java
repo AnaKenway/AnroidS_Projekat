@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
     String storageImgPath;
     //pogledaj ovde ako ne radi
     FirebaseStorage storage=FirebaseStorage.getInstance();
+    private boolean isCameraOpened = false;
 
     // Create a Cloud Storage reference from the app
 
@@ -122,6 +123,7 @@ public class LoginActivity extends AppCompatActivity {
                     //preuzeti uri
                     //i sacuvati u imgURI
                     dispatchTakePictureIntent();
+                    isCameraOpened = true;
 
                 }
             });
@@ -130,6 +132,15 @@ public class LoginActivity extends AppCompatActivity {
             register.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(isCameraOpened)
+                    {
+                        while (imgURI == null) {}
+                    }
+                    else
+                    {
+                        Toast.makeText(LoginActivity.this, "Please, take a picture of yourself before registering.", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     EditText etUsername=(EditText) findViewById(R.id.editTextUsername);
                     EditText etEmail=(EditText) findViewById(R.id.editTextEmail);
                     EditText etPassword=(EditText) findViewById(R.id.editTextPassword);

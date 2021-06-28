@@ -10,17 +10,15 @@ public class Doctor extends Place {
     private String fieldOfWork;
     private String workingHours;
     private String phoneNumber;
-    private List<String> services;
 
     public Doctor(){}
 
-    public Doctor(String n, String d, String a, Location l, float rating, Type t,
+    public Doctor(String n, String d, String a, String lat,String lon, float rating, String imgUrl,
                   String f, String w, String phone){
-        super(n,d,a,l,rating,t);
+        super(n, d, a, lat, lon, rating,imgUrl);
         fieldOfWork=f;
         workingHours=w;
         phoneNumber=phone;
-        services=new ArrayList<String>();
     }
 
     public String getFieldOfWork() {
@@ -45,13 +43,5 @@ public class Doctor extends Place {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public List<String> getServices() {
-        return services;
-    }
-
-    public void setServices(List<String> services) {
-        this.services = services;
     }
 }

@@ -9,9 +9,9 @@ public class TravelAgency extends Place{
 
     public TravelAgency(){}
 
-    public TravelAgency(String n, String d, String a, Location l, float rating, Type t,
+    public TravelAgency(String n, String d, String a, String lat, String lon , float rating, String imgUrl,
                         String v, String p){
-        super(n,d,a,l,rating,t);
+        super(n,d,a,lat,lon,rating,imgUrl);
         visitingHours=v;
         phoneNumber=p;
     }

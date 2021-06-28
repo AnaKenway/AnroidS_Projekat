@@ -8,8 +8,8 @@ public class Monument extends Place {
 
     public Monument(){}
 
-    public Monument(String n, String d, String a, Location l, float rating, Type t, String age){
-        super(n,d,a,l,rating,t);
+    public Monument(String n, String d, String a, String lat,String lon, float rating, String age, String imgUrl){
+        super(n,d,a,lat,lon,rating,imgUrl);
         this.age=age;
     }
 }

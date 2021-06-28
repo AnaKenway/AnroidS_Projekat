@@ -12,9 +12,9 @@ public class CoffeeShop extends Place{
 
     public CoffeeShop(){}
 
-    public CoffeeShop(String n, String d, String a, Location l, float rating, Type t,
+    public CoffeeShop(String n, String d, String a, String lat,String lon,  float rating, String imgUrl,
                       String v, boolean p, String phone, boolean wifi, boolean card){
-        super(n,d,a,l,rating,t);
+        super(n,d,a,lat,lon,rating,imgUrl);
         visitingHours=v;
         petFriendly=p;
         phoneNumber=phone;

@@ -13,9 +13,9 @@ public class Restaurant extends Place{
 
     public Restaurant(){}
 
-    public Restaurant(String n, String d, String a, Location l, float rating, Type t,
-                      String v, String c, boolean p, String phone, boolean wifi, boolean card ){
-        super(n,d,a,l,rating,t);
+    public Restaurant(String n, String d, String a, String lat, String lon, float rating, String imgUrl,
+                      String v, String c, boolean p, String phone, boolean wifi, boolean card){
+        super(n,d,a,lat,lon,rating,imgUrl);
         visitingHours=v;
         cuisine=c;
         petFriendly=p;

@@ -170,6 +170,9 @@ public class UserProfileActivity extends AppCompatActivity {
             // Get Post object and use the values to update the UI
             Object u=dataSnapshot.getValue();
             HashMap<String, String> hm1 = (HashMap<String, String>) u;
+            if(hm1==null)
+                numberOfRequests = 0;
+            else
             numberOfRequests = hm1.size();
 
 
