@@ -60,6 +60,21 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <ProgressBar
+        android:id="@+id/uploadPicProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/imgViewProfileTakeAPhoto"
+        android:layout_width="52dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="@dimen/loginViewsMargin"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -83,14 +98,6 @@
             android:text="@string/Save"
             app:backgroundTint="#47E8C8" />
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/imgViewProfileTakeAPhoto"
-        android:layout_width="52dp"
-        android:layout_height="50dp"
-        android:clickable="true"
-        app:srcCompat="@android:drawable/ic_menu_camera"
-        android:layout_marginTop="@dimen/loginViewsMargin"/>
 
 
 </LinearLayout>
