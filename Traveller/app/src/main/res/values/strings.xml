@@ -27,4 +27,14 @@
     <string name="editProfile">Edit Profile</string>
     <string name="Save">Save</string>
     <string name="Cancel">Cancel</string>
+    <string name="addMonument">Add Monument</string>
+    <string name="addRestaurant">Add Restaurant</string>
+    <string name="addCoffeeShop">Add Coffee Shop</string>
+    <string name="addDoctor">Add Doctor</string>
+    <string name="addTravelAgency">Add Travel Agency</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="address">Address</string>
+    <string name="age">Age</string>
+    <string name="add">Add</string>
 </resources>

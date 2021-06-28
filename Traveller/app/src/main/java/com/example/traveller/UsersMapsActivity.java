@@ -1,12 +1,14 @@
 package com.example.traveller;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -22,6 +24,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -50,7 +53,9 @@ import com.google.firebase.storage.StorageReference;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCallback, LocationListener {
 
@@ -70,6 +75,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
     private MenuItem switchShowUsers;
     private boolean showUsers=false;
     private Location currLoc;
+    private String selectedItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,13 +93,51 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
         friendMarkers=new ArrayList<Marker>();
         monumentMarkers=new ArrayList<Marker>();
 
-        /*switchShowUsers=findViewById(R.id.show_users_switch);
-        switchShowUsers.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        final String[] listItems = new String[]{"Monument", "Coffee Shop", "Doctor", "Restaurant","Travel Agency"};
+        final List<String> selectedItems = Arrays.asList(listItems);
+        final boolean[] checkedItems = new boolean[listItems.length];
+
+
+        Button btnAddPlace=findViewById(R.id.buttonAddPlace);
+        btnAddPlace.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                showUsers=isChecked;
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(UsersMapsActivity.this);
+
+                // set the title for the alert dialog
+                builder.setTitle("Choose a place to add:");
+
+                builder.setSingleChoiceItems(listItems, 1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), listItems[which], Toast.LENGTH_LONG).show();
+                        selectedItem=listItems[which];
+                    }
+                });
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i=new Intent(UsersMapsActivity.this,AddPlaceActivity.class);
+                        i.putExtra("userName",userName);
+                        i.putExtra("type",selectedItem);
+                        i.putExtra("latitude",currLoc.getLatitude());
+                        i.putExtra("longitude",currLoc.getLongitude());
+                        startActivity(i);
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+                builder.create();
+                AlertDialog alert = builder.create();
+                alert.show();
             }
-        });*/
+        });
     }
 
     @Override
