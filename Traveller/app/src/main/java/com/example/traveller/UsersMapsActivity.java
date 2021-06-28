@@ -1,16 +1,13 @@
 package com.example.traveller;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,25 +18,16 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
-import com.example.traveller.models.User;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -79,6 +67,9 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
     private FirebaseAuth mAuth;
     private ArrayList<Marker> friendMarkers;
     private ArrayList<Marker> monumentMarkers;
+    private MenuItem switchShowUsers;
+    private boolean showUsers=false;
+    private Location currLoc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +86,14 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
         mapFragment.getMapAsync(this);
         friendMarkers=new ArrayList<Marker>();
         monumentMarkers=new ArrayList<Marker>();
+
+        /*switchShowUsers=findViewById(R.id.show_users_switch);
+        switchShowUsers.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                showUsers=isChecked;
+            }
+        });*/
     }
 
     @Override
@@ -185,6 +184,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
     @Override
     public void onLocationChanged(@NonNull Location location) {
 
+        currLoc=location;
         if (location != null && userMarker!=null) {
 
             userMarker.remove();
@@ -235,7 +235,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                         }
                     });
                     float zoomLevel = 16.0f; //This goes up to 21
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, zoomLevel));
+                    //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, zoomLevel));
 
                     myRef.child("users").child(userName).child("latitude").setValue(Double.toString(location.getLatitude()));
                     myRef.child("users").child(userName).child("longitude").setValue(Double.toString(location.getLongitude()));
@@ -246,7 +246,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                     Log.e("MYAPP",exception.getLocalizedMessage());
                     userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).title(userName));
                     float zoomLevel = 16.0f; //This goes up to 21
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, zoomLevel));
+                    //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, zoomLevel));
 
                     myRef.child("users").child(userName).child("latitude").setValue(Double.toString(location.getLatitude()));
                     myRef.child("users").child(userName).child("longitude").setValue(Double.toString(location.getLongitude()));
@@ -262,6 +262,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                     Toast.makeText(getApplicationContext(),"Couldn't find users",Toast.LENGTH_LONG).show();
                 }
                 else {
+                    if(!showUsers) return;
                     Object u=task.getResult().getValue();
                     HashMap<String, HashMap<String, ArrayList<String>>> hm=(HashMap<String, HashMap<String,ArrayList<String>>>) u;
                     HashMap<String, HashMap<String, String>> hm2=(HashMap<String, HashMap<String, String>>) u;
@@ -323,8 +324,19 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
+        super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu_toolbar_users_maps, menu);
+        View view = (View) menu.findItem(R.id.item_show_users_switch).getActionView();
+
+        Switch sw=(Switch)view.findViewById(R.id.switch_show_users);
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                showUsers=!showUsers;
+                onLocationChanged(currLoc);
+            }
+        });
+
         return true;
     }
     @Override
