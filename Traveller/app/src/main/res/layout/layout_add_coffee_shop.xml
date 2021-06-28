@@ -78,12 +78,13 @@
 
 
     </com.google.android.material.textfield.TextInputLayout>
+
     <Switch
         android:id="@+id/switchPetFriendly"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:layout_marginTop="10dp"
+        android:layout_weight="1"
         android:text="@string/petFriendly" />
 
     <Switch

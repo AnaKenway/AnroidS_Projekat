@@ -10,10 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class AddPlaceActivity extends AppCompatActivity {
 
     private String userName;
-    private Location loc;
+    private LatLng loc;
     private boolean isMonument=false;
     private boolean isDoctor=false;
     private boolean isCoffeeShop=false;
@@ -26,11 +28,13 @@ public class AddPlaceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         Intent i=getIntent();
         String type=i.getStringExtra("type");
         userName=i.getStringExtra("userName");
-        loc.setLatitude(i.getDoubleExtra("latitude",0.0));
-        loc.setLongitude(i.getDoubleExtra("longitude",0.0));
+        double lat=i.getDoubleExtra("latitude",0.0);
+        double lon=i.getDoubleExtra("longitude",0.0);
+        loc=new LatLng(lat,lon);
 
         //"Monument", "Coffee Shop", "Doctor", "Restaurant","Travel Agency"
         switch (type) {
