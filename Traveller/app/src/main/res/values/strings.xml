@@ -44,4 +44,14 @@
     <string name="cuisine">Cuisine</string>
     <string name="fieldOfWork">Field of Work</string>
     <string name="workingHours">Wokring Hours</string>
+    <string name="visitedMonumentQuestion">Have you visited this monument?</string>
+    <string name="visitedCOffeeShopQuestion">Have you visited this coffee shop?</string>
+    <string name="visitedRestaurantQuestion">Have you visited this restaurant?</string>
+    <string name="visitedDoctorQuestion">Have you visited this doctor?</string>
+    <string name="visitedTravelAgencyQuestion">Have you visited this travel agency?</string>
+    <string name="rateMonument">Rate this monument</string>
+    <string name="rateCoffeeShop">Rate this coffee shop</string>
+    <string name="rateRestaurant">Rate this restaurant</string>
+    <string name="rateDoctor">Rate this doctor</string>
+    <string name="rateTravelAgency">Rate this travel agency</string>
 </resources>

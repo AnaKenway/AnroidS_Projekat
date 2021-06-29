@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!-- ovde napisati activity, koji jos nismo napravili-->
+            <!--tools:context=".AddPlaceActivity"-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/loginViewsMargin"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewMonumentViewName"
+                    style="@style/loginHeader"
+                    android:layout_width="262dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/loginViewsMargin"
+                    android:foregroundGravity="right|center_horizontal"
+                    android:gravity="right"
+                    android:text="Text View"
+                    android:textColor="#2196F3" />
+
+                <ImageView
+                    android:id="@+id/imgViewMonumentPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="43dp"
+                    android:layout_gravity="bottom"
+                    android:clickable="true"
+                    app:srcCompat="@drawable/outline_favorite_border_black_48dp"></ImageView>
+
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/loginViewsMargin"
+                app:srcCompat="@drawable/outline_museum_black_48dp" />
+
+            <TextView
+                android:id="@+id/textViewMonumentViewDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/loginViewsMargin"
+                android:text="@string/description"
+                android:textAlignment="center"
+                android:textColor="#131313"
+                android:textSize="18sp" />
+
+            <Switch
+                android:id="@+id/switchVisitedMonument"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/loginViewsMargin"
+                android:text="@string/visitedMonumentQuestion" />
+
+            <RatingBar
+                android:id="@+id/ratingBarMonument"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:id="@+id/textViewMonumentViewRate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/loginViewsMargin"
+                android:text="@string/rateMonument"
+                android:textAlignment="center"
+                android:textColor="#131313"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</ScrollView>
