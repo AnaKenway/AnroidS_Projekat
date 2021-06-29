@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/loginViewsMargin"
-                app:srcCompat="@drawable/outline_local_cafe_black_48dp" />
+                app:srcCompat="@drawable/outline_restaurant_black_48dp" />
 
             <TextView
                 android:id="@+id/textViewMonumentAddress"
@@ -82,6 +82,16 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/textViewMonumentViewCuisine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/loginViewsMargin"
+                android:text="@string/cuisine"
+                android:textAlignment="center"
+                android:textColor="#131313"
+                android:textSize="18sp" />
+
+            <TextView
                 android:id="@+id/textViewMonumentViewDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -96,7 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/loginViewsMargin"
-                android:text="@string/visitedCOffeeShopQuestion" />
+                android:text="@string/visitedRestaurantQuestion" />
 
             <CheckedTextView
                 android:id="@+id/checkedTextViewHasWifi"

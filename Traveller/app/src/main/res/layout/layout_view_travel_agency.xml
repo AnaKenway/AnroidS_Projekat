@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/loginViewsMargin"
-                app:srcCompat="@drawable/outline_local_cafe_black_48dp" />
+                app:srcCompat="@drawable/outline_travel_explore_black_48dp" />
 
             <TextView
                 android:id="@+id/textViewMonumentAddress"
@@ -96,33 +96,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/loginViewsMargin"
-                android:text="@string/visitedCOffeeShopQuestion" />
+                android:text="@string/visitedTravelAgencyQuestion" />
 
-            <CheckedTextView
-                android:id="@+id/checkedTextViewHasWifi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:checkMark="@drawable/outline_check_circle_green_48dp"
-                android:text="@string/petFriendly"
-                android:textSize="18sp" />
-
-            <CheckedTextView
-                android:id="@+id/checkedTextViewIsPetFriendly"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/signup_text_margin_top"
-                android:checkMark="@drawable/outline_check_circle_green_48dp"
-                android:text="@string/hasWifi"
-                android:textSize="18sp" />
-
-            <CheckedTextView
-                android:id="@+id/checkedTextViewHasCardPay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/signup_text_margin_top"
-                android:checkMark="@drawable/outline_check_circle_green_48dp"
-                android:text="@string/cardPay"
-                android:textSize="18sp" />
 
             <RatingBar
                 android:id="@+id/ratingBarMonument"
