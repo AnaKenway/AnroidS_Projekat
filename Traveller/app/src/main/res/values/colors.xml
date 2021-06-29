@@ -19,4 +19,5 @@
 
     <!--colros for card-->
     <color name="whiteCardColor">#fff</color>
+    <color name="heartColor">#d4335e</color>
 </resources>

@@ -26,6 +26,7 @@ import com.example.traveller.models.TravelAgency;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -51,12 +52,12 @@ public class AddPlaceActivity extends AppCompatActivity {
     private boolean isRestaurant=false;
     private boolean isTravelAgency=false;
     private boolean isCameraOpened = false;
+    private int points;
 
     String imgUrl,type;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     String currentPhotoPath;
     String storageImgPath;
-    //pogledaj ovde ako ne radi
     FirebaseStorage storage=FirebaseStorage.getInstance();
 
     @Override
@@ -70,6 +71,21 @@ public class AddPlaceActivity extends AppCompatActivity {
         double lat=i.getDoubleExtra("latitude",0.0);
         double lon=i.getDoubleExtra("longitude",0.0);
 
+        myRef.child("users").child(userName).child("points").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue()!=null) {
+                    String s = (String) dataSnapshot.getValue();
+                    points = Integer.parseInt(s);
+                }
+                else points=0;
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                points=0;
+            }
+        });
 
         //"Monument", "Coffee Shop", "Doctor", "Restaurant","Travel Agency"
         switch (type) {
@@ -139,7 +155,18 @@ public class AddPlaceActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(AddPlaceActivity.this, "Place Successfully added!", Toast.LENGTH_LONG).show();
-                            finish();
+                            myRef.child("users").child(userName).child("visitedPlaces").child(placeName).setValue("true").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(@NonNull Void aVoid) {
+                                    int newPoints=points+10;
+                                    myRef.child("users").child(userName).child("points").setValue(Integer.toString(newPoints)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(@NonNull Void aVoid) {
+                                            finish();
+                                        }
+                                    });
+                                }
+                            });
                         }
                     });
 
@@ -158,7 +185,18 @@ public class AddPlaceActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(AddPlaceActivity.this, "Place Successfully added!", Toast.LENGTH_LONG).show();
-                            finish();
+                            myRef.child("users").child(userName).child("visitedPlaces").child(placeName).setValue("true").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(@NonNull Void aVoid) {
+                                    int newPoints=points+5;
+                                    myRef.child("users").child(userName).child("points").setValue(Integer.toString(newPoints)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(@NonNull Void aVoid) {
+                                            finish();
+                                        }
+                                    });
+                                }
+                            });
                         }
                     });
                 }else if(isRestaurant){
@@ -179,7 +217,18 @@ public class AddPlaceActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(AddPlaceActivity.this, "Place Successfully added!", Toast.LENGTH_LONG).show();
-                            finish();
+                            myRef.child("users").child(userName).child("visitedPlaces").child(placeName).setValue("true").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(@NonNull Void aVoid) {
+                                    int newPoints=points+5;
+                                    myRef.child("users").child(userName).child("points").setValue(Integer.toString(newPoints)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(@NonNull Void aVoid) {
+                                            finish();
+                                        }
+                                    });
+                                }
+                            });
                         }
                     });
 
@@ -197,7 +246,18 @@ public class AddPlaceActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(AddPlaceActivity.this, "Place Successfully added!", Toast.LENGTH_LONG).show();
-                            finish();
+                            myRef.child("users").child(userName).child("visitedPlaces").child(placeName).setValue("true").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(@NonNull Void aVoid) {
+                                    int newPoints=points+5;
+                                    myRef.child("users").child(userName).child("points").setValue(Integer.toString(newPoints)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(@NonNull Void aVoid) {
+                                            finish();
+                                        }
+                                    });
+                                }
+                            });
                         }
                     });
                 }else{
@@ -213,7 +273,18 @@ public class AddPlaceActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(AddPlaceActivity.this, "Place Successfully added!", Toast.LENGTH_LONG).show();
-                            finish();
+                            myRef.child("users").child(userName).child("visitedPlaces").child(placeName).setValue("true").addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(@NonNull Void aVoid) {
+                                    int newPoints=points+5;
+                                    myRef.child("users").child(userName).child("points").setValue(Integer.toString(newPoints)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(@NonNull Void aVoid) {
+                                            finish();
+                                        }
+                                    });
+                                }
+                            });
                         }
                     });
                 }

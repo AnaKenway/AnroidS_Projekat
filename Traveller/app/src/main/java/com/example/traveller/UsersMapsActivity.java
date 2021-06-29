@@ -351,20 +351,39 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
 
                             if(marker.getTag().equals("monument")) {
 
-//                                Intent i = new Intent(UsersMapsActivity.this, UserProfileActivity.class);
-//                                i.putExtra("userName", userName);
-//                                startActivity(i);
+                                Intent i = new Intent(UsersMapsActivity.this, ViewPlaceActivity.class);
+                                i.putExtra("userName", userName);
+                                i.putExtra("tag","monument");
+                                i.putExtra("placeName",marker.getTitle());
+                                startActivity(i);
 
                             }else if(marker.getTag().equals("coffeeShop")){
+                                Intent i = new Intent(UsersMapsActivity.this, ViewPlaceActivity.class);
+                                i.putExtra("userName", userName);
+                                i.putExtra("tag","coffeeShop");
+                                i.putExtra("placeName",marker.getTitle());
+                                startActivity(i);
 
                             }else if(marker.getTag().equals("restaurant")){
-
+                                Intent i = new Intent(UsersMapsActivity.this, ViewPlaceActivity.class);
+                                i.putExtra("userName", userName);
+                                i.putExtra("tag","restaurant");
+                                i.putExtra("placeName",marker.getTitle());
+                                startActivity(i);
                             }
                             else if(marker.getTag().equals("doctor")){
-
+                                Intent i = new Intent(UsersMapsActivity.this, ViewPlaceActivity.class);
+                                i.putExtra("userName", userName);
+                                i.putExtra("tag","doctor");
+                                i.putExtra("placeName",marker.getTitle());
+                                startActivity(i);
                             }
                             else if(marker.getTag().equals("travelAgency")){
-
+                                Intent i = new Intent(UsersMapsActivity.this, ViewPlaceActivity.class);
+                                i.putExtra("userName", userName);
+                                i.putExtra("tag","travelAgency");
+                                i.putExtra("placeName",marker.getTitle());
+                                startActivity(i);
                             }
                             else if(marker.getTitle().toString().equals(userName))
                             {

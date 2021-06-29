@@ -54,4 +54,5 @@
     <string name="rateRestaurant">Rate this restaurant</string>
     <string name="rateDoctor">Rate this doctor</string>
     <string name="rateTravelAgency">Rate this travel agency</string>
+    <string name="rate">Rate</string>
 </resources>

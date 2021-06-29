@@ -17,40 +17,42 @@
             <!-- ovde napisati activity, koji jos nismo napravili-->
             <!--tools:context=".AddPlaceActivity"-->
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/textViewMonumentViewName"
+                style="@style/loginHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/loginViewsMargin"
-                android:orientation="horizontal">
+                android:foregroundGravity="right|center_horizontal"
+                android:gravity="center"
+                android:text="Text View"
+                android:textColor="#2196F3" />
 
-                <TextView
-                    android:id="@+id/textViewMonumentViewName"
-                    style="@style/loginHeader"
-                    android:layout_width="262dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/loginViewsMargin"
-                    android:foregroundGravity="right|center_horizontal"
-                    android:gravity="right"
-                    android:text="Text View"
-                    android:textColor="#2196F3" />
-
-                <ImageView
-                    android:id="@+id/imgViewMonumentPhoto"
-                    android:layout_width="match_parent"
-                    android:layout_height="43dp"
-                    android:layout_gravity="bottom"
-                    android:clickable="true"
-                    app:srcCompat="@drawable/outline_favorite_border_black_48dp"></ImageView>
-
-
-            </LinearLayout>
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imgViewMonumentIsFavorite"
+                android:layout_width="match_parent"
+                android:layout_height="43dp"
+                android:layout_gravity="bottom"
+                android:clickable="true"
+                app:srcCompat="@drawable/outline_favorite_border_black_48dp"></ImageView>
+
+            <ImageView
+                android:id="@+id/imgViewMonumentPhoto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/loginViewsMargin"
                 app:srcCompat="@drawable/outline_museum_black_48dp" />
+
+            <TextView
+                android:id="@+id/textViewMonumentAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/signup_text_margin_top"
+                android:text="Address"
+                android:textAlignment="center"
+                android:textColor="#222020"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/textViewMonumentViewDescription"
@@ -73,17 +75,17 @@
                 android:id="@+id/ratingBarMonument"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:stepSize="1"/>
 
-            <TextView
-                android:id="@+id/textViewMonumentViewRate"
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/btnRateMonument"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/loginViewsMargin"
-                android:text="@string/rateMonument"
-                android:textAlignment="center"
-                android:textColor="#131313"
-                android:textSize="18sp" />
+                android:layout_gravity="center"
+                android:text="@string/rate"
+                app:backgroundTint="#03A9F4" />
+
         </LinearLayout>
 
 
