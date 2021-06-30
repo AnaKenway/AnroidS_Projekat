@@ -91,7 +91,10 @@ public class FriendProfileActivity extends AppCompatActivity {
                             friendVisitedLocations.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Toast.makeText(getApplicationContext(), "Visited friend locations kliknuto!", Toast.LENGTH_LONG).show();
+                                    Intent i=new Intent(FriendProfileActivity.this, VisitedOrFaveLocationsActivity.class);
+                                    i.putExtra("isFavorite",false);
+                                    i.putExtra("userName", friendUserName);
+                                    startActivity(i);
                                 }
                             });
                         }
@@ -167,7 +170,7 @@ public class FriendProfileActivity extends AppCompatActivity {
                             addFriend.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Toast.makeText(getApplicationContext(), "Add friend kliknuto!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "Friend Request sent!", Toast.LENGTH_LONG).show();
                                     myRef.child("users").child(friendUserName).child("friendRequests").child(userName).setValue("true");
                                 }
                             });
@@ -199,73 +202,6 @@ public class FriendProfileActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-               /* myRef.child("users").child(friendUserName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        Object u = task.getResult().getValue();
-                        HashMap<String,String> hm = (HashMap<String,String>) u;
-                        userFirstName = hm.get("firstName");
-                        userLastName = hm.get("lastName");
-                        URI = hm.get("imgUrl");
-                        storageRef = storage.getReference(URI);
-
-                        if(isEnteredFromRequests)
-                        {
-                            setContentView(R.layout.activity_profile_from_request);
-
-                            Button accept = (Button) findViewById(R.id.buttonAccept);
-                            accept.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Toast.makeText(getApplicationContext(), "Accept!", Toast.LENGTH_LONG).show();
-                                    // myRef.child("users").child(friendUserName).child("friendRequests").child(userName).setValue("true");
-                                }
-                            });
-
-                            Button decline = (Button) findViewById(R.id.buttonDecline);
-                            decline.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Toast.makeText(getApplicationContext(), "Decline!", Toast.LENGTH_LONG).show();
-                                    // myRef.child("users").child(friendUserName).child("friendRequests").child(userName).setValue("true");
-                                }
-                            });
-                        }
-                        else
-                        {
-                            setContentView(R.layout.layout_not_friend);
-
-                            Button addFriend = (Button) findViewById(R.id.buttonAddFriend);
-                            addFriend.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Toast.makeText(getApplicationContext(), "Add friend kliknuto!", Toast.LENGTH_LONG).show();
-                                    myRef.child("users").child(friendUserName).child("friendRequests").child(userName).setValue("true");
-                                }
-                            });
-                        }
-
-                        //ActionBar actionBar = getSupportActionBar();
-                        //actionBar.setDisplayHomeAsUpEnabled(true);
-
-                        final long ONE_MEGABYTE = 1024 * 1024;
-                        ImageView friendImageView = (ImageView) findViewById(R.id.imgViewFriendProfilePicture);
-
-                        storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                            @Override
-                            public void onSuccess(byte[] bytes) {
-                                bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                Bitmap mutableBitmap = bmp.copy(Bitmap.Config.ARGB_8888, true);
-                                Bitmap smallBitmap = Bitmap.createScaledBitmap(mutableBitmap, 500, 500, false);
-                                friendImageView.setImageBitmap(smallBitmap);
-                            }
-                        });
-                        TextView friendFullName =(TextView) findViewById(R.id.textViewFriendFullName);
-                        TextView textViewfriendUserName =(TextView) findViewById(R.id.textViewFriendUserName);
-                        friendFullName.setText(userFirstName+" "+userLastName);
-                        textViewfriendUserName.setText("@" + friendUserName);
-                    }
-                });*/
 
                 Toast.makeText(getApplicationContext(), "You have no friends! :P", Toast.LENGTH_LONG).show();
             }

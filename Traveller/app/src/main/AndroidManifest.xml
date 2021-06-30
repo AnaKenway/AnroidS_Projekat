@@ -23,7 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Traveller">
-        <activity android:name=".RankingsActivity"></activity>
+        <activity android:name=".VisitedOrFaveLocationsActivity"></activity>
+        <activity android:name=".RankingsActivity" />
         <activity android:name=".ViewPlaceActivity" />
         <activity android:name=".AddPlaceActivity" />
         <activity android:name=".AllFriendsActivity" />

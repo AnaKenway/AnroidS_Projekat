@@ -67,6 +67,8 @@ public class UserProfileActivity extends AppCompatActivity {
         final TextView userNameTextView = findViewById(R.id.textViewUserName);
         final ImageView profileImgImageView = findViewById(R.id.imgViewProfilePicture);
         final ImageView allFriendsImageView = findViewById(R.id.imageViewAllFriends);
+        final ImageView favoriteLocations=findViewById(R.id.imageViewFavoriteLocations);
+        final ImageView visitedLocations=findViewById(R.id.imageViewMonuments);
 
         allFriendsImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +79,27 @@ public class UserProfileActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        visitedLocations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(UserProfileActivity.this, VisitedOrFaveLocationsActivity.class);
+                i.putExtra("isFavorite",false);
+                i.putExtra("userName", userName);
+                startActivity(i);
+            }
+        });
+
+       favoriteLocations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(UserProfileActivity.this, VisitedOrFaveLocationsActivity.class);
+                i.putExtra("isFavorite",true);
+                i.putExtra("userName", userName);
+                startActivity(i);
+            }
+        });
+
         myRef.child("users").child(userName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
