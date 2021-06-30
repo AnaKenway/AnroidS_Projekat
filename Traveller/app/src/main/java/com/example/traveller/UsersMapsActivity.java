@@ -79,6 +79,8 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
     private Location currLoc;
     private String selectedItem;
     private boolean showMonuments=true, showRestaurants=true, showDoctors=true, showTravelAgencies=true, showCoffeeShop=true;
+    ValueEventListener showPlacesListener;
+    DataSnapshot ds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,9 +211,11 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                         }
                     }
                 });
-        myRef.child("places").addValueEventListener(new ValueEventListener() {
+
+        showPlacesListener=new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ds=snapshot;
                 HashMap<String,HashMap<String,HashMap<String,String>>> hm = (HashMap<String,HashMap<String,HashMap<String,String>>>) snapshot.getValue();
 
                 if(!placesMarkers.isEmpty())
@@ -222,74 +226,75 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                     HashMap<String,HashMap<String,String>> hashmonuments = hm.get("monuments");
 
                     if(hashmonuments!=null)
-                    for(String key: hashmonuments.keySet()){
-                        String lat = hashmonuments.get(key).get("latitude");
-                        String lon = hashmonuments.get(key).get("longitude");
-                        Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat),Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_museum_black_48dp)).title(key));
-                        m.setTag("monument");
-                        placesMarkers.add(m);
-                    }
+                        for(String key: hashmonuments.keySet()){
+                            String lat = hashmonuments.get(key).get("latitude");
+                            String lon = hashmonuments.get(key).get("longitude");
+                            Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat),Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_museum_black_48dp)).title(key));
+                            m.setTag("monument");
+                            placesMarkers.add(m);
+                        }
                 }
 
                 if(showCoffeeShop){
                     HashMap<String,HashMap<String,String>> hashCoffee = hm.get("coffee_shops");
 
                     if(hashCoffee!=null)
-                    for(String key: hashCoffee.keySet()){
-                        String lat = hashCoffee.get(key).get("latitude");
-                        String lon = hashCoffee.get(key).get("longitude");
-                        Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat),Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_local_cafe_black_48dp)).title(key));
-                        m.setTag("coffeeShop");
-                        placesMarkers.add(m);
-                    }
+                        for(String key: hashCoffee.keySet()){
+                            String lat = hashCoffee.get(key).get("latitude");
+                            String lon = hashCoffee.get(key).get("longitude");
+                            Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat),Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_local_cafe_black_48dp)).title(key));
+                            m.setTag("coffeeShop");
+                            placesMarkers.add(m);
+                        }
                 }
 
                 if(showDoctors){
                     HashMap<String,HashMap<String,String>> hashDoctors = hm.get("doctors");
 
                     if(hashDoctors!=null)
-                    for(String key: hashDoctors.keySet()){
-                        String lat = hashDoctors.get(key).get("latitude");
-                        String lon = hashDoctors.get(key).get("longitude");
-                        Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat),Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_medical_services_black_48dp)).title(key));
-                        m.setTag("doctor");
-                        placesMarkers.add(m);
-                    }
+                        for(String key: hashDoctors.keySet()){
+                            String lat = hashDoctors.get(key).get("latitude");
+                            String lon = hashDoctors.get(key).get("longitude");
+                            Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat),Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_medical_services_black_48dp)).title(key));
+                            m.setTag("doctor");
+                            placesMarkers.add(m);
+                        }
                 }
 
                 if(showRestaurants) {
                     HashMap<String, HashMap<String, String>> hashRestaurants = hm.get("restaurants");
 
                     if(hashRestaurants!=null)
-                    for (String key : hashRestaurants.keySet()) {
-                        String lat = hashRestaurants.get(key).get("latitude");
-                        String lon = hashRestaurants.get(key).get("longitude");
-                        Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat), Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_restaurant_black_48dp)).title(key));
-                        m.setTag("restaurant");
-                        placesMarkers.add(m);
-                    }
+                        for (String key : hashRestaurants.keySet()) {
+                            String lat = hashRestaurants.get(key).get("latitude");
+                            String lon = hashRestaurants.get(key).get("longitude");
+                            Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat), Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_restaurant_black_48dp)).title(key));
+                            m.setTag("restaurant");
+                            placesMarkers.add(m);
+                        }
                 }
 
                 if(showTravelAgencies){
                     HashMap<String, HashMap<String, String>> hashTravelAgencies = hm.get("travel_agencies");
 
                     if(hashTravelAgencies!=null)
-                    for (String key : hashTravelAgencies.keySet()) {
-                        String lat = hashTravelAgencies.get(key).get("latitude");
-                        String lon = hashTravelAgencies.get(key).get("longitude");
-                        Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat), Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_travel_explore_black_48dp)).title(key));
-                        m.setTag("travelAgency");
-                        placesMarkers.add(m);
-                    }
+                        for (String key : hashTravelAgencies.keySet()) {
+                            String lat = hashTravelAgencies.get(key).get("latitude");
+                            String lon = hashTravelAgencies.get(key).get("longitude");
+                            Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat), Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_travel_explore_black_48dp)).title(key));
+                            m.setTag("travelAgency");
+                            placesMarkers.add(m);
+                        }
                 }
             }
-
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+
+       myRef.child("places").addValueEventListener(showPlacesListener);
     }
 
     @SuppressLint("MissingPermission")
@@ -521,6 +526,64 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                 Intent i = new Intent(UsersMapsActivity.this, UserProfileActivity.class);
                 i.putExtra("userName", userName);
                 startActivity(i);
+                return true;
+            case R.id.itemFilterMap:
+
+                final String[] listItems = new String[]{"Monuments", "Coffee Shops", "Restaurants", "Doctors","Travel Agencies"};
+                final boolean[] checkedItems = new boolean[listItems.length];
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(UsersMapsActivity.this);
+
+                // set the title for the alert dialog
+                builder.setTitle("Choose which places to show:");
+
+                builder.setMultiChoiceItems(listItems, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        checkedItems[which] = isChecked;
+                    }
+                });
+
+                builder.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for (int i = 0; i < checkedItems.length; i++) {
+                            if (checkedItems[i]) {
+                               if(i==0)
+                                   showMonuments=true;
+                               else if(i==1)
+                                   showCoffeeShop=true;
+                               else if(i==2)
+                                   showRestaurants=true;
+                               else if(i==3)
+                                   showDoctors=true;
+                               else showTravelAgencies=true;
+                            }
+                            else{
+                                if(i==0)
+                                    showMonuments=false;
+                                else if(i==1)
+                                    showCoffeeShop=false;
+                                else if(i==2)
+                                    showRestaurants=false;
+                                else if(i==3)
+                                    showDoctors=false;
+                                else showTravelAgencies=false;
+                            }
+                        }
+                        showPlacesListener.onDataChange(ds);
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+                builder.create();
+                AlertDialog alert = builder.create();
+                alert.show();
                 return true;
         }
         return super.onOptionsItemSelected(item);

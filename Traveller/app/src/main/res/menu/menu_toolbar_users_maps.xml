@@ -14,8 +14,16 @@
     <item
         android:id="@+id/itemProfileUserMaps"
         android:icon="@drawable/person_black_48dp"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:title="Compose">
     </item>
+    <item
+        android:id="@+id/itemFilterMap"
+        android:title="Filter by type"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/itemRadius"
+        android:title="Select radius"
+        app:showAsAction="ifRoom" />
 
 </menu>
