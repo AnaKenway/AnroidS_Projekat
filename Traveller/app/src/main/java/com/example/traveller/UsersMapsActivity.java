@@ -585,6 +585,10 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                 AlertDialog alert = builder.create();
                 alert.show();
                 return true;
+            case R.id.itemRanking:
+                Intent i2 = new Intent(UsersMapsActivity.this, RankingsActivity.class);
+                startActivity(i2);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

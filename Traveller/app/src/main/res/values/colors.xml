@@ -20,4 +20,8 @@
     <!--colros for card-->
     <color name="whiteCardColor">#fff</color>
     <color name="heartColor">#d4335e</color>
+    <color name="goldenWind">#f0d71f</color>
+    <color name="silverChariot">#d2d3d6</color>
+    <color name="bronze">#cd7f32</color>
+    <color name="roseGold">#b76e79</color>
 </resources>

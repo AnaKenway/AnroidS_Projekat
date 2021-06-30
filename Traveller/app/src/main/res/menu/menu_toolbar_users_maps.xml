@@ -19,11 +19,15 @@
     </item>
     <item
         android:id="@+id/itemFilterMap"
-        android:title="Filter by type"
+        android:title="Filter by Type"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/itemRadius"
-        android:title="Select radius"
+        android:title="Select Radius"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/itemRanking"
+        android:title="Show Ranking"
         app:showAsAction="ifRoom" />
 
 </menu>
