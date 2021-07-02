@@ -26,6 +26,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.SearchView;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -52,6 +53,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.maps.android.SphericalUtil;
 
 
 import java.util.ArrayList;
@@ -78,9 +80,11 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
     private boolean showUsers=false;
     private Location currLoc;
     private String selectedItem;
+    private String selectedItemRadius="Unlimited";
     private boolean showMonuments=true, showRestaurants=true, showDoctors=true, showTravelAgencies=true, showCoffeeShop=true;
     ValueEventListener showPlacesListener;
-    DataSnapshot ds;
+    private double selectedRaduius;
+    private DataSnapshot ds;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +101,44 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
         mapFragment.getMapAsync(this);
         friendMarkers=new ArrayList<Marker>();
         placesMarkers=new ArrayList<Marker>();
+
+        SearchView search = findViewById(R.id.searchItem);
+
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+
+                HashMap<String,HashMap<String,HashMap<String,String>>> hm = (HashMap<String,HashMap<String,HashMap<String,String>>>) ds.getValue();
+                for(String key : hm.keySet())
+                {
+                    for(String key2 : hm.get(key).keySet()){
+                        if(key2.equals(s))
+                        {
+                            LatLng latLng = new LatLng(Double.parseDouble(hm.get(key).get(key2).get("latitude")), Double.parseDouble(hm.get(key).get(key2).get("longitude")));
+                            if(!selectedItemRadius.equals("Unlimited"))
+                            {
+                                double distance = SphericalUtil.computeDistanceBetween(new LatLng(currLoc.getLatitude(),currLoc.getLongitude()), latLng);
+                                if(selectedRaduius<distance) {
+                                    Toast.makeText(getApplicationContext(), "This place is outside radius of " + selectedItemRadius + "!", Toast.LENGTH_LONG).show();
+                                    return false;
+                                }
+                            }
+
+                            float zoomLevel = 16.0f; //This goes up to 21
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
+                            return false;
+                        }
+                    }
+                }
+                Toast.makeText(getApplicationContext(), "No place with that name!", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
 
         final String[] listItems = new String[]{"Monument", "Coffee Shop", "Doctor", "Restaurant","Travel Agency"};
         final List<String> selectedItems = Arrays.asList(listItems);
@@ -229,6 +271,14 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                         for(String key: hashmonuments.keySet()){
                             String lat = hashmonuments.get(key).get("latitude");
                             String lon = hashmonuments.get(key).get("longitude");
+                            if(!selectedItemRadius.equals("Unlimited"))
+                            {
+
+                                double distance = SphericalUtil.computeDistanceBetween(new LatLng(currLoc.getLatitude(),currLoc.getLongitude()),new LatLng(Double.parseDouble(lat),Double.parseDouble(lon)));
+                                if(selectedRaduius<distance)
+                                    continue;
+
+                            }
                             Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat),Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_museum_black_48dp)).title(key));
                             m.setTag("monument");
                             placesMarkers.add(m);
@@ -242,6 +292,14 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                         for(String key: hashCoffee.keySet()){
                             String lat = hashCoffee.get(key).get("latitude");
                             String lon = hashCoffee.get(key).get("longitude");
+                            if(!selectedItemRadius.equals("Unlimited"))
+                            {
+
+                                double distance = SphericalUtil.computeDistanceBetween(new LatLng(currLoc.getLatitude(),currLoc.getLongitude()),new LatLng(Double.parseDouble(lat),Double.parseDouble(lon)));
+                                if(selectedRaduius<distance)
+                                    continue;
+
+                            }
                             Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat),Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_local_cafe_black_48dp)).title(key));
                             m.setTag("coffeeShop");
                             placesMarkers.add(m);
@@ -255,6 +313,14 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                         for(String key: hashDoctors.keySet()){
                             String lat = hashDoctors.get(key).get("latitude");
                             String lon = hashDoctors.get(key).get("longitude");
+                            if(!selectedItemRadius.equals("Unlimited"))
+                            {
+
+                                double distance = SphericalUtil.computeDistanceBetween(new LatLng(currLoc.getLatitude(),currLoc.getLongitude()),new LatLng(Double.parseDouble(lat),Double.parseDouble(lon)));
+                                if(selectedRaduius<distance)
+                                    continue;
+
+                            }
                             Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat),Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_medical_services_black_48dp)).title(key));
                             m.setTag("doctor");
                             placesMarkers.add(m);
@@ -268,6 +334,14 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                         for (String key : hashRestaurants.keySet()) {
                             String lat = hashRestaurants.get(key).get("latitude");
                             String lon = hashRestaurants.get(key).get("longitude");
+                            if(!selectedItemRadius.equals("Unlimited"))
+                            {
+
+                                double distance = SphericalUtil.computeDistanceBetween(new LatLng(currLoc.getLatitude(),currLoc.getLongitude()),new LatLng(Double.parseDouble(lat),Double.parseDouble(lon)));
+                                if(selectedRaduius<distance)
+                                    continue;
+
+                            }
                             Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat), Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_restaurant_black_48dp)).title(key));
                             m.setTag("restaurant");
                             placesMarkers.add(m);
@@ -281,6 +355,14 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                         for (String key : hashTravelAgencies.keySet()) {
                             String lat = hashTravelAgencies.get(key).get("latitude");
                             String lon = hashTravelAgencies.get(key).get("longitude");
+                            if(!selectedItemRadius.equals("Unlimited"))
+                            {
+
+                                double distance = SphericalUtil.computeDistanceBetween(new LatLng(currLoc.getLatitude(),currLoc.getLongitude()),new LatLng(Double.parseDouble(lat),Double.parseDouble(lon)));
+                                if(selectedRaduius<distance)
+                                    continue;
+
+                            }
                             Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(lat), Double.parseDouble(lon))).icon(BitmapDescriptorFactory.fromResource(R.drawable.outline_travel_explore_black_48dp)).title(key));
                             m.setTag("travelAgency");
                             placesMarkers.add(m);
@@ -450,6 +532,14 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                             longitude = hm2.get(friendUserName).get("longitude");
                             imgURI = hm2.get(friendUserName).get("imgUrl");
                             LatLng friendLoc = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+                            if(!selectedItemRadius.equals("Unlimited"))
+                            {
+
+                                double distance = SphericalUtil.computeDistanceBetween(new LatLng(currLoc.getLatitude(),currLoc.getLongitude()),friendLoc);
+                                if(selectedRaduius<distance)
+                                    continue;
+
+                            }
                             hm2.remove(friends.get(i));
 
                             final long ONE_MEGABYTE = 1024 * 1024;
@@ -490,6 +580,12 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                             latitude = hm2.get(notFriend).get("latitude");
                             longitude = hm2.get(notFriend).get("longitude");
                             LatLng notFriendLoc = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+                            if(!selectedItemRadius.equals("Unlimited"))
+                            {
+                                double distance = SphericalUtil.computeDistanceBetween(new LatLng(currLoc.getLatitude(),currLoc.getLongitude()), notFriendLoc);
+                                if(selectedRaduius<distance)
+                                    continue;
+                            }
                             Marker m2=mMap.addMarker(new MarkerOptions().position(notFriendLoc).title(notFriend));
                             m2.setTag("notFriend");
                             friendMarkers.add(m2);
@@ -588,6 +684,53 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
             case R.id.itemRanking:
                 Intent i2 = new Intent(UsersMapsActivity.this, RankingsActivity.class);
                 startActivity(i2);
+                return true;
+            case R.id.itemRadius:
+
+                final String[] listItem = new String[]{"Unlimited", "100m", "1km", "10km","100km"};
+                selectedItemRadius = listItem[0];
+
+                AlertDialog.Builder build = new AlertDialog.Builder(UsersMapsActivity.this);
+
+                // set the title for the alert dialog
+                build.setTitle("Choose radius:");
+
+                build.setSingleChoiceItems(listItem, 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), listItem[which], Toast.LENGTH_LONG).show();
+                        selectedItemRadius=listItem[which];
+                    }
+                });
+
+                build.setPositiveButton("SET", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(selectedItemRadius.equals("100m"))
+                        selectedRaduius = 100.0;
+                        else if(selectedItemRadius.equals("1km"))
+                            selectedRaduius = 1000.0;
+                        else if(selectedItemRadius.equals("10km"))
+                            selectedRaduius = 10000.0;
+                        else if(selectedItemRadius.equals("100km"))
+                            selectedRaduius = 100000.0;
+
+                        showPlacesListener.onDataChange(ds);
+                        onLocationChanged(currLoc);
+
+                    }
+                });
+
+                build.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+
+                build.create();
+                AlertDialog alertDialog = build.create();
+                alertDialog.show();
+
                 return true;
         }
         return super.onOptionsItemSelected(item);

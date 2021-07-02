@@ -1,10 +1,13 @@
 package com.example.traveller;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -38,6 +41,8 @@ public class VisitedOrFaveLocationsActivity extends AppCompatActivity {
         Intent i=getIntent();
         userName=i.getStringExtra("userName");
         isFave=i.getBooleanExtra("isFavorite",false);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         ListView list=findViewById(R.id.listViewList);
 
@@ -77,5 +82,18 @@ public class VisitedOrFaveLocationsActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
