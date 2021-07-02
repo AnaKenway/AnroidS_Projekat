@@ -85,6 +85,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
     ValueEventListener showPlacesListener;
     private double selectedRaduius;
     private DataSnapshot ds;
+    private boolean startService = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +184,17 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                 builder.create();
                 AlertDialog alert = builder.create();
                 alert.show();
+            }
+        });
+        myRef.child("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                onLocationChanged(currLoc);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
@@ -731,6 +743,16 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                 AlertDialog alertDialog = build.create();
                 alertDialog.show();
 
+                return true;
+            case R.id.itemService:
+                startService = ! startService;
+                if(startService) {
+                    Intent intent = new Intent(getBaseContext(), NearbyLocationsService.class);
+                    intent.putExtra("userName", userName);
+                    startService(intent);
+                }
+                else
+                stopService(new Intent(getBaseContext(), NearbyLocationsService.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);

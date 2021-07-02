@@ -29,5 +29,9 @@
         android:id="@+id/itemRanking"
         android:title="Show Ranking"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/itemService"
+        android:title="Start/Stop Service"
+        app:showAsAction="ifRoom" />
 
 </menu>
