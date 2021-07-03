@@ -76,6 +76,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
     private String URI;
     private FirebaseAuth mAuth;
     private ArrayList<Marker> friendMarkers;
+    private ArrayList<Marker> userMarkers;
     private ArrayList<Marker> placesMarkers;
     private MenuItem switchShowUsers;
     private boolean showUsers=false;
@@ -103,7 +104,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
         mapFragment.getMapAsync(this);
         friendMarkers=new ArrayList<Marker>();
         placesMarkers=new ArrayList<Marker>();
-
+        userMarkers = new ArrayList<Marker>();
         SearchView search = findViewById(R.id.searchItem);
 
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -232,8 +233,8 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
-                            userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).title(userName));
-                            userMarker.setTag("user");
+                            userMarkers.add( mMap.addMarker(new MarkerOptions().position(currentLoc).title(userName)) );
+                            //userMarker.setTag("user");
                             float zoomLevel = 16.0f; //This goes up to 21
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, zoomLevel));
 
@@ -414,9 +415,13 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
     public void onLocationChanged(@NonNull Location location) {
 
         currLoc=location;
-        if (location != null && userMarker!=null) {
+        if (location != null && userMarkers!=null) {
 
-            userMarker.remove();
+            if(!userMarkers.isEmpty())
+            for(int i=0;i<userMarkers.size();i++){
+                userMarkers.get(i).remove();
+            }
+
             //mMap.clear(); // izbrisati stare markere
             if(!friendMarkers.isEmpty())
             {
@@ -442,8 +447,9 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
 
                     canvas.drawBitmap(smallMarker, 0,0, color);
                     canvas.drawText(userName, 30, 40, color);
-                    userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).title(userName).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).anchor(0.5f,1));
-                    userMarker.setTag("user");
+                    Marker setTag = mMap.addMarker(new MarkerOptions().position(currentLoc).title(userName).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).anchor(0.5f,1));
+                    setTag.setTag("user");
+                    userMarkers.add(setTag);
 
                     mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         @Override
@@ -511,9 +517,9 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     Log.e("MYAPP",exception.getLocalizedMessage());
-
-                    userMarker = mMap.addMarker(new MarkerOptions().position(currentLoc).title(userName));
-                    userMarker.setTag("user");
+                    Marker setTag = mMap.addMarker(new MarkerOptions().position(currentLoc).title(userName));
+                    setTag.setTag("user");
+                    userMarkers.add(setTag);
                     float zoomLevel = 16.0f; //This goes up to 21
                     //mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, zoomLevel));
 
@@ -545,6 +551,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                             longitude = hm2.get(friendUserName).get("longitude");
                             imgURI = hm2.get(friendUserName).get("imgUrl");
                             LatLng friendLoc = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+                            String localFriendUserName = new String (friends.get(i));
                             if(!selectedItemRadius.equals("Unlimited"))
                             {
 
@@ -555,7 +562,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                             }
                             hm2.remove(friends.get(i));
 
-                            final long ONE_MEGABYTE = 1024 * 1024;
+                            final long ONE_MEGABYTE = 512 * 512;
 
                             storageRef = storage.getReference(imgURI);
                             storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -572,7 +579,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
 
                                     canvas.drawBitmap(smallMarker, 0, 0, color);
                                     canvas.drawText(friendUserName, 30, 40, color);
-                                    Marker m=mMap.addMarker(new MarkerOptions().position(friendLoc).title(friendUserName).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).anchor(0.5f, 1));
+                                    Marker m=mMap.addMarker(new MarkerOptions().position(friendLoc).title(localFriendUserName).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).anchor(0.5f, 1));
                                     m.setTag("friend");
                                     friendMarkers.add(m);
 
