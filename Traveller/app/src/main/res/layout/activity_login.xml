@@ -4,16 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity"
-    android:background="@drawable/login_bk"
-    android:focusableInTouchMode="true">
+    android:background="@drawable/background_reg"
+    android:focusableInTouchMode="true"
+    tools:context=".LoginActivity">
 
-    <include layout="@layout/layout_register"
+    <include
         android:id="@+id/lRegister"
-        android:visibility="gone"/>
-        <!--android:visibility="gone"-->
-    <include layout="@layout/layout_login"
-        android:id="@+id/lLogin"/>
-        <!--android:visibility="visible"-->
+        layout="@layout/layout_register"
+        android:visibility="gone" />
+    <!--android:visibility="gone"-->
+    <include
+        android:id="@+id/lLogin"
+        layout="@layout/layout_login" />
+    <!--android:visibility="visible"-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FriendProfileActivity">
+    tools:context=".FriendProfileActivity"
+    android:background="@drawable/profile_background">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -79,14 +83,15 @@
         android:layout_width="112dp"
         android:layout_height="99dp"
         android:layout_marginStart="149dp"
-        android:layout_marginTop="96dp"
         android:layout_marginEnd="150dp"
+        android:layout_marginBottom="1dp"
         android:src="@drawable/visited_places"
-        app:tint="#2FD5C7"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonUnfriend" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonUnfriend"
+        app:tint="#2FD5C7" />
 
     <TextView
         android:id="@+id/textView2"
@@ -95,8 +100,9 @@
         android:layout_marginStart="178dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="175dp"
-        android:layout_marginBottom="95dp"
+        android:layout_marginBottom="80dp"
         android:text="@string/textViewVisitedPlaces"
+        android:textColor="#FFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.54"
@@ -104,3 +110,4 @@
         app:layout_constraintTop_toBottomOf="@+id/imageViewFriendsVisitedLoations"
         app:layout_constraintVertical_bias="1.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

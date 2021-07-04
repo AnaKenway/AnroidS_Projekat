@@ -1,9 +1,11 @@
 package com.example.traveller;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
@@ -33,15 +35,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent i2=new Intent(MainActivity.this,LoginActivity.class);
                 i2.putExtra("isLogin",false);
                 startActivity(i2);
-            }
-        });
-
-        Button bMaps=(Button) findViewById(R.id.btnMap);
-        bMaps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i3=new Intent(MainActivity.this,UsersMapsActivity.class);
-                startActivity(i3);
             }
         });
 

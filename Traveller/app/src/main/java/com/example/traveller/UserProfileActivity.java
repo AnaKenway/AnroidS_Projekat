@@ -69,7 +69,7 @@ public class UserProfileActivity extends AppCompatActivity {
         final ImageView allFriendsImageView = findViewById(R.id.imageViewAllFriends);
         final ImageView favoriteLocations=findViewById(R.id.imageViewFavoriteLocations);
         final ImageView visitedLocations=findViewById(R.id.imageViewMonuments);
-
+        final TextView pointsTextView = findViewById(R.id.textViewPoints);
         allFriendsImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,6 +120,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
                     fullNameTextView.setText(firstName + " " + lastName);
                     userNameTextView.setText("@"+userName);
+                    pointsTextView.setText("Points: " + hm.get("points"));
                     final long ONE_MEGABYTE = 1024 * 1024;
 
                     storageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
