@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/itemSwitchShowUsers"
+        android:title="Show users:"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/item_show_users_switch"
+        android:clickable="true"
+        android:title="Show users"
+        app:actionLayout="@layout/switch_item"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/itemProfileUserMaps"
+        android:icon="@drawable/person_black_48dp"
+        app:showAsAction="always"
+        android:title="Compose">
+    </item>
+    <item
+        android:id="@+id/itemFilterMap"
+        android:title="Filter by Type"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/itemRadius"
+        android:title="Select Radius"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/itemRanking"
+        android:title="Show Ranking"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/itemService"
+        android:title="Start/Stop Service"
+        app:showAsAction="ifRoom" />
+
+</menu>

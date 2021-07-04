@@ -7,4 +7,21 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="colorPrimary">#1F5BF3</color>
+    <color name="colorPrimaryDark">#00A5FF</color>
+    <color name="colorAccent">#00A5FF</color>
+
+    <!--colors for modern ui-->
+    <color name="whiteTextColor">#fff</color>
+    <color name="primaryTextColor">#00A5FF</color>
+    <color name="loginBkColor">#f0f0f0</color>
+
+    <!--colros for card-->
+    <color name="whiteCardColor">#fff</color>
+    <color name="heartColor">#d4335e</color>
+    <color name="goldenWind">#f0d71f</color>
+    <color name="silverChariot">#d2d3d6</color>
+    <color name="bronze">#cd7f32</color>
+    <color name="roseGold">#b76e79</color>
 </resources>
