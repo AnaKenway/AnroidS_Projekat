@@ -109,7 +109,7 @@
                 android:text="@string/visitedRestaurantQuestion" />
 
             <CheckedTextView
-                android:id="@+id/checkedTextViewHasWifi"
+                android:id="@+id/checkedTextViewPetFriendly"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:checkMark="@drawable/outline_check_circle_green_48dp"
@@ -117,7 +117,7 @@
                 android:textSize="18sp" />
 
             <CheckedTextView
-                android:id="@+id/checkedTextViewIsPetFriendly"
+                android:id="@+id/checkedTextViewHasWifi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/signup_text_margin_top"

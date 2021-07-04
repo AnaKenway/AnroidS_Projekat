@@ -101,8 +101,8 @@ public class ViewPlaceActivity extends AppCompatActivity {
                                 if(favoritePlaces.get(placeName)!=null) {
                                     ImageView imgHeart = findViewById(R.id.imgViewMonumentIsFavorite);
                                     imgHeart.setImageResource(R.drawable.baseline_favorite_black_48dp);
-                                    imgHeart.setColorFilter(R.color.heartColor);
-                                    //imgHeart.setColorFilter(getResources().getColor(R.color.heartColor));
+                                    //imgHeart.setColorFilter(R.color.heartColor);
+                                    imgHeart.setColorFilter(getResources().getColor(R.color.heartColor));
                                     isFave=true;
 
                                 }
@@ -258,7 +258,8 @@ public class ViewPlaceActivity extends AppCompatActivity {
                                 if(favoritePlaces.get(placeName)!=null) {
                                     ImageView imgHeart = findViewById(R.id.imgViewMonumentIsFavorite);
                                     imgHeart.setImageResource(R.drawable.baseline_favorite_black_48dp);
-                                    imgHeart.setColorFilter(R.color.heartColor);
+                                    //imgHeart.setColorFilter(R.color.heartColor);
+                                    imgHeart.setColorFilter(getResources().getColor(R.color.heartColor));
                                     isFave=true;
 
                                 }
@@ -276,7 +277,7 @@ public class ViewPlaceActivity extends AppCompatActivity {
             TextView txtViewVisitingHours=findViewById(R.id.textViewVisitingHours);
             TextView txtViewPhoneNumber=findViewById(R.id.textViewPhoneNumber);
             CheckedTextView cTVHasWifi=findViewById(R.id.checkedTextViewHasWifi);
-            CheckedTextView cTVIsPetFriendly=findViewById(R.id.checkedTextViewIsPetFriendly);
+            CheckedTextView cTVIsPetFriendly=findViewById(R.id.checkedTextViewPetFriendly);
             CheckedTextView cTVHasCardPay=findViewById(R.id.checkedTextViewHasCardPay);
 
             myRef.child("places").child("coffee_shops").child(placeName).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
@@ -441,7 +442,8 @@ public class ViewPlaceActivity extends AppCompatActivity {
                                 if(favoritePlaces.get(placeName)!=null) {
                                     ImageView imgHeart = findViewById(R.id.imgViewMonumentIsFavorite);
                                     imgHeart.setImageResource(R.drawable.baseline_favorite_black_48dp);
-                                    imgHeart.setColorFilter(R.color.heartColor);
+                                    //imgHeart.setColorFilter(R.color.heartColor);
+                                    imgHeart.setColorFilter(getResources().getColor(R.color.heartColor));
                                     isFave=true;
 
                                 }
@@ -460,7 +462,7 @@ public class ViewPlaceActivity extends AppCompatActivity {
             TextView txtViewPhoneNumber=findViewById(R.id.textViewPhoneNumber);
             TextView txtViewCuisine=findViewById(R.id.textViewMonumentViewCuisine);
             CheckedTextView cTVHasWifi=findViewById(R.id.checkedTextViewHasWifi);
-            CheckedTextView cTVIsPetFriendly=findViewById(R.id.checkedTextViewIsPetFriendly);
+            CheckedTextView cTVIsPetFriendly=findViewById(R.id.checkedTextViewPetFriendly);
             CheckedTextView cTVHasCardPay=findViewById(R.id.checkedTextViewHasCardPay);
 
             myRef.child("places").child("restaurants").child(placeName).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
@@ -586,6 +588,7 @@ public class ViewPlaceActivity extends AppCompatActivity {
                     else{
                         isFave=true;
                         imgHeart.setImageResource(R.drawable.baseline_favorite_black_48dp);
+                        //imgHeart.setColorFilter(getResources().getColor(R.color.heartColor));
                         imgHeart.setColorFilter(getResources().getColor(R.color.heartColor));
                         myRef.child("users").child(userName).child("favoritePlaces").child(placeName).setValue("true").addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
@@ -626,8 +629,8 @@ public class ViewPlaceActivity extends AppCompatActivity {
                                 if(favoritePlaces.get(placeName)!=null) {
                                     ImageView imgHeart = findViewById(R.id.imgViewMonumentIsFavorite);
                                     imgHeart.setImageResource(R.drawable.baseline_favorite_black_48dp);
-                                    imgHeart.setColorFilter(R.color.heartColor);
-                                    //imgHeart.setColorFilter(getResources().getColor(R.color.heartColor));
+                                    //imgHeart.setColorFilter(R.color.heartColor);
+                                    imgHeart.setColorFilter(getResources().getColor(R.color.heartColor));
                                     isFave=true;
 
                                 }
@@ -790,8 +793,8 @@ public class ViewPlaceActivity extends AppCompatActivity {
                                 if(favoritePlaces.get(placeName)!=null) {
                                     ImageView imgHeart = findViewById(R.id.imgViewMonumentIsFavorite);
                                     imgHeart.setImageResource(R.drawable.baseline_favorite_black_48dp);
-                                    imgHeart.setColorFilter(R.color.heartColor);
-                                    //imgHeart.setColorFilter(getResources().getColor(R.color.heartColor));
+                                    //imgHeart.setColorFilter(R.color.heartColor);
+                                    imgHeart.setColorFilter(getResources().getColor(R.color.heartColor));
                                     isFave=true;
 
                                 }
@@ -912,6 +915,7 @@ public class ViewPlaceActivity extends AppCompatActivity {
                     else{
                         isFave=true;
                         imgHeart.setImageResource(R.drawable.baseline_favorite_black_48dp);
+                        //imgHeart.setColorFilter(getResources().getColor(R.color.heartColor));
                         imgHeart.setColorFilter(getResources().getColor(R.color.heartColor));
                         myRef.child("users").child(userName).child("favoritePlaces").child(placeName).setValue("true").addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
