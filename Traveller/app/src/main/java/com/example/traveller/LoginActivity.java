@@ -151,7 +151,34 @@ public class LoginActivity extends AppCompatActivity {
                     String username=etUsername.getText().toString();
                     String password=etPassword.getText().toString();
                     String email=etEmail.getText().toString();
+                    String firstName=etFirstName.getText().toString();
+                    String lastName=etLastName.getText().toString();
+                    String phoneNumber=etPhoneNumber.getText().toString();
 
+                    if(username.isEmpty()){
+                        Toast.makeText(getApplicationContext(),"Please enter a user name!",Toast. LENGTH_LONG).show();
+                        return;
+                    }
+                    if(password.isEmpty()){
+                        Toast.makeText(getApplicationContext(),"Please enter a password!",Toast. LENGTH_LONG).show();
+                        return;
+                    }
+                    if(email.isEmpty()){
+                        Toast.makeText(getApplicationContext(),"Please a enter an email address!",Toast. LENGTH_LONG).show();
+                        return;
+                    }
+                    if(firstName.isEmpty()){
+                        Toast.makeText(getApplicationContext(),"Please a enter your first name!",Toast. LENGTH_LONG).show();
+                        return;
+                    }
+                    if(lastName.isEmpty()){
+                        Toast.makeText(getApplicationContext(),"Please a enter your last name!",Toast. LENGTH_LONG).show();
+                        return;
+                    }
+                    if(phoneNumber.isEmpty()){
+                        Toast.makeText(getApplicationContext(),"Please a enter your phone number!",Toast. LENGTH_LONG).show();
+                        return;
+                    }
 
 
                     User user=new User(etPassword.getText().toString(),
