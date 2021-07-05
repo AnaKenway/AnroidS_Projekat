@@ -71,6 +71,8 @@ public class FriendProfileActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         Object u = task.getResult().getValue();
                         HashMap<String,String> hm = (HashMap<String,String>) u;
+                        HashMap<String,ArrayList<String>> hm2=(HashMap<String,ArrayList<String>>)u;
+                        ArrayList<String> friendList=hm2.get("friends");
                         userFirstName = hm.get("firstName");
                         userLastName = hm.get("lastName");
                         URI = hm.get("imgUrl");
@@ -85,6 +87,19 @@ public class FriendProfileActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View view) {
                                     Toast.makeText(getApplicationContext(), "Unfriend kliknuto!", Toast.LENGTH_LONG).show();
+                                    for(int i =0;i<friendList.size();i++){
+                                        if(friendList.get(i).equals(userName)){
+                                            friendList.remove(i);
+                                            myRef.child("users").child(friendUserName).child("friends").setValue(friendList);
+                                        }
+                                    }
+                                    for(int i =0;i<friends.size();i++){
+                                        if(friends.get(i).equals(friendUserName)){
+                                            friends.remove(i);
+                                            myRef.child("users").child(userName).child("friends").setValue(friends);
+                                        }
+                                    }
+
                                 }
                             });
                             ImageView friendVisitedLocations = (ImageView) findViewById(R.id.imageViewFriendsVisitedLoations);
