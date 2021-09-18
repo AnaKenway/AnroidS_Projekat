@@ -17,6 +17,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+
+    <!-- ARCore -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -48,6 +52,11 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
+        <!-- "AR Optional" app, contains non-AR features that can be used when
+         "Google Play Services for AR" (ARCore) is not available. -->
+        <meta-data android:name="com.google.ar.core" android:value="optional" />
+
 
         <activity
             android:name=".UsersMapsActivity"
