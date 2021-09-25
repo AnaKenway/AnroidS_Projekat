@@ -107,6 +107,24 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
         userMarkers = new ArrayList<Marker>();
         SearchView search = findViewById(R.id.searchItem);
 
+        //isAdmin Test
+
+        myRef.child("users").child(userName).child("isAdmin").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
+                Object o=dataSnapshot.getValue();
+                boolean isAdmin=(boolean)o;
+                if(isAdmin){
+                    Toast.makeText(getApplicationContext(), "You are an Admin", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "You are not an Admin", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        //end isAdmin Test
+
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

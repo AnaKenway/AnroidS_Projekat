@@ -23,6 +23,7 @@ public class User {
     public List<Location> visited;
     public List<Location> favoriteLocation;
     public String points;
+    public boolean isAdmin;
 
     public User(){}
 
@@ -44,6 +45,7 @@ public class User {
         favoriteLocation= new ArrayList<Location>();
         setFriendRequests(new ArrayList<String>());
         this.points=points;
+        setAdmin(false);
     }
     public User(String p, String e, String f, String l, String i, String ph,String points){
         password=p;
@@ -59,6 +61,7 @@ public class User {
         setLatitude("");
         setLongitude("");
         this.points=points;
+        setAdmin(false);
     }
 
 
@@ -172,6 +175,14 @@ public class User {
 
     public void setFriendRequests(List<String> friendRequests) {
         this.friendRequests = friendRequests;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 
 //    public Location getMyLocation() {
