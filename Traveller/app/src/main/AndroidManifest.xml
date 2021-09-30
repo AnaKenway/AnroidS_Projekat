@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.traveller">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -15,10 +14,7 @@
         android:required="true" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
-
-    <!-- ARCore -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- ARCore -->
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
@@ -28,10 +24,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Traveller">
+        <activity android:name=".TreasureHuntListActivity"></activity>
+
         <service
             android:name=".NearbyLocationsService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity android:name=".VisitedOrFaveLocationsActivity" />
         <activity android:name=".RankingsActivity" />
@@ -52,11 +50,13 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
-        <!-- "AR Optional" app, contains non-AR features that can be used when
-         "Google Play Services for AR" (ARCore) is not available. -->
-        <meta-data android:name="com.google.ar.core" android:value="optional" />
-
+        <!--
+ "AR Optional" app, contains non-AR features that can be used when
+         "Google Play Services for AR" (ARCore) is not available.
+        -->
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="optional" />
 
         <activity
             android:name=".UsersMapsActivity"
