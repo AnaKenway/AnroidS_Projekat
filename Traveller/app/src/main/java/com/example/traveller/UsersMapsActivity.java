@@ -20,6 +20,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,6 +45,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.ar.core.ArCoreApk;
+import com.google.ar.core.Session;
+import com.google.ar.core.exceptions.UnavailableApkTooOldException;
+import com.google.ar.core.exceptions.UnavailableArcoreNotInstalledException;
+import com.google.ar.core.exceptions.UnavailableDeviceNotCompatibleException;
+import com.google.ar.core.exceptions.UnavailableSdkTooOldException;
+import com.google.ar.core.exceptions.UnavailableUserDeclinedInstallationException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -89,6 +97,11 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
     private DataSnapshot ds;
     private boolean startService = false;
     private boolean isAdmin=false;
+    private Button buttonOpenCamera;
+    private Button buttonTreasureHunt;
+    private Session mSession;
+    private boolean mUserRequestedInstall = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -228,6 +241,36 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                 startActivity(i);
             }
         });
+
+        //for AR supported apps
+        buttonOpenCamera=findViewById(R.id.buttonOpenCamera);
+        buttonTreasureHunt=findViewById(R.id.buttonTreasureHunt);
+        maybeEnableArButtons();
+    }
+
+    void maybeEnableArButtons() {
+        ArCoreApk.Availability availability = ArCoreApk.getInstance().checkAvailability(this);
+        if (availability.isTransient()) {
+            // Continue to query availability at 5Hz while compatibility is checked in the background.
+            //ovde me pitao koji Handler da importujem, ako nesto ne valja, pogledaj ovde; obrisati ovaj comment posle
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    maybeEnableArButtons();
+                }
+            }, 200);
+        }
+        if (availability.isSupported()) {
+            buttonOpenCamera.setVisibility(View.VISIBLE);
+            buttonOpenCamera.setEnabled(true);
+            buttonTreasureHunt.setVisibility(View.VISIBLE);
+            buttonTreasureHunt.setEnabled(true);
+        } else { // The device is unsupported or unknown.
+            buttonOpenCamera.setVisibility(View.INVISIBLE);
+            buttonOpenCamera.setEnabled(false);
+            buttonTreasureHunt.setVisibility(View.INVISIBLE);
+            buttonTreasureHunt.setEnabled(false);
+        }
     }
 
     @Override
@@ -238,6 +281,70 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
         if(currentUser == null){
             finish();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Ensure that Google Play Services for AR and ARCore device profile data are
+        // installed and up to date.
+        Exception exception = null;
+        String message = null;
+        try {
+            if (mSession == null) {
+                switch (ArCoreApk.getInstance().requestInstall(this, mUserRequestedInstall)) {
+                    case INSTALLED:
+                        // Success: Safe to create the AR session.
+                        mSession = new Session(this);
+                        break;
+                    case INSTALL_REQUESTED:
+                        // When this method returns `INSTALL_REQUESTED`:
+                        // 1. ARCore pauses this activity.
+                        // 2. ARCore prompts the user to install or update Google Play
+                        //    Services for AR (market://details?id=com.google.ar.core).
+                        // 3. ARCore downloads the latest device profile data.
+                        // 4. ARCore resumes this activity. The next invocation of
+                        //    requestInstall() will either return `INSTALLED` or throw an
+                        //    exception if the installation or update did not succeed.
+                        mUserRequestedInstall = false;
+                        return;
+                }
+            }
+        } catch (UnavailableUserDeclinedInstallationException e) {
+            // Display an appropriate message to the user and return gracefully.
+            Toast.makeText(this, "TODO: handle exception " + e, Toast.LENGTH_LONG)
+                    .show();
+            return;
+        } catch (UnavailableApkTooOldException e) {
+            message = "Please update ARCore";
+            exception = e;
+        } catch (UnavailableSdkTooOldException e) {
+            message = "Please update this app";
+            exception = e;
+        } catch (UnavailableDeviceNotCompatibleException e) {
+            message = "This device does not support AR";
+            exception = e;
+        } catch (Exception e) {
+            message = "Failed to create AR session";
+            exception = e;
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+
+        if (mSession != null) {
+            // Explicitly close ARCore Session to release native resources.
+            // Review the API reference for important considerations before calling close() in apps with
+            // more complicated lifecycle requirements:
+            // https://developers.google.com/ar/reference/java/arcore/reference/com/google/ar/core/Session#close()
+            mSession.close();
+            mSession = null;
+        }
+
+        super.onDestroy();
     }
 
     static final int PERMISSION_ACCESS_FINE_LOCATION = 1;
