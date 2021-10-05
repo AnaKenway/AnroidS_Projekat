@@ -88,6 +88,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
     private double selectedRaduius;
     private DataSnapshot ds;
     private boolean startService = false;
+    private boolean isAdmin=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +114,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
             @Override
             public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
                 Object o=dataSnapshot.getValue();
-                boolean isAdmin=(boolean)o;
+                isAdmin=(boolean)o;
                 if(isAdmin){
                     Toast.makeText(getApplicationContext(), "You are an Admin", Toast.LENGTH_LONG).show();
                 }
@@ -223,7 +224,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(UsersMapsActivity.this,TreasureHuntListActivity.class);
-                i.putExtra("isAdmin",true);
+                i.putExtra("isAdmin",isAdmin);
                 startActivity(i);
             }
         });
