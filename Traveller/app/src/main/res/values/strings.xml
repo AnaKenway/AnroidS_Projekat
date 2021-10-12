@@ -56,4 +56,6 @@
     <string name="rateTravelAgency">Rate this travel agency</string>
     <string name="rate">Rate</string>
     <string name="treasureHunt">Treasure Hunt</string>
+    <string name="addTreasureHunt">Add Treasure Hunt</string>
+    <string name="addTreasures">Add Treasures</string>
 </resources>

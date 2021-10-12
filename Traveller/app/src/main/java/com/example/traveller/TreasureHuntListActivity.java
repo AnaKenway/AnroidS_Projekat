@@ -23,11 +23,20 @@ public class TreasureHuntListActivity extends AppCompatActivity {
         Intent i = getIntent();
         isAdmin = i.getBooleanExtra("isAdmin",false);
 
+        Button addTreasureHunt=findViewById(R.id.buttonAddTreasureHunt);
+
         if(!isAdmin){
-            Button addTreasureHunt=findViewById(R.id.buttonAddTreasureHunt);
             addTreasureHunt.setVisibility(View.INVISIBLE);
             addTreasureHunt.setEnabled(false);
         }
+
+        addTreasureHunt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(TreasureHuntListActivity.this,AddTreasureHuntActivity.class);
+                startActivity(i);
+            }
+        });
 
         ArrayList<String> testTreasures=new ArrayList<String>();
         testTreasures.add("TreasureHunt1");
