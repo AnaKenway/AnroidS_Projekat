@@ -1,6 +1,10 @@
 package com.example.traveller.models;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TreasureHunt {
 
@@ -12,6 +16,9 @@ public class TreasureHunt {
     //maybe this should be ArrayList<Treasure>?? i think that would be much better
     //on firebase i should keep them as Strings, just the names of treasures, but when i get them, i make them into objects
     public String imgURI; //some kind of picture/icon that represents this treasure hunt
+    public Map<String, Boolean> treasureHunts = new HashMap<>();
+
+    public TreasureHunt(){} //default constructor for retrieving from firebase db
 
     public TreasureHunt(String name, String category, String description, ArrayList<String> treasures, String imgURI){
         this.name=name;
@@ -36,5 +43,16 @@ public class TreasureHunt {
         this.description=description;
         this.treasures=new ArrayList<String>();
     }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("name", name);
+        result.put("description", description);
+        result.put("category", category);
+
+        return result;
+    }
+
 
 }
