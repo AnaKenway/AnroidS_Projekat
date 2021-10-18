@@ -18,8 +18,10 @@ import android.widget.Toast;
 import com.example.traveller.models.TreasureHunt;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +31,7 @@ public class TreasureHuntListActivity extends AppCompatActivity {
     private boolean isAdmin=false;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference();
+    ArrayList<String> treasureHuntsList=new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,24 +56,41 @@ public class TreasureHuntListActivity extends AppCompatActivity {
             }
         });
 
-        ArrayList<String> testTreasures=new ArrayList<String>();
+
         ListView listViewTreasureHunts=findViewById(R.id.listViewTreasureHunts);
-        myRef.child("treasureHunts").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+       /* myRef.child("treasureHunts").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
                 HashMap<String,TreasureHunt> hm=(HashMap<String,TreasureHunt>)dataSnapshot.getValue();
                 for (String key:hm.keySet()
                      ) {
-                    testTreasures.add(key);
+                    treasureHuntsList.add(key);
                 }
-                listViewTreasureHunts.setAdapter(new ArrayAdapter<String>(TreasureHuntListActivity.this, android.R.layout.simple_list_item_1, testTreasures ));
+                listViewTreasureHunts.setAdapter(new ArrayAdapter<String>(TreasureHuntListActivity.this, android.R.layout.simple_list_item_1, treasureHuntsList ));
                 if(isAdmin)
                     registerForContextMenu(listViewTreasureHunts);
             }
+        });*/
+
+        myRef.child("treasureHunts").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                treasureHuntsList.removeAll(treasureHuntsList);
+                HashMap<String,TreasureHunt> hm=(HashMap<String,TreasureHunt>)snapshot.getValue();
+                for (String key:hm.keySet()
+                ) {
+                    treasureHuntsList.add(key);
+                }
+                listViewTreasureHunts.setAdapter(new ArrayAdapter<String>(TreasureHuntListActivity.this, android.R.layout.simple_list_item_1, treasureHuntsList ));
+                if(isAdmin)
+                    registerForContextMenu(listViewTreasureHunts);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
         });
-        //testTreasures.add("TreasureHunt1");
-        //testTreasures.add("TreasureHunt2");
-        //testTreasures.add("TreasureHunt3");
     }
 
     @Override
@@ -87,14 +107,24 @@ public class TreasureHuntListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.ctxMenuEditTreasureHunt:
                 Toast.makeText(getApplicationContext(), "Edit", Toast.LENGTH_LONG).show();
+                editTreasureHunt(info.id);
                 return true;
             case R.id.ctxMenuDeleteTreasureHunt:
                 Toast.makeText(getApplicationContext(), "Delete", Toast.LENGTH_LONG).show();
+                deleteTreasureHunt(info.id);
                 return true;
             default:
                 return super.onContextItemSelected(item);
         }
     }
 
+    public void deleteTreasureHunt(long id){
+        String toDelete=treasureHuntsList.get((int)id);
+        myRef.child("treasureHunts").child(toDelete).removeValue();
+    }
+
+    public void editTreasureHunt(long id){
+
+    }
 
 }
