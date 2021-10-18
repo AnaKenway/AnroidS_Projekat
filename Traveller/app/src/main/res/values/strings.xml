@@ -58,4 +58,6 @@
     <string name="treasureHunt">Treasure Hunt</string>
     <string name="addTreasureHunt">Add Treasure Hunt</string>
     <string name="addTreasures">Add Treasures</string>
+    <string name="Edit">Edit</string>
+    <string name="Delete">Delete</string>
 </resources>
