@@ -91,6 +91,16 @@ public class TreasureHuntListActivity extends AppCompatActivity {
 
             }
         });
+
+        listViewTreasureHunts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i=new Intent(TreasureHuntListActivity.this,ViewTreasureHuntActivity.class);
+                i.putExtra("name",treasureHuntsList.get(position));
+                i.putExtra("isAdmin",isAdmin);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
