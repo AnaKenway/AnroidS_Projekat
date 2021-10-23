@@ -6,8 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.traveller.models.TreasureHunt;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,16 +38,37 @@ public class ViewTreasureHuntActivity extends AppCompatActivity {
         isAdmin = i.getBooleanExtra("isAdmin",false);
         THName=i.getStringExtra("name");
 
-        //dodaj da pita ako je admin, da bude vidljivo edit dugme, koje treba da dodam i na layout
-        //dodaj i neku sliku, kao piratske mape sa X i onim ---- kao putanjom do x, neka bude ista slika za svaki TH,
-        //cisto da ne bude onoliko prazan layout
+        Button btnEdit=findViewById(R.id.btnEditTHnView);
+        Button btnDelete=findViewById(R.id.btnDeleteTHInView);
+
+        if(!isAdmin){
+
+            btnEdit.setVisibility(View.INVISIBLE);
+            btnDelete.setVisibility(View.INVISIBLE);
+
+            btnEdit.setEnabled(false);
+            btnDelete.setEnabled(false);
+        }
+        else{
+
+            btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    myRef.child("treasureHunts").child(THName).removeValue();
+                    Toast.makeText(getApplicationContext(), "Treasure Hunt deleted", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            });
+        }
 
 
         myRef.child("treasureHunts").child(THName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                TreasureHunt th=snapshot.getValue(TreasureHunt.class);
-                 fillForm(th);
+                if(snapshot.getValue()!=null) {
+                    TreasureHunt th = snapshot.getValue(TreasureHunt.class);
+                    fillForm(th);
+                }
             }
 
             @Override
