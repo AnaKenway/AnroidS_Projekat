@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 import android.content.Intent;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,7 +22,6 @@ import com.example.traveller.models.Doctor;
 import com.example.traveller.models.Monument;
 import com.example.traveller.models.Restaurant;
 import com.example.traveller.models.TravelAgency;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -119,7 +117,7 @@ public class AddPlaceActivity extends AppCompatActivity {
         EditText etPlaceName=findViewById(R.id.editTextPlaceName);
         EditText etPlaceDesc=findViewById(R.id.editTextPlaceDesc);
         EditText etPlaceAddress=findViewById(R.id.editTextPlaceAdress);
-        ImageButton imgBtn=findViewById(R.id.imgBtnCamera);
+        ImageButton imgBtn=findViewById(R.id.imgBtnAddTreasure);
         Button btnSave=findViewById(R.id.btnAddPlace);
         Button btnCancel=findViewById(R.id.btnCancelPlace);
 

@@ -12,7 +12,7 @@ public class TreasureHunt {
     public String category; //can be local, all treasures in one city/area
                             //or world, treasures scattered around the globe
     public String description; //short description of the treasure hunt
-    public ArrayList<String> treasures; //list of (for now) treasure names that are a part of this treasure hunt
+    public ArrayList<String> treasures=new ArrayList<String>(); //list of (for now) treasure names that are a part of this treasure hunt
     //maybe this should be ArrayList<Treasure>?? i think that would be much better
     //on firebase i should keep them as Strings, just the names of treasures, but when i get them, i make them into objects
     public String imgURI; //some kind of picture/icon that represents this treasure hunt

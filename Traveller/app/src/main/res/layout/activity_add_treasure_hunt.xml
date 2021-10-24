@@ -82,14 +82,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
-            android:text="@string/addTreasures"></TextView>
+            android:text="@string/addTreasure"
+            android:textSize="18sp"></TextView>
 
         <ImageButton
-            android:id="@+id/imgBtnCamera"
+            android:id="@+id/imgBtnAddTreasure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            app:srcCompat="@android:drawable/ic_menu_camera" />
+            android:background="#FFFFFF"
+            android:scaleType="center"
+            app:srcCompat="@drawable/treasure_chest_icon_256px" />
 
     </LinearLayout>
 

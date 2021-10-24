@@ -57,7 +57,11 @@
     <string name="rate">Rate</string>
     <string name="treasureHunt">Treasure Hunt</string>
     <string name="addTreasureHunt">Add Treasure Hunt</string>
-    <string name="addTreasures">Add Treasures</string>
+    <string name="addTreasure">Add Treasure</string>
     <string name="Edit">Edit</string>
     <string name="Delete">Delete</string>
+    <string name="treasureHint">Treasure Hint</string>
+    <string name="treasureQuestion">Treasure Question</string>
+    <string name="add3DObject">Add 3D Object</string>
+    <string name="numberOfPoints">Number of Points</string>
 </resources>

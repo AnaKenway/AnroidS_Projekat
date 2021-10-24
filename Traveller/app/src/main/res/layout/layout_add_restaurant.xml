@@ -123,7 +123,7 @@
         android:text="@string/cardPay" />
 
     <ImageButton
-        android:id="@+id/imgBtnCamera"
+        android:id="@+id/imgBtnAddTreasure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

@@ -76,7 +76,10 @@ public class TreasureHuntListActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 treasureHuntsList.removeAll(treasureHuntsList);
-                HashMap<String,TreasureHunt> hm=(HashMap<String,TreasureHunt>)snapshot.getValue();
+                Object o=snapshot.getValue();
+                if(o.equals("")) return;
+                if(o==null) return;
+                HashMap<String,TreasureHunt>hm=(HashMap<String,TreasureHunt>)o;
                 for (String key:hm.keySet()
                 ) {
                     treasureHuntsList.add(key);
