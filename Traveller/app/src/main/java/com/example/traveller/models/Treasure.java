@@ -1,8 +1,11 @@
 package com.example.traveller.models;
 
-public class Treasure {
+import java.io.Serializable;
+
+public class Treasure implements Serializable {
 
     public String name;
+    public String description; //This treasure is hidden in a place where that and that happened
     public String hint; //a hint about finding this treasure
     public String question; //a question that the user can answer and that will bring extra points
     public int points;
@@ -15,8 +18,9 @@ public class Treasure {
 
     public Treasure(){}
 
-    public Treasure(String name, String hint, String question,int points,String id,long timestamp, int code){
+    public Treasure(String name, String description, String hint, String question,int points,String id,long timestamp, int code){
         this.name=name;
+        this.description=description;
         this.hint=hint;
         this.question=question;
         this.points=points;

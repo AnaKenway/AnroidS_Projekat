@@ -33,6 +33,19 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputTreasureDescription"
+            style="@style/parent"
+            android:layout_marginTop="@dimen/loginViewsMargin">
+
+            <EditText
+                android:id="@+id/editTextTreasureDescription"
+                style="@style/modifiedEditProfileText"
+                android:hint="@string/description"
+                android:inputType="textPersonName"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputTreasureHint"
             style="@style/parent"
             android:layout_marginTop="@dimen/loginViewsMargin">
@@ -67,7 +80,7 @@
                 android:id="@+id/editTextTreasurePoints"
                 style="@style/modifiedEditProfileText"
                 android:hint="@string/numberOfPoints"
-                android:inputType="textPersonName"
+                android:inputType="number"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -102,7 +115,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnCancelTreasureHunt"
+                android:id="@+id/btnCancelTreasure"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -111,7 +124,7 @@
                 app:backgroundTint="#DF6969" />
 
             <Button
-                android:id="@+id/btnAddTreasureHunt"
+                android:id="@+id/btnAddTreasure"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="185dp"

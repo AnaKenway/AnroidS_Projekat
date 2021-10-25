@@ -1,8 +1,13 @@
 package com.example.traveller;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.example.traveller.models.Treasure;
 import com.example.traveller.models.TreasureHunt;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -22,9 +28,13 @@ public class AddTreasureHuntActivity extends AppCompatActivity {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference();
     TreasureHunt th=new TreasureHunt();
+    Treasure t;
+    ArrayList<Treasure> treasures=new ArrayList<>();
     //ovde staviti ArrayList od Treasure, i u ActivityResult preuzeti
     //dodati treasure i staviti ga ovde, plus njegovo ime smestiti u
     //listu od tekuceg th
+
+    int LAUNCH_SECOND_ACTIVITY = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +54,8 @@ public class AddTreasureHuntActivity extends AppCompatActivity {
         imgBtnAddTreasure.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(AddTreasureHuntActivity.this,AddTreasureActivity.class);
-                startActivity(i);
+                Intent i = new Intent(AddTreasureHuntActivity.this,AddTreasureActivity.class);
+                startActivityForResult(i, LAUNCH_SECOND_ACTIVITY);
             }
         });
 
@@ -72,16 +82,33 @@ public class AddTreasureHuntActivity extends AppCompatActivity {
                     th.category="world";
                 }
 
-                //dodati ovde za treasures logiku, za njihov upis u bazu
                 if(th.name.isEmpty() || th.description.isEmpty()){
                     Toast.makeText(getApplicationContext(), "Please add a name and description", Toast.LENGTH_LONG).show();
                 }
                 else{
                     myRef.child("treasureHunts").child(thName).setValue(th);
+                    //dodati ovde za treasures logiku, za njihov upis u bazu
+                    //treba sve treasures iz ArrayList treasures upisati u myRef.child("treasures")  na primer
                     finish();
-
                 }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == LAUNCH_SECOND_ACTIVITY) {
+            if(resultCode == Activity.RESULT_OK){
+                t= (Treasure) data.getSerializableExtra("result");
+                th.treasures.add(t.name);
+                treasures.add(t);
+                Toast.makeText(getApplicationContext(), "testing:"+t.name+", "+ t.hint, Toast.LENGTH_LONG).show();
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(getApplicationContext(), "Adding a treasure canceled", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }
