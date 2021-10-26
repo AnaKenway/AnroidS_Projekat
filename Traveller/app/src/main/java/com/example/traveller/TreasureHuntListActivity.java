@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.traveller.models.Treasure;
 import com.example.traveller.models.TreasureHunt;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -132,8 +133,21 @@ public class TreasureHuntListActivity extends AppCompatActivity {
     }
 
     public void deleteTreasureHunt(long id){
-        String toDelete=treasureHuntsList.get((int)id);
-        myRef.child("treasureHunts").child(toDelete).removeValue();
+        String toDelete=treasureHuntsList.get((int)id); //toDelete postaje ime TreasureHunt-a koji zelimo da obrisemo
+        //prvo brisem sve treasures iz baze koji pripadaju ovom TreasureHunt-u
+
+        myRef.child("treasureHunts").child(toDelete).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
+                TreasureHunt th=new TreasureHunt();
+                th=dataSnapshot.getValue(TreasureHunt.class);
+                for (String tName:th.treasures) {
+                    myRef.child("treasures").child(tName).removeValue();
+                }
+                //sad mogu da obrisem i sam treasureHunt
+                myRef.child("treasureHunts").child(toDelete).removeValue();
+            }
+        });
     }
 
     public void editTreasureHunt(long id){

@@ -54,9 +54,20 @@ public class ViewTreasureHuntActivity extends AppCompatActivity {
             btnDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    myRef.child("treasureHunts").child(THName).removeValue();
-                    Toast.makeText(getApplicationContext(), "Treasure Hunt deleted", Toast.LENGTH_LONG).show();
-                    finish();
+                    myRef.child("treasureHunts").child(THName).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                        @Override
+                        public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
+                            TreasureHunt th=new TreasureHunt();
+                            th=dataSnapshot.getValue(TreasureHunt.class);
+                            for (String tName:th.treasures) {
+                                myRef.child("treasures").child(tName).removeValue();
+                            }
+                            //sad mogu da obrisem i sam treasureHunt
+                            myRef.child("treasureHunts").child(THName).removeValue();
+                            Toast.makeText(getApplicationContext(), "Treasure Hunt deleted", Toast.LENGTH_LONG).show();
+                            finish();
+                        }
+                    });
                 }
             });
         }

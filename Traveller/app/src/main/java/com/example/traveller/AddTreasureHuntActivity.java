@@ -30,9 +30,6 @@ public class AddTreasureHuntActivity extends AppCompatActivity {
     TreasureHunt th=new TreasureHunt();
     Treasure t;
     ArrayList<Treasure> treasures=new ArrayList<>();
-    //ovde staviti ArrayList od Treasure, i u ActivityResult preuzeti
-    //dodati treasure i staviti ga ovde, plus njegovo ime smestiti u
-    //listu od tekuceg th
 
     int LAUNCH_SECOND_ACTIVITY = 1;
 
@@ -89,6 +86,9 @@ public class AddTreasureHuntActivity extends AppCompatActivity {
                     myRef.child("treasureHunts").child(thName).setValue(th);
                     //dodati ovde za treasures logiku, za njihov upis u bazu
                     //treba sve treasures iz ArrayList treasures upisati u myRef.child("treasures")  na primer
+                    for (Treasure tt:treasures) {
+                        myRef.child("treasures").child(tt.name).setValue(tt);
+                    }
                     finish();
                 }
             }
