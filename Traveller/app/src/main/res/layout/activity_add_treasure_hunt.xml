@@ -17,7 +17,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/loginViewsMargin"
         android:text="@string/addTreasureHunt"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/sand" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputTreasureHuntName"
@@ -83,7 +84,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:text="@string/addTreasure"
-            android:textSize="18sp"></TextView>
+            android:textSize="18sp"
+            android:textColor="@color/sand" ></TextView>
 
         <ImageButton
             android:id="@+id/imgBtnAddTreasure"
@@ -108,7 +110,7 @@
             android:layout_marginLeft="15dp"
             android:layout_marginTop="@dimen/loginViewsMargin"
             android:text="@string/Cancel"
-            app:backgroundTint="#DF6969" />
+            app:backgroundTint="@color/x_red" />
 
         <Button
             android:id="@+id/btnAddTreasureHunt"
@@ -117,7 +119,7 @@
             android:layout_marginLeft="185dp"
             android:layout_marginTop="@dimen/loginViewsMargin"
             android:text="@string/add"
-            app:backgroundTint="#00BCD4" />
+            app:backgroundTint="@color/sand"  />
     </LinearLayout>
 
 </LinearLayout>

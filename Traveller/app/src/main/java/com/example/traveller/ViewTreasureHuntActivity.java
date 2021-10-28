@@ -70,6 +70,15 @@ public class ViewTreasureHuntActivity extends AppCompatActivity {
                     });
                 }
             });
+
+            btnEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i=new Intent(ViewTreasureHuntActivity.this,EditTreasureHuntActivity.class);
+                    i.putExtra("name",THName);
+                    startActivity(i);
+                }
+            });
         }
 
 

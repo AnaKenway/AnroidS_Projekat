@@ -151,7 +151,10 @@ public class TreasureHuntListActivity extends AppCompatActivity {
     }
 
     public void editTreasureHunt(long id){
-
+        String toEdit=treasureHuntsList.get((int)id);
+        Intent i=new Intent(TreasureHuntListActivity.this,EditTreasureHuntActivity.class);
+        i.putExtra("name",toEdit);
+        startActivity(i);
     }
 
 }
