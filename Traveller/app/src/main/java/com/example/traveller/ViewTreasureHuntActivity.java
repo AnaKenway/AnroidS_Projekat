@@ -6,8 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -96,6 +99,18 @@ public class ViewTreasureHuntActivity extends AppCompatActivity {
 
             }
         });
+
+        Button viewTreasures=findViewById(R.id.btnViewTreasures_view_treasure_hunt);
+        viewTreasures.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(ViewTreasureHuntActivity.this,ViewTreasuresListActivity.class);
+                i.putExtra("name",THName);
+                i.putExtra("isAdmin",isAdmin);
+                i.putExtra("fromEdit",false);//ako je iz Treasure Hunt edita, onda treba da mu omogucim context meni za delete i da omogucim add dugme
+                startActivity(i);
+            }
+        });
     }
 
     private void fillForm(TreasureHunt t){
@@ -107,6 +122,7 @@ public class ViewTreasureHuntActivity extends AppCompatActivity {
 
         TextView thDesc=findViewById(R.id.textViewTHDesc);
         thDesc.setText(t.description);
+
 
         //pronaci u bazi da li je ulogovanom korisniku
         //ovo aktivan treasure hunt, ako uopste ima aktivnog

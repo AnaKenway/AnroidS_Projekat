@@ -28,4 +28,5 @@
     <!-- colors for Treasure Hunt-->
     <color name="sand">#c2a780 </color>
     <color name="x_red">#b1000f</color>
+    <color name="positive_green">#69f0ae</color>
 </resources>

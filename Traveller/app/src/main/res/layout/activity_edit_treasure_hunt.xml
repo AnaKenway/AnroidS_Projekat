@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        tools:context=".EditTreasureHuntActivity">
-
-        <LinearLayout android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             xmlns:app="http://schemas.android.com/apk/res-auto"
+            tools:context=".EditTreasureHuntActivity"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="24dp"
             android:layout_marginStart="24dp"
@@ -61,7 +56,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:orientation="horizontal">
 
@@ -85,10 +80,25 @@
                 </RadioGroup>
             </LinearLayout>
 
+    <ListView
+        android:id="@+id/listViewTreasures_edit_treasure_hunt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
+
+            <Button
+                android:id="@+id/btnAddTreasure_edit_treasure_hunt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:insetLeft="6dp"
+                android:text="@string/addTreasure"
+                android:textSize="18sp"
+                app:backgroundTint="@color/positive_green" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/loginViewsMargin"
                 android:orientation="horizontal">
 
@@ -112,5 +122,4 @@
                     android:text="@string/Save"
                     app:backgroundTint="@color/sand" />
             </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+</LinearLayout>

@@ -64,4 +64,6 @@
     <string name="treasureQuestion">Treasure Question</string>
     <string name="add3DObject">Add 3D Object</string>
     <string name="numberOfPoints">Number of Points</string>
+    <string name="treasureOfATreasureHunt">Treasures of this Treasure Hunt are: </string>
+    <string name="viewTreasures">View Treasures</string>
 </resources>
