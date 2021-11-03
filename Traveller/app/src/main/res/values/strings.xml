@@ -66,4 +66,6 @@
     <string name="numberOfPoints">Number of Points</string>
     <string name="treasureOfATreasureHunt">Treasures of this Treasure Hunt are: </string>
     <string name="viewTreasures">View Treasures</string>
+    <string name="treasurePoints">If found, this treasure brings you </string>
+    <string name="showHint">Show Hint</string>
 </resources>

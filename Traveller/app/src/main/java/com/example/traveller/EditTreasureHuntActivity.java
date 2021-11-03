@@ -21,7 +21,6 @@ import android.widget.Toast;
 
 import com.example.traveller.models.Treasure;
 import com.example.traveller.models.TreasureHunt;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,7 +37,8 @@ public class EditTreasureHuntActivity extends AppCompatActivity {
     ArrayList<Treasure> newlyAddedTreasures=new ArrayList<>();
     ListView listViewTreasures;
 
-    int LAUNCH_SECOND_ACTIVITY = 1;
+    int LAUNCH_ADD_TREASURE_ACTIVITY = 1;
+    int LAUNCH_EDIT_TREASURE_ACTIVITY=2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +103,16 @@ public class EditTreasureHuntActivity extends AppCompatActivity {
                 listViewTreasures=findViewById(R.id.listViewTreasures_edit_treasure_hunt);
                 listViewTreasures.setAdapter(new ArrayAdapter<String>(EditTreasureHuntActivity.this, android.R.layout.simple_list_item_1,th.treasures));
                 registerForContextMenu(listViewTreasures);
+                listViewTreasures.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        String toView=th.treasures.get((int)id); //toView postaje ime Treasure-a koji zelimo da view
+                        Intent i=new Intent(EditTreasureHuntActivity.this,ViewTreasureActivity.class);
+                        i.putExtra("name",toView);
+                        i.putExtra("isAdmin",true);
+                        startActivity(i);
+                    }
+                });
             }
 
             @Override
@@ -134,7 +144,7 @@ public class EditTreasureHuntActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(EditTreasureHuntActivity.this,AddTreasureActivity.class);
-                startActivityForResult(i, LAUNCH_SECOND_ACTIVITY);
+                startActivityForResult(i, LAUNCH_ADD_TREASURE_ACTIVITY);
             }
         });
     }
@@ -144,7 +154,7 @@ public class EditTreasureHuntActivity extends AppCompatActivity {
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_delete_option, menu);
+        inflater.inflate(R.menu.menu_treasure_options, menu);
     }
 
     @Override
@@ -155,6 +165,8 @@ public class EditTreasureHuntActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "Delete", Toast.LENGTH_LONG).show();
                 deleteTreasure(info.id);
                 return true;
+            case R.id.ctxMenuEditTreasure:
+                editTreasure(info.id);
             default:
                 return super.onContextItemSelected(item);
         }
@@ -166,11 +178,18 @@ public class EditTreasureHuntActivity extends AppCompatActivity {
         myRef.child("treasures").child(toDelete).removeValue();
     }
 
+    public void editTreasure(long id){
+        String toEdit=th.treasures.get((int)id); //toEdit postaje ime Treasure-a koji zelimo da edit
+        Intent i=new Intent(EditTreasureHuntActivity.this,EditTreasureActivity.class);
+        i.putExtra("name",toEdit);
+        startActivityForResult(i,LAUNCH_EDIT_TREASURE_ACTIVITY);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == LAUNCH_SECOND_ACTIVITY) {
+        if (requestCode == LAUNCH_ADD_TREASURE_ACTIVITY) {
             if(resultCode == Activity.RESULT_OK){
                 Treasure t= (Treasure) data.getSerializableExtra("result");
                 th.treasures.add(t.name);
@@ -181,6 +200,18 @@ public class EditTreasureHuntActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Adding a treasure canceled", Toast.LENGTH_LONG).show();
             }
         }
+
+        if (requestCode == LAUNCH_EDIT_TREASURE_ACTIVITY) {
+            if(resultCode == Activity.RESULT_OK){
+
+                Toast.makeText(getApplicationContext(), "Treasure edited", Toast.LENGTH_LONG).show();
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+
+                Toast.makeText(getApplicationContext(), "Editing a treasure canceled", Toast.LENGTH_LONG).show();
+            }
+        }
+
     }
 
 }

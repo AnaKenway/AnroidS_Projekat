@@ -13,12 +13,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <LinearLayout
+    <!--<LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal">-->
 
 
         <Button
@@ -26,10 +26,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|start"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
             android:text="Back"
             app:backgroundTint="@color/x_red" />
-        <Button
+       <!-- <Button
             android:id="@+id/btnAddTreasure_treasures_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,7 +46,7 @@
             android:layout_gravity="bottom|start"
             android:layout_marginStart="5dp"
             android:text="@string/Save"
-            app:backgroundTint="@color/positive_green" />
-    </LinearLayout>
+            app:backgroundTint="@color/positive_green" />-->
+    <!--</LinearLayout>-->
 
 </LinearLayout>

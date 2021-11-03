@@ -47,20 +47,20 @@ public class ViewTreasuresListActivity extends AppCompatActivity {
         isAdmin=i.getBooleanExtra("isAdmin",false);
         thName=i.getStringExtra("name");
         fromEdit=i.getBooleanExtra("fromEdit",false);
-        Button btnAddTreasure=findViewById(R.id.btnAddTreasure_treasures_list);
-        Button btnSave=findViewById(R.id.btnSave_treasures_list);
+        //Button btnAddTreasure=findViewById(R.id.btnAddTreasure_treasures_list);
+        //Button btnSave=findViewById(R.id.btnSave_treasures_list);
         Button btnBack=findViewById(R.id.btnBack_treasures_list);
         ListView listViewTreasures=findViewById(R.id.listViewTreasures_treasures_list);
 
         if(!fromEdit){
-            btnAddTreasure.setEnabled(false);
-            btnAddTreasure.setVisibility(View.INVISIBLE);
-            btnSave.setEnabled(false);
-            btnSave.setVisibility(View.INVISIBLE);
+            //btnAddTreasure.setEnabled(false);
+            //btnAddTreasure.setVisibility(View.INVISIBLE);
+            //btnSave.setEnabled(false);
+            //btnSave.setVisibility(View.INVISIBLE);
         }
         else{
 
-            btnAddTreasure.setOnClickListener(new View.OnClickListener() {
+            /*btnAddTreasure.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(ViewTreasuresListActivity.this,AddTreasureActivity.class);
@@ -77,7 +77,7 @@ public class ViewTreasuresListActivity extends AppCompatActivity {
                     }
                     //finish();
                 }
-            });
+            });*/
         }
 
         btnBack.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +101,11 @@ public class ViewTreasuresListActivity extends AppCompatActivity {
                 listViewTreasures.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        //otvoriti ViewTreasure
+                        String toView=th.treasures.get((int)id); //toView postaje ime Treasure-a koji zelimo da view
+                        Intent i=new Intent(ViewTreasuresListActivity.this,ViewTreasureActivity.class);
+                        i.putExtra("name",toView);
+                        i.putExtra("isAdmin",isAdmin);
+                        startActivity(i);
                     }
                 });
             }
@@ -136,7 +140,7 @@ public class ViewTreasuresListActivity extends AppCompatActivity {
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_delete_option, menu);
+        inflater.inflate(R.menu.menu_treasure_options, menu);
     }
 
     @Override

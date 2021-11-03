@@ -24,7 +24,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Traveller">
-        <activity android:name=".ViewTreasuresListActivity"></activity>
+        <activity android:name=".ViewTreasureActivity"></activity>
+        <activity android:name=".EditTreasureActivity" />
+        <activity android:name=".ViewTreasuresListActivity" />
         <activity android:name=".EditTreasureHuntActivity" />
         <activity android:name=".AddTreasureActivity" />
         <activity android:name=".ViewTreasureHuntActivity" />
