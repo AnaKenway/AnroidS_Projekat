@@ -24,6 +24,12 @@
             android:text="Treasure Name"
             android:textColor="@color/sand" />
 
+
+        <pl.droidsonroids.gif.GifImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/treasure_chest_opening_gif"
+            />
         <TextView
             android:id="@+id/textViewTreasureDesc_view_treasure"
             android:layout_width="match_parent"

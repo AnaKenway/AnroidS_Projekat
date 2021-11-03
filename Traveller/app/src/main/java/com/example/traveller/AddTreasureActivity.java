@@ -56,7 +56,7 @@ public class AddTreasureActivity extends AppCompatActivity {
             }
         });
 
-        Button cancel=findViewById(R.id.btnCancelTreasure);
+        Button cancel=findViewById(R.id.btnCancelEditTreasure_edit_treasure);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -35,6 +35,7 @@ public class EditTreasureHuntActivity extends AppCompatActivity {
     private DatabaseReference myRef = database.getReference();
     TreasureHunt th=new TreasureHunt();
     ArrayList<Treasure> newlyAddedTreasures=new ArrayList<>();
+    ArrayList<Treasure> editedTreasures=new ArrayList<>();
     ListView listViewTreasures;
 
     int LAUNCH_ADD_TREASURE_ACTIVITY = 1;
@@ -135,6 +136,10 @@ public class EditTreasureHuntActivity extends AppCompatActivity {
                 for (Treasure t:newlyAddedTreasures) {
                     myRef.child("treasures").child(t.name).setValue(t);
                 }
+                //snimiti izmenjene treasures
+                for (Treasure t:editedTreasures) {
+                    myRef.child("treasures").child(t.name).setValue(t);
+                }
                 finish();
             }
         });
@@ -203,8 +208,9 @@ public class EditTreasureHuntActivity extends AppCompatActivity {
 
         if (requestCode == LAUNCH_EDIT_TREASURE_ACTIVITY) {
             if(resultCode == Activity.RESULT_OK){
-
-                Toast.makeText(getApplicationContext(), "Treasure edited", Toast.LENGTH_LONG).show();
+                Treasure t= (Treasure) data.getSerializableExtra("result");
+                editedTreasures.add(t);
+                Toast.makeText(getApplicationContext(), "Treasure edited, will be saved if the Treasure Hunt is saved", Toast.LENGTH_LONG).show();
             }
             if (resultCode == Activity.RESULT_CANCELED) {
 
