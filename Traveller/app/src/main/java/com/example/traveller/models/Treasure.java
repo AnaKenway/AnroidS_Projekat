@@ -34,5 +34,6 @@ public class Treasure implements Serializable {
         this.hint=hint;
         this.question=question;
         this.points=points;
+        this.hostedAnchorID="";
     }
 }

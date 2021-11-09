@@ -69,4 +69,7 @@
     <string name="treasurePoints">If found, this treasure brings you </string>
     <string name="showHint">Show Hint</string>
     <string name="edit3DObject">Edit 3D Object</string>
+    <string name="host_button_text">Host</string>
+    <string name="resolve_button_text">Resolve</string>
+    <string name="initial_room_code">0000</string>
 </resources>
