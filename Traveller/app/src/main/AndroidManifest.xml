@@ -66,6 +66,12 @@
             android:name="com.google.ar.core"
             android:value="optional" />
 
+
+        <!--Vidi ovde ako APi opet ne daje dozvolu-->
+        <meta-data
+            android:name="com.google.android.ar.API_KEY"
+            android:value="AIzaSyCTEOG6OzqEZh7aDa5h_jCIdn5hchFO8cQ"/>
+
         <activity
             android:name=".UsersMapsActivity"
             android:label="@string/title_activity_users_maps">

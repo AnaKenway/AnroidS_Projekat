@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.traveller.models.Treasure;
@@ -19,6 +20,7 @@ public class AddTreasureActivity extends AppCompatActivity {
     //bice upisan tek kad se doda ceo treasure hunt
     //ova activity kao rezultat vraca objekat Treasure
     Treasure t=new Treasure();
+    private static final int LAUNCH_CLOUD_ANCHOR_ACTIVITY=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class AddTreasureActivity extends AppCompatActivity {
             }
         });
 
-        Button cancel=findViewById(R.id.btnCancelEditTreasure_edit_treasure);
+        Button cancel=findViewById(R.id.btnCancelTreasure);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,5 +67,35 @@ public class AddTreasureActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        ImageButton btnAdd3DObject=findViewById(R.id.imgBtnAdd3DObject);
+        btnAdd3DObject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(AddTreasureActivity.this,CloudAnchorActivity.class);
+                i.putExtra("isForAddOrEditTreasure",true);
+                i.putExtra("isAdmin",true);
+                startActivityForResult(i,LAUNCH_CLOUD_ANCHOR_ACTIVITY);
+            }
+        });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == LAUNCH_CLOUD_ANCHOR_ACTIVITY) {
+            if(resultCode == Activity.RESULT_OK){
+                Treasure tResult= (Treasure) data.getSerializableExtra("result");
+                Toast.makeText(getApplicationContext(), "Anchor successfully created", Toast.LENGTH_LONG).show();
+                t.updatedAtTimestamp=tResult.updatedAtTimestamp;
+                t.roomCode=tResult.roomCode;
+                t.hostedAnchorID=tResult.hostedAnchorID;
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                Toast.makeText(getApplicationContext(), "Adding an Anchor canceled", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
 }
