@@ -519,7 +519,7 @@ public class CloudAnchorActivity extends AppCompatActivity
         snackbarHelper.showMessageWithDismiss(this, getString(R.string.snackbar_on_host));
 
         hostListener = new RoomCodeAndCloudAnchorIdListener();
-        //firebaseManager.getNewRoomCode(hostListener);
+        firebaseManager.getNewRoomCode(hostListener);
         synchronized (singleTapLock) {
             // Change currentMode to HOSTING after receiving the room code (not when the 'Host' button
             // is tapped), to prevent an anchor being placed before we know the room code and able to
@@ -641,7 +641,7 @@ public class CloudAnchorActivity extends AppCompatActivity
             //ovde cuva u firebase po sample modelu, obrisi ovo, ovde treba da sacuva u treasure i da taj treasure vrati kroz ActivityResult
             //firebaseManager.storeAnchorIdInRoom(roomCode, cloudAnchorId);
             treasureToReturn.hostedAnchorID=cloudAnchorId;
-            treasureToReturn.roomCode= roomCode.intValue();
+            //treasureToReturn.roomCode= roomCode.intValue();
             treasureToReturn.updatedAtTimestamp=System.currentTimeMillis();
             snackbarHelper.showMessageWithDismiss(
                     CloudAnchorActivity.this, "Anchor is saved.");

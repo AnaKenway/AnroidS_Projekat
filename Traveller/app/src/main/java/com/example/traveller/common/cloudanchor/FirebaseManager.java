@@ -93,7 +93,7 @@ public class FirebaseManager {
    * code is available.
    */
   public void getNewRoomCode(RoomCodeListener listener) {
-    Preconditions.checkNotNull(app, "Firebase App was null");
+    /*Preconditions.checkNotNull(app, "Firebase App was null");
     roomCodeRef.runTransaction(
         new Transaction.Handler() {
           @Override
@@ -115,9 +115,10 @@ public class FirebaseManager {
               return;
             }
             Long roomCode = currentData.getValue(Long.class);
-            listener.onNewRoomCode(/*roomCode*/);
-          }
-        });
+            listener.onNewRoomCode(/*roomCode*/ //);
+         // }
+        //});
+    listener.onNewRoomCode(/*roomCode*/);
   }
 
   /** Stores the given anchor ID in the given room code. */
