@@ -244,6 +244,15 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
 
         //for AR supported apps
         buttonOpenCamera=findViewById(R.id.buttonOpenCamera);
+        buttonOpenCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(UsersMapsActivity.this,CloudAnchorActivity.class);
+                i.putExtra("isAdmin",isAdmin);
+                i.putExtra("isForAddOrEditTreasure",false);
+                startActivity(i);
+            }
+        });
         buttonTreasureHunt=findViewById(R.id.buttonTreasureHunt);
         maybeEnableArButtons();
     }
@@ -252,7 +261,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
         ArCoreApk.Availability availability = ArCoreApk.getInstance().checkAvailability(this);
         if (availability.isTransient()) {
             // Continue to query availability at 5Hz while compatibility is checked in the background.
-            //ovde me pitao koji Handler da importujem, ako nesto ne valja, pogledaj ovde; obrisati ovaj comment posle
+            //ovde me pitao koji Handler da importujem, ako nesto ne valja, pogledaj ovde;
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {

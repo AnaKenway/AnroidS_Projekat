@@ -26,8 +26,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 
 /** A helper class to manage all communications with Firebase. */
@@ -55,18 +53,20 @@ public class FirebaseManager {
   // Names of the nodes used in the Firebase Database
   private static final String ROOT_FIREBASE_HOTSPOTS = "hotspot_list";
   private static final String ROOT_LAST_ROOM_CODE = "last_room_code";
+  private static final String ROOT_TREASURES = "treasures";
 
   // Some common keys and values used when writing to the Firebase Database.
   private static final String KEY_DISPLAY_NAME = "display_name";
-  private static final String KEY_ANCHOR_ID = "hosted_anchor_id";
+  private static final String KEY_ANCHOR_ID = "hostedAnchorID";
   private static final String KEY_TIMESTAMP = "updated_at_timestamp";
   private static final String DISPLAY_NAME_VALUE = "Android EAP Sample";
 
   private final FirebaseApp app;
-  private final DatabaseReference hotspotListRef;
-  private final DatabaseReference roomCodeRef;
-  private DatabaseReference currentRoomRef = null;
-  private ValueEventListener currentRoomListener = null;
+  //private final DatabaseReference hotspotListRef;
+  //private final DatabaseReference roomCodeRef;
+  private DatabaseReference treasuresRef;
+  private DatabaseReference currentTreasureRef = null;
+  private ValueEventListener currentTreasureListener = null;
 
   /**
    * Default constructor for the FirebaseManager.
@@ -77,14 +77,15 @@ public class FirebaseManager {
     app = FirebaseApp.initializeApp(context);
     if (app != null) {
       DatabaseReference rootRef = FirebaseDatabase.getInstance(app).getReference();
-      hotspotListRef = rootRef.child(ROOT_FIREBASE_HOTSPOTS);
-      roomCodeRef = rootRef.child(ROOT_LAST_ROOM_CODE);
+      //hotspotListRef = rootRef.child(ROOT_FIREBASE_HOTSPOTS);
+      //roomCodeRef = rootRef.child(ROOT_LAST_ROOM_CODE);
+      treasuresRef=rootRef.child(ROOT_TREASURES);
 
       DatabaseReference.goOnline();
     } else {
       Log.d(TAG, "Could not connect to Firebase Database!");
-      hotspotListRef = null;
-      roomCodeRef = null;
+      //hotspotListRef = null;
+      //roomCodeRef = null;
     }
   }
 
@@ -124,21 +125,21 @@ public class FirebaseManager {
   /** Stores the given anchor ID in the given room code. */
   public void storeAnchorIdInRoom(Long roomCode, String cloudAnchorId) {
     Preconditions.checkNotNull(app, "Firebase App was null");
-    DatabaseReference roomRef = hotspotListRef.child(String.valueOf(roomCode));
-    roomRef.child(KEY_DISPLAY_NAME).setValue(DISPLAY_NAME_VALUE);
-    roomRef.child(KEY_ANCHOR_ID).setValue(cloudAnchorId);
-    roomRef.child(KEY_TIMESTAMP).setValue(System.currentTimeMillis());
+    //DatabaseReference roomRef = hotspotListRef.child(String.valueOf(roomCode));
+    //roomRef.child(KEY_DISPLAY_NAME).setValue(DISPLAY_NAME_VALUE);
+    //roomRef.child(KEY_ANCHOR_ID).setValue(cloudAnchorId);
+    //roomRef.child(KEY_TIMESTAMP).setValue(System.currentTimeMillis());
   }
 
   /**
-   * Registers a new listener for the given room code. The listener is invoked whenever the data for
-   * the room code is changed.
+   * Registers a new listener for the given treasure name. The listener is invoked whenever the data for
+   * the treasure name is changed.
    */
-  public void registerNewListenerForRoom(Long roomCode, CloudAnchorIdListener listener) {
+  public void registerNewListenerForTreasureName(String treasureName, CloudAnchorIdListener listener) {
     Preconditions.checkNotNull(app, "Firebase App was null");
     clearRoomListener();
-    currentRoomRef = hotspotListRef.child(String.valueOf(roomCode));
-    currentRoomListener =
+    currentTreasureRef = treasuresRef.child(treasureName);
+    currentTreasureListener =
         new ValueEventListener() {
           @Override
           public void onDataChange(DataSnapshot dataSnapshot) {
@@ -156,18 +157,18 @@ public class FirebaseManager {
             Log.w(TAG, "The Firebase operation was cancelled.", databaseError.toException());
           }
         };
-    currentRoomRef.addValueEventListener(currentRoomListener);
+    currentTreasureRef.addValueEventListener(currentTreasureListener);
   }
 
   /**
-   * Resets the current room listener registered using {@link #registerNewListenerForRoom(Long,
+   * Resets the current room listener registered using {@link #registerNewListenerForTreasureName(String,
    * CloudAnchorIdListener)}.
    */
   public void clearRoomListener() {
-    if (currentRoomListener != null && currentRoomRef != null) {
-      currentRoomRef.removeEventListener(currentRoomListener);
-      currentRoomListener = null;
-      currentRoomRef = null;
+    if (currentTreasureListener != null && currentTreasureRef != null) {
+      currentTreasureRef.removeEventListener(currentTreasureListener);
+      currentTreasureListener = null;
+      currentTreasureRef = null;
     }
   }
 }

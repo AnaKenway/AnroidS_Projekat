@@ -71,7 +71,9 @@
     <string name="edit3DObject">Edit 3D Object</string>
     <string name="host_button_text">Host</string>
     <string name="resolve_button_text">Resolve</string>
+    <string name="dig">Dig</string>
     <string name="initial_room_code">0000</string>
+    <string name="initial_treasure_name">Treasure name</string>
 
     <!-- Strings used in privacy notice dialog messages. [CHAR_LIMIT=NONE] -->
     <string name="share_experience_title">Experience it together</string>
@@ -85,9 +87,9 @@
     <string name="cloud_anchor_website">https://developers.google.com/ar/cloud-anchors-privacy</string>
 
     <!-- Strings in the Resolve Dialog Box -->
-    <string name="resolve_dialog_ok">Resolve</string>
-    <string name="resolve_dialog_title">Resolve an Anchor</string>
-    <string name="resolve_dialog_text_hint">Enter Room Code</string>
+    <string name="resolve_dialog_ok">Dig</string>
+    <string name="resolve_dialog_title">For which treasure are you searching?</string>
+    <string name="resolve_dialog_text_hint">Enter Treasure Name</string>
     <string name="cancel">Cancel</string>
 
     <!-- Strings used in Snackbar messages -->
@@ -103,7 +105,7 @@
     <string name="snackbar_host_error">Hosting Error: %1$s</string>
     <string name="snackbar_initial_message">Please select Host or Resolve to continue.</string>
     <string name="snackbar_on_host">Now in Hosting Mode. Press Cancel to Exit.</string>
-    <string name="snackbar_on_resolve">Now in Resolving Mode. Press Cancel to Exit.</string>
+    <string name="snackbar_on_resolve">Now digging. Press Cancel to Exit.</string>
     <string name="snackbar_resolve_error">Resolving Error: %1$s</string>
     <string name="snackbar_resolve_success">The anchor was successfully resolved.</string>
     <string name="snackbar_room_code_available">The room code is now available. Please place an anchor to host.</string>

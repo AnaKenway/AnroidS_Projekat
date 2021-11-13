@@ -155,6 +155,11 @@ public class CloudAnchorActivity extends AppCompatActivity
             btnResolve.setEnabled(false);
             btnResolve.setVisibility(View.GONE);
         }
+        else{
+            Button btnHost=findViewById(R.id.host_button);
+            btnHost.setVisibility(View.GONE);
+            btnHost.setEnabled(false);
+        }
 
         surfaceView = findViewById(R.id.surfaceview);
         displayRotationHelper = new DisplayRotationHelper(this);
@@ -227,7 +232,10 @@ public class CloudAnchorActivity extends AppCompatActivity
         if (sharedPreferences.getBoolean(ALLOW_SHARE_IMAGES_KEY, false)) {
             createSession();
         }
-        snackbarHelper.showMessage(this, getString(R.string.snackbar_initial_message));
+        if(isForAddOrEditTreasure)
+            snackbarHelper.showMessage(this, "Press Host to enter hosting mode");
+        else
+            snackbarHelper.showMessage(this, "Press Dig to search for treasure!");
         surfaceView.onResume();
         displayRotationHelper.onResume();
     }
@@ -564,21 +572,30 @@ public class CloudAnchorActivity extends AppCompatActivity
     }
 
     /** Callback function invoked when the user presses the OK button in the Resolve Dialog. */
-    private void onRoomCodeEntered(Long roomCode) {
+    private void onRoomCodeEntered(String treasureName) {
+
+        //ovde treba napraviti logiku koja proverava da li je
+        //1. taj treasure name postojeci
+        //2. taj treasure name je u okviru aktivnog TH-a za tog korisnika
+        //3. taj treasure nije vec completed
+        //ako je sve u redu, nastavi dalje,
+        //ako ne, prikazi odgovarajucu poruku i return
+        //moze te funkcije za proveru da idu u okviru firebaseManager klase
+
         currentMode = HostResolveMode.RESOLVING;
         hostButton.setEnabled(false);
         resolveButton.setText(R.string.cancel);
-        roomCodeText.setText(String.valueOf(roomCode));
+        roomCodeText.setText(String.valueOf(treasureName));
         snackbarHelper.showMessageWithDismiss(this, getString(R.string.snackbar_on_resolve));
 
         // Register a new listener for the given room.
         //napraviti da se trazi ne po room code, nego po treasureName
-        firebaseManager.registerNewListenerForRoom(
-                roomCode,
+        firebaseManager.registerNewListenerForTreasureName(
+                treasureName,
                 cloudAnchorId -> {
                     // When the cloud anchor ID is available from Firebase.
                     CloudAnchorResolveStateListener resolveListener =
-                            new CloudAnchorResolveStateListener(roomCode);
+                            new CloudAnchorResolveStateListener(treasureName);
                     Preconditions.checkNotNull(resolveListener, "The resolve listener cannot be null.");
                     cloudManager.resolveCloudAnchor(
                             cloudAnchorId, resolveListener, SystemClock.uptimeMillis());
@@ -654,10 +671,10 @@ public class CloudAnchorActivity extends AppCompatActivity
 
     private final class CloudAnchorResolveStateListener
             implements CloudAnchorManager.CloudAnchorResolveListener {
-        private final long roomCode;
+        private final String treasureName;
 
-        CloudAnchorResolveStateListener(long roomCode) {
-            this.roomCode = roomCode;
+        CloudAnchorResolveStateListener(String treasureName) {
+            this.treasureName = treasureName;
         }
 
         @Override
@@ -667,8 +684,8 @@ public class CloudAnchorActivity extends AppCompatActivity
             if (cloudState.isError()) {
                 Log.w(
                         TAG,
-                        "The anchor in room "
-                                + roomCode
+                        "The treasure "
+                                + treasureName
                                 + " could not be resolved. The error state was "
                                 + cloudState);
                 snackbarHelper.showMessageWithDismiss(

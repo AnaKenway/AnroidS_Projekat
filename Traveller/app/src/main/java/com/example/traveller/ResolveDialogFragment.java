@@ -33,12 +33,12 @@ public class ResolveDialogFragment extends DialogFragment {
     /**
      * This method is called by the dialog box when its OK button is pressed.
      *
-     * @param dialogValue the long value from the dialog box
+     * @param treasureName the long value from the dialog box
      */
-    void onOkPressed(Long dialogValue);
+    void onOkPressed(String treasureName);
   }
 
-  private EditText roomCodeField;
+  private EditText treasureNameField;
   private OkListener okListener;
 
   public void setOkListener(OkListener okListener) {
@@ -53,17 +53,17 @@ public class ResolveDialogFragment extends DialogFragment {
 
     // Passing null as the root is fine, because the view is for a dialog.
     View dialogView = activity.getLayoutInflater().inflate(R.layout.resolve_dialog, null);
-    roomCodeField = dialogView.findViewById(R.id.room_code_input);
+    treasureNameField = dialogView.findViewById(R.id.treasure_name_input);
     builder
         .setView(dialogView)
         .setTitle(R.string.resolve_dialog_title)
         .setPositiveButton(
             R.string.resolve_dialog_ok,
             (dialog, which) -> {
-              Editable roomCodeText = roomCodeField.getText();
-              if (okListener != null && roomCodeText != null && roomCodeText.length() > 0) {
-                Long longVal = Long.valueOf(roomCodeText.toString());
-                okListener.onOkPressed(longVal);
+              Editable treasureNameText = treasureNameField.getText();
+              if (okListener != null && treasureNameText != null && treasureNameText.length() > 0) {
+                //Long longVal = Long.valueOf(treasureNameText.toString());
+                okListener.onOkPressed(treasureNameText.toString());
               }
             })
         .setNegativeButton(R.string.cancel, (dialog, which) -> {});
