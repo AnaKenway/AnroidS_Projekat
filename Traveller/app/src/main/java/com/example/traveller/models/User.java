@@ -24,6 +24,9 @@ public class User {
     public List<Location> favoriteLocation;
     public String points;
     public boolean isAdmin;
+    public String activeTreasureHunt;
+    public ArrayList<String> foundTreasures;
+    public ArrayList<String> completedTreasureHunts;
 
     public User(){}
 
@@ -46,6 +49,9 @@ public class User {
         setFriendRequests(new ArrayList<String>());
         this.points=points;
         setAdmin(false);
+        setActiveTreasureHunt("");
+        foundTreasures=new ArrayList<>();
+        completedTreasureHunts=new ArrayList<>();
     }
     public User(String p, String e, String f, String l, String i, String ph,String points){
         password=p;
@@ -62,6 +68,9 @@ public class User {
         setLongitude("");
         this.points=points;
         setAdmin(false);
+        setActiveTreasureHunt("");
+        foundTreasures=new ArrayList<>();
+        completedTreasureHunts=new ArrayList<>();
     }
 
 
@@ -183,6 +192,22 @@ public class User {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public String getActiveTreasureHunt() {
+        return activeTreasureHunt;
+    }
+
+    public void setActiveTreasureHunt(String activeTreasureHunt) {
+        this.activeTreasureHunt = activeTreasureHunt;
+    }
+
+    public void addCompletedTreasureHunt(String thName){
+        completedTreasureHunts.add(thName);
+    }
+
+    public void addFoundTreasure(String treasureName){
+        foundTreasures.add(treasureName);
     }
 
 //    public Location getMyLocation() {

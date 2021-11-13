@@ -30,6 +30,7 @@ import java.util.HashMap;
 public class TreasureHuntListActivity extends AppCompatActivity {
 
     private boolean isAdmin=false;
+    private String username;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference();
     ArrayList<String> treasureHuntsList=new ArrayList<String>();
@@ -41,6 +42,7 @@ public class TreasureHuntListActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         isAdmin = i.getBooleanExtra("isAdmin",false);
+        username=i.getStringExtra("username");
 
         Button addTreasureHunt=findViewById(R.id.buttonAddTreasureHunt);
 
@@ -102,6 +104,7 @@ public class TreasureHuntListActivity extends AppCompatActivity {
                 Intent i=new Intent(TreasureHuntListActivity.this,ViewTreasureHuntActivity.class);
                 i.putExtra("name",treasureHuntsList.get(position));
                 i.putExtra("isAdmin",isAdmin);
+                i.putExtra("username",username);
                 startActivity(i);
             }
         });

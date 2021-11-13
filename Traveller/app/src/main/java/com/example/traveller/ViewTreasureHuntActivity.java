@@ -26,6 +26,8 @@ public class ViewTreasureHuntActivity extends AppCompatActivity {
 
     private boolean isAdmin=false;
     private String THName="";
+    private String username;
+    private String activeTHName;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference();
 
@@ -35,19 +37,41 @@ public class ViewTreasureHuntActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_treasure_hunt);
 
         CheckedTextView chkTextViewActive=findViewById(R.id.checkedTextViewActiveTH);
-        chkTextViewActive.setVisibility(View.INVISIBLE);
+
 
         Intent i = getIntent();
         isAdmin = i.getBooleanExtra("isAdmin",false);
         THName=i.getStringExtra("name");
+        username=i.getStringExtra("username");
+
+        myRef.child("users").child(username).child("activeTreasureHunt").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+            @Override
+            public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
+                Object o=dataSnapshot.getValue();
+                if(o==null){
+                    chkTextViewActive.setVisibility(View.GONE);
+                }else{
+                    activeTHName=(String)o;
+                    if(!activeTHName.equals(THName))
+                        chkTextViewActive.setVisibility(View.GONE);
+                }
+                //sad isto na osnovu ovih if-s videti da li enable ili disable dugme za activate/deactivate TH
+                //i sta na njemu da pise
+
+                //mozda je bolje da ovo nekako realizujem u FirebaseManager, kad ga vec imam
+                //i onda ovde da se pozove neki callback, koji ce da uradi ovo za dugmice i CheckedTextView
+                //a u FirebaseManager da proveri da li ima aktivanTH, da li je bas to ovaj, da li je completed
+                //pa onda rezultat (boolean) da vraca preko nekog listener-a
+            }
+        });
 
         Button btnEdit=findViewById(R.id.btnEditTHnView);
         Button btnDelete=findViewById(R.id.btnDeleteTHInView);
 
         if(!isAdmin){
 
-            btnEdit.setVisibility(View.INVISIBLE);
-            btnDelete.setVisibility(View.INVISIBLE);
+            btnEdit.setVisibility(View.GONE);
+            btnDelete.setVisibility(View.GONE);
 
             btnEdit.setEnabled(false);
             btnDelete.setEnabled(false);

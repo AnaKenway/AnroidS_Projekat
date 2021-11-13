@@ -232,13 +232,31 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
             }
         });
 
-        Button btnAddTreasureHunts=findViewById(R.id.buttonTreasureHunt);
-        btnAddTreasureHunts.setOnClickListener(new View.OnClickListener() {
+        Button btnViewTreasureHunts=findViewById(R.id.buttonTreasureHunt);
+        btnViewTreasureHunts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i=new Intent(UsersMapsActivity.this,TreasureHuntListActivity.class);
-                i.putExtra("isAdmin",isAdmin);
-                startActivity(i);
+
+                myRef.child("users").child(userName).child("activeTreasureHunt").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+                    @Override
+                    public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
+                        Object o=dataSnapshot.getValue();
+                        if(o==null){
+                            Intent i=new Intent(UsersMapsActivity.this,TreasureHuntListActivity.class);
+                            i.putExtra("isAdmin",isAdmin);
+                            i.putExtra("username",userName);
+                            startActivity(i);
+                        }
+                        else{
+                            String activeTHName=(String)o;
+                            Intent i=new Intent(UsersMapsActivity.this,ViewTreasureHuntActivity.class);
+                            i.putExtra("name",activeTHName);
+                            i.putExtra("isAdmin",isAdmin);
+                            i.putExtra("username",userName);
+                            startActivity(i);
+                        }
+                    }
+                });
             }
         });
 
@@ -250,6 +268,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                 Intent i=new Intent(UsersMapsActivity.this,CloudAnchorActivity.class);
                 i.putExtra("isAdmin",isAdmin);
                 i.putExtra("isForAddOrEditTreasure",false);
+                i.putExtra("username",userName);
                 startActivity(i);
             }
         });

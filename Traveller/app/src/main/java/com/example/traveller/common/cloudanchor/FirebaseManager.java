@@ -50,10 +50,13 @@ public class FirebaseManager {
     void onNewCloudAnchorId(String cloudAnchorId);
   }
 
+
+
   // Names of the nodes used in the Firebase Database
   private static final String ROOT_FIREBASE_HOTSPOTS = "hotspot_list";
   private static final String ROOT_LAST_ROOM_CODE = "last_room_code";
   private static final String ROOT_TREASURES = "treasures";
+  private static final String ROOT_USERS="users";
 
   // Some common keys and values used when writing to the Firebase Database.
   private static final String KEY_DISPLAY_NAME = "display_name";
@@ -65,6 +68,7 @@ public class FirebaseManager {
   //private final DatabaseReference hotspotListRef;
   //private final DatabaseReference roomCodeRef;
   private DatabaseReference treasuresRef;
+  private DatabaseReference usersRef;
   private DatabaseReference currentTreasureRef = null;
   private ValueEventListener currentTreasureListener = null;
 
@@ -80,6 +84,7 @@ public class FirebaseManager {
       //hotspotListRef = rootRef.child(ROOT_FIREBASE_HOTSPOTS);
       //roomCodeRef = rootRef.child(ROOT_LAST_ROOM_CODE);
       treasuresRef=rootRef.child(ROOT_TREASURES);
+      usersRef=rootRef.child(ROOT_USERS);
 
       DatabaseReference.goOnline();
     } else {

@@ -79,6 +79,7 @@ public class CloudAnchorActivity extends AppCompatActivity
     private static final float[] OBJECT_COLOR = new float[] {139.0f, 195.0f, 74.0f, 255.0f};
     private boolean isAdmin=false;
     private boolean isForAddOrEditTreasure=false;
+    private String username="";
     //Treasure preko kojeg vracam podatke, moze i svaki podatak pojedinacno
     private Treasure treasureToReturn=new Treasure();
 
@@ -145,6 +146,7 @@ public class CloudAnchorActivity extends AppCompatActivity
         Intent i=getIntent();
         isAdmin=i.getBooleanExtra("isAdmin",false);
         isForAddOrEditTreasure=i.getBooleanExtra("isForAddOrEditTreasure",false);
+        username=i.getStringExtra("username");
         if(!isAdmin){
             Button btnHost=findViewById(R.id.host_button);
             btnHost.setVisibility(View.GONE);

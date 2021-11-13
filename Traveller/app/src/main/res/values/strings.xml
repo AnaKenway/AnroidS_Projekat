@@ -107,9 +107,9 @@
     <string name="snackbar_on_host">Now in Hosting Mode. Press Cancel to Exit.</string>
     <string name="snackbar_on_resolve">Now digging. Press Cancel to Exit.</string>
     <string name="snackbar_resolve_error">Resolving Error: %1$s</string>
-    <string name="snackbar_resolve_success">The anchor was successfully resolved.</string>
+    <string name="snackbar_resolve_success">Congratulations, you found the treasure! Click on it!</string>
     <string name="snackbar_room_code_available">The room code is now available. Please place an anchor to host.</string>
     <!-- Resolve anchor has no result yet. [CHAR_LIMIT=NONE] -->
-    <string name="snackbar_resolve_no_result_yet">Still resolving the anchor. Please make sure you\'re looking at where the Cloud Anchor was hosted. Or, try to re-join the room.</string>
+    <string name="snackbar_resolve_no_result_yet">Still digging. Please make sure you\'re looking at where you think the treasure is hidden. Or, try again.</string>
 
 </resources>
