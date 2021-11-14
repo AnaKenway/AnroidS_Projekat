@@ -19,7 +19,10 @@ package com.example.traveller.common.cloudanchor;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.traveller.CloudAnchorActivity;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.base.Preconditions;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
@@ -27,6 +30,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 /** A helper class to manage all communications with Firebase. */
 public class FirebaseManager {
@@ -50,13 +55,35 @@ public class FirebaseManager {
     void onNewCloudAnchorId(String cloudAnchorId);
   }
 
+  /** Listener for getting completed treasure hunts*/
+  public interface CompletedTreasureHuntsListener{
 
+    /** Invoked when the list of completed treasure hunts is available*/
+    void onCompletedTreasureHunts(ArrayList<String> completedTHs);
+  }
+
+  /** Listener for an Active Treasure Hunt*/
+  public interface ActiveTreasureHuntListener{
+
+    /** Invoked when the list of completed treasure hunts is available*/
+    void onActiveTreasureHunt(String activeTH);
+  }
+
+  /** Listener for an the list of found treasures of the active treasure hunt*/
+  public interface FoundTreasuresListener{
+
+    /** Invoked when the list of found treasures is available*/
+    void onFoundTreasures(ArrayList<String> foundTreasures);
+  }
 
   // Names of the nodes used in the Firebase Database
   private static final String ROOT_FIREBASE_HOTSPOTS = "hotspot_list";
   private static final String ROOT_LAST_ROOM_CODE = "last_room_code";
   private static final String ROOT_TREASURES = "treasures";
   private static final String ROOT_USERS="users";
+  private static final String ROOT_TREASURE_HUNT="treasureHunts";
+  private static final String USER_COMPLETED_TREASURE_HUNTS="completedTreasureHunts";
+  private static final String USER_ACTIVE_TREASURE_HUNT="activeTreasureHunt";
 
   // Some common keys and values used when writing to the Firebase Database.
   private static final String KEY_DISPLAY_NAME = "display_name";
@@ -176,4 +203,38 @@ public class FirebaseManager {
       currentTreasureRef = null;
     }
   }
+
+  /** Gets the list of all completed treasure hunts for the user with username
+   * @param username*/
+  public void getCompletedTreasureHunts(String username, CompletedTreasureHuntsListener listener){
+
+    usersRef.child(username).child(USER_COMPLETED_TREASURE_HUNTS).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+      @Override
+      public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
+          Object o=dataSnapshot.getValue();
+          if(o==null) return;
+          ArrayList<String> completedTreasureHunts=(ArrayList<String>)o;
+          listener.onCompletedTreasureHunts(completedTreasureHunts);
+      }
+    });
+
+  }
+
+  public void getActiveTreasureHunt(String username, ActiveTreasureHuntListener listener){
+
+    usersRef.child(username).child(USER_ACTIVE_TREASURE_HUNT).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+      @Override
+      public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
+        Object o=dataSnapshot.getValue();
+        if(o==null) return;
+        String activeTHName=(String)o;
+        listener.onActiveTreasureHunt(activeTHName);
+      }
+    });
+  }
+
+  public void getFoundTreasures(String username, FoundTreasuresListener listener){
+
+  }
+
 }

@@ -74,6 +74,7 @@
     <string name="dig">Dig</string>
     <string name="initial_room_code">0000</string>
     <string name="initial_treasure_name">Treasure name</string>
+    <string name="treasure_hunt_completed">You have completed this treasure hunt!</string>
 
     <!-- Strings used in privacy notice dialog messages. [CHAR_LIMIT=NONE] -->
     <string name="share_experience_title">Experience it together</string>

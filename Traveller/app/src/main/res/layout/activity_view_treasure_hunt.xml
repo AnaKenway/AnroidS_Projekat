@@ -5,12 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_gravity="bottom|end"
     android:layout_centerVertical="true"
     tools:context=".ViewTreasureHuntActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -70,6 +72,16 @@
             android:textColor="#131313"
             android:textSize="20sp" />
 
+        <TextView
+            android:id="@+id/textViewTHCompleted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:text="@string/treasure_hunt_completed"
+            android:textAlignment="center"
+            android:textColor="#131313"
+            android:textSize="20sp" />
+
         <Button
             android:id="@+id/btnViewTreasures_view_treasure_hunt"
             android:layout_width="wrap_content"
@@ -82,6 +94,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="bottom|end"
             android:layout_marginTop="@dimen/loginViewsMargin"
             android:orientation="horizontal">
 

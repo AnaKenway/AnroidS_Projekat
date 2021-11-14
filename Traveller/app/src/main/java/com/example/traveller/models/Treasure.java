@@ -8,6 +8,7 @@ public class Treasure implements Serializable {
     public String description; //This treasure is hidden in a place where that and that happened
     public String hint; //a hint about finding this treasure
     public String question; //a question that the user can answer and that will bring extra points
+    public String answer;
     public int points;
     //to do: add everything needed for treasure: object model, location, isHidden
     //i only vaguely know about how ARCore works, i need to find out how it keeps and describes objects
@@ -18,21 +19,23 @@ public class Treasure implements Serializable {
 
     public Treasure(){}
 
-    public Treasure(String name, String description, String hint, String question,int points,String id,long timestamp, int code){
+    public Treasure(String name, String description, String hint, String question,String answer, int points,String id,long timestamp, int code){
         this.name=name;
         this.description=description;
         this.hint=hint;
         this.question=question;
         this.points=points;
+        this.answer=answer;
         hostedAnchorID=id;
         updatedAtTimestamp=timestamp;
         roomCode=code;
     }
 
-    public Treasure(String name, String hint, String question,int points){
+    public Treasure(String name, String hint, String question,String answer, int points){
         this.name=name;
         this.hint=hint;
         this.question=question;
+        this.answer=answer;
         this.points=points;
         this.hostedAnchorID="";
     }

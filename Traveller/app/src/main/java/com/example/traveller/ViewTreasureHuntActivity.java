@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.traveller.common.cloudanchor.FirebaseManager;
 import com.example.traveller.models.TreasureHunt;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +22,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 public class ViewTreasureHuntActivity extends AppCompatActivity {
 
@@ -30,21 +33,27 @@ public class ViewTreasureHuntActivity extends AppCompatActivity {
     private String activeTHName;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference();
+    private TreasureHuntsListener thListener=new TreasureHuntsListener();
+    private FirebaseManager firebaseManager=new FirebaseManager(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_treasure_hunt);
 
-        CheckedTextView chkTextViewActive=findViewById(R.id.checkedTextViewActiveTH);
-
-
         Intent i = getIntent();
         isAdmin = i.getBooleanExtra("isAdmin",false);
         THName=i.getStringExtra("name");
         username=i.getStringExtra("username");
+        thListener.thNameForChecking=THName;
+        CheckedTextView chkTextViewActive=findViewById(R.id.checkedTextViewActiveTH);
+        chkTextViewActive.setVisibility(View.GONE);
+        TextView txtViewCompletedTH=findViewById(R.id.textViewTHCompleted);
+        txtViewCompletedTH.setVisibility(View.GONE);
 
-        myRef.child("users").child(username).child("activeTreasureHunt").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+        firebaseManager.getActiveTreasureHunt(username,thListener);
+
+       /* myRef.child("users").child(username).child("activeTreasureHunt").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
             public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
                 Object o=dataSnapshot.getValue();
@@ -63,7 +72,7 @@ public class ViewTreasureHuntActivity extends AppCompatActivity {
                 //a u FirebaseManager da proveri da li ima aktivanTH, da li je bas to ovaj, da li je completed
                 //pa onda rezultat (boolean) da vraca preko nekog listener-a
             }
-        });
+        });*/
 
         Button btnEdit=findViewById(R.id.btnEditTHnView);
         Button btnDelete=findViewById(R.id.btnDeleteTHInView);
@@ -152,4 +161,50 @@ public class ViewTreasureHuntActivity extends AppCompatActivity {
         //ovo aktivan treasure hunt, ako uopste ima aktivnog
         //ako jeste, vratiti visible na onaj CheckedTextViewActive
     }
+
+    private void ShowOrHideActiveTHCheckedView(boolean isActive){
+        //sakrije ili prikaze active th checked view
+        //u zavisnosti sta mu TreasureHuntsListener prosledi
+        // i da napise Activate ili Deactivate na activation button
+        CheckedTextView chkTextViewActive=findViewById(R.id.checkedTextViewActiveTH);
+        if(isActive){
+            chkTextViewActive.setVisibility(View.VISIBLE);
+            //dodati da na novom dugmetu pise Deactivate
+        }
+        else{
+            chkTextViewActive.setVisibility(View.GONE);
+            //dodati da na novom dugmetu pise Activate
+        }
+    }
+
+    private void ShowOrHideCompletedTHCheckedView(boolean isCompleted){
+        //sakrije ili prikaze completed th checked view
+        //u zavisnosti sta mu TreasureHuntsListener prosledi
+        //takodje activate/deactivate dugme treba sakriti
+    }
+
+    private final class TreasureHuntsListener
+            implements FirebaseManager.CompletedTreasureHuntsListener,
+                        FirebaseManager.ActiveTreasureHuntListener{
+
+        /** The name of the treasure hunt we are comparing to the ones of the user
+         * in this case, it's the treasure hunt we are viewing on this activity*/
+        public String thNameForChecking;
+
+        @Override
+        public void onCompletedTreasureHunts(ArrayList<String> completedTHs) {
+
+
+            //ShowOrHideCompletedTHCheckedView(
+        }
+
+        @Override
+        public void onActiveTreasureHunt(String activeTH) {
+            if(activeTH.equals(thNameForChecking))
+                ShowOrHideActiveTHCheckedView(true);
+            else ShowOrHideActiveTHCheckedView(false);
+        }
+    }
+
 }
+
