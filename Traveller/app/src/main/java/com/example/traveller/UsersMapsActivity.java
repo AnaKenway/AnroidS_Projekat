@@ -241,7 +241,7 @@ public class UsersMapsActivity extends AppCompatActivity implements OnMapReadyCa
                     @Override
                     public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
                         Object o=dataSnapshot.getValue();
-                        if(o==null){
+                        if(o==null || o.equals("")){
                             Intent i=new Intent(UsersMapsActivity.this,TreasureHuntListActivity.class);
                             i.putExtra("isAdmin",isAdmin);
                             i.putExtra("username",userName);

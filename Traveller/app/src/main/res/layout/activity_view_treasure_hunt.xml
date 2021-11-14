@@ -82,14 +82,38 @@
             android:textColor="#131313"
             android:textSize="20sp" />
 
-        <Button
-            android:id="@+id/btnViewTreasures_view_treasure_hunt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:text="@string/viewTreasures"
-            app:backgroundTint="@color/positive_green" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|end"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnActivateDeactivate_view_treasure_hunt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:text="@string/activate_treasure_hunt"
+                app:backgroundTint="@color/positive_green"
+                android:layout_weight="1"
+                android:insetLeft="6dp"
+                android:insetRight="6dp"/>
+
+            <Button
+                android:id="@+id/btnViewTreasures_view_treasure_hunt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="15dp"
+                android:text="@string/viewTreasures"
+                app:backgroundTint="@color/positive_green"
+                android:layout_weight="1"
+                android:insetLeft="6dp"
+                android:insetRight="6dp"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -100,7 +124,7 @@
 
             <Button
                 android:id="@+id/btnDeleteTHInView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:insetLeft="6dp"
@@ -110,7 +134,7 @@
 
             <Button
                 android:id="@+id/btnEditTHnView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:insetLeft="6dp"

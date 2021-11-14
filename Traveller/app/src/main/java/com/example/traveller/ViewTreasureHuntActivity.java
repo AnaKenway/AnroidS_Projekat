@@ -6,11 +6,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,27 +49,7 @@ public class ViewTreasureHuntActivity extends AppCompatActivity {
         txtViewCompletedTH.setVisibility(View.GONE);
 
         firebaseManager.getActiveTreasureHunt(username,thListener);
-
-       /* myRef.child("users").child(username).child("activeTreasureHunt").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-            @Override
-            public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
-                Object o=dataSnapshot.getValue();
-                if(o==null){
-                    chkTextViewActive.setVisibility(View.GONE);
-                }else{
-                    activeTHName=(String)o;
-                    if(!activeTHName.equals(THName))
-                        chkTextViewActive.setVisibility(View.GONE);
-                }
-                //sad isto na osnovu ovih if-s videti da li enable ili disable dugme za activate/deactivate TH
-                //i sta na njemu da pise
-
-                //mozda je bolje da ovo nekako realizujem u FirebaseManager, kad ga vec imam
-                //i onda ovde da se pozove neki callback, koji ce da uradi ovo za dugmice i CheckedTextView
-                //a u FirebaseManager da proveri da li ima aktivanTH, da li je bas to ovaj, da li je completed
-                //pa onda rezultat (boolean) da vraca preko nekog listener-a
-            }
-        });*/
+        firebaseManager.getCompletedTreasureHunts(username,thListener);
 
         Button btnEdit=findViewById(R.id.btnEditTHnView);
         Button btnDelete=findViewById(R.id.btnDeleteTHInView);
@@ -163,17 +140,23 @@ public class ViewTreasureHuntActivity extends AppCompatActivity {
     }
 
     private void ShowOrHideActiveTHCheckedView(boolean isActive){
-        //sakrije ili prikaze active th checked view
-        //u zavisnosti sta mu TreasureHuntsListener prosledi
-        // i da napise Activate ili Deactivate na activation button
         CheckedTextView chkTextViewActive=findViewById(R.id.checkedTextViewActiveTH);
+        Button btnActivateDeactivate=findViewById(R.id.btnActivateDeactivate_view_treasure_hunt);
         if(isActive){
             chkTextViewActive.setVisibility(View.VISIBLE);
-            //dodati da na novom dugmetu pise Deactivate
+            btnActivateDeactivate.setText(R.string.deactivate_treasure_hunt);
+            btnActivateDeactivate.setBackgroundColor(getResources().getColor(R.color.x_red));
+            btnActivateDeactivate.setOnClickListener(v -> {
+                firebaseManager.DeactivateTreasureHunt(username,THName);
+            });
         }
         else{
             chkTextViewActive.setVisibility(View.GONE);
-            //dodati da na novom dugmetu pise Activate
+            btnActivateDeactivate.setText(R.string.activate_treasure_hunt);
+            btnActivateDeactivate.setBackgroundColor(getResources().getColor(R.color.positive_green));
+            btnActivateDeactivate.setOnClickListener(v -> {
+                firebaseManager.ActivateTreasureHunt(username,THName);
+            });
         }
     }
 
@@ -193,14 +176,20 @@ public class ViewTreasureHuntActivity extends AppCompatActivity {
 
         @Override
         public void onCompletedTreasureHunts(ArrayList<String> completedTHs) {
-
-
-            //ShowOrHideCompletedTHCheckedView(
+            for (String completedTH: completedTHs) {
+                if(thNameForChecking.equals(completedTH)){
+                    TextView textViewCompletedTH=findViewById(R.id.textViewTHCompleted);
+                    textViewCompletedTH.setVisibility(View.VISIBLE);
+                    Button btnActivateDeactivate=findViewById(R.id.btnActivateDeactivate_view_treasure_hunt);
+                    btnActivateDeactivate.setVisibility(View.GONE);
+                    return;
+                }
+            }
         }
 
         @Override
         public void onActiveTreasureHunt(String activeTH) {
-            if(activeTH.equals(thNameForChecking))
+            if(activeTH!=null && activeTH.equals(thNameForChecking))
                 ShowOrHideActiveTHCheckedView(true);
             else ShowOrHideActiveTHCheckedView(false);
         }

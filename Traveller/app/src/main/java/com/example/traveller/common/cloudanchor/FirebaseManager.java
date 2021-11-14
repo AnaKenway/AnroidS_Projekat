@@ -69,12 +69,13 @@ public class FirebaseManager {
     void onActiveTreasureHunt(String activeTH);
   }
 
-  /** Listener for an the list of found treasures of the active treasure hunt*/
+  /** Listener for the list of found treasures of the active treasure hunt*/
   public interface FoundTreasuresListener{
 
     /** Invoked when the list of found treasures is available*/
     void onFoundTreasures(ArrayList<String> foundTreasures);
   }
+
 
   // Names of the nodes used in the Firebase Database
   private static final String ROOT_FIREBASE_HOTSPOTS = "hotspot_list";
@@ -84,6 +85,7 @@ public class FirebaseManager {
   private static final String ROOT_TREASURE_HUNT="treasureHunts";
   private static final String USER_COMPLETED_TREASURE_HUNTS="completedTreasureHunts";
   private static final String USER_ACTIVE_TREASURE_HUNT="activeTreasureHunt";
+  private static final String USER_FOUND_TREASURES="foundTreasures";
 
   // Some common keys and values used when writing to the Firebase Database.
   private static final String KEY_DISPLAY_NAME = "display_name";
@@ -208,33 +210,71 @@ public class FirebaseManager {
    * @param username*/
   public void getCompletedTreasureHunts(String username, CompletedTreasureHuntsListener listener){
 
-    usersRef.child(username).child(USER_COMPLETED_TREASURE_HUNTS).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+    usersRef.child(username).child(USER_COMPLETED_TREASURE_HUNTS).addValueEventListener(new ValueEventListener() {
       @Override
-      public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
-          Object o=dataSnapshot.getValue();
-          if(o==null) return;
-          ArrayList<String> completedTreasureHunts=(ArrayList<String>)o;
-          listener.onCompletedTreasureHunts(completedTreasureHunts);
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        Object o=snapshot.getValue();
+        if(o==null) return;
+        ArrayList<String> completedTreasureHunts=(ArrayList<String>)o;
+        listener.onCompletedTreasureHunts(completedTreasureHunts);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        Log.w(TAG, "The Firebase operation was cancelled.", error.toException());
       }
     });
-
   }
 
+  /** Gets the active treasure hunt for the user with username
+   * @param username*/
   public void getActiveTreasureHunt(String username, ActiveTreasureHuntListener listener){
 
-    usersRef.child(username).child(USER_ACTIVE_TREASURE_HUNT).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+    usersRef.child(username).child(USER_ACTIVE_TREASURE_HUNT).addValueEventListener(new ValueEventListener() {
       @Override
-      public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
-        Object o=dataSnapshot.getValue();
-        if(o==null) return;
-        String activeTHName=(String)o;
-        listener.onActiveTreasureHunt(activeTHName);
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        Object o=snapshot.getValue();
+        if(o==null || o.equals("")) {
+          listener.onActiveTreasureHunt(null);
+          return;
+        }
+        else {
+          String activeTHName = (String) o;
+          listener.onActiveTreasureHunt(activeTHName);
+        }
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        Log.w(TAG, "The Firebase operation was cancelled.", error.toException());
       }
     });
   }
 
   public void getFoundTreasures(String username, FoundTreasuresListener listener){
 
+    usersRef.child(username).child(USER_FOUND_TREASURES).addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        Object o=snapshot.getValue();
+        if(o==null) return;
+        ArrayList<String> foundTreasures=(ArrayList<String>)o;
+        listener.onFoundTreasures(foundTreasures);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        Log.w(TAG, "The Firebase operation was cancelled.", error.toException());
+      }
+    });
+  }
+
+  public void ActivateTreasureHunt(String username, String treasureHuntName){
+    usersRef.child(username).child(USER_ACTIVE_TREASURE_HUNT).setValue(treasureHuntName);
+  }
+
+  public void DeactivateTreasureHunt(String username, String treasureHuntName){
+    usersRef.child(username).child(USER_ACTIVE_TREASURE_HUNT).setValue("");
   }
 
 }
