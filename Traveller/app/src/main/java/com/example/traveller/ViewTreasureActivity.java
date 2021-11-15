@@ -48,11 +48,14 @@ public class ViewTreasureActivity extends AppCompatActivity {
         TextView treasureDesc=findViewById(R.id.textViewTreasureDesc_view_treasure);
         TextView treasureHint=findViewById(R.id.textViewTreasureHint_view_treasure);
         TextView treasureQuestion=findViewById(R.id.textViewTreasureQuestion_view_treasure);
+        TextView treasureAnswer=findViewById(R.id.textViewTreasureAnswer_view_treasure);
         TextView treasurePoints=findViewById(R.id.textViewTreasurePoints_view_treasure);
 
         if(isAdmin){
             treasureQuestion.setVisibility(View.VISIBLE);
             treasureQuestion.setText(treasure.question);
+            treasureAnswer.setVisibility(View.VISIBLE);
+            treasureAnswer.setText(treasure.answer);
         }
 
         treasureName.setText(treasure.name);

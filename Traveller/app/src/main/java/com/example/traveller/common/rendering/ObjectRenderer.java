@@ -221,6 +221,8 @@ public class ObjectRenderer {
     Matrix.setIdentityM(modelMatrix, 0);
   }
 
+
+
   /**
    * Selects the blending mode for rendering.
    *

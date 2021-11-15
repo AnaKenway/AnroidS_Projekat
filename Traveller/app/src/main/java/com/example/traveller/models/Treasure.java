@@ -8,7 +8,7 @@ public class Treasure implements Serializable {
     public String description; //This treasure is hidden in a place where that and that happened
     public String hint; //a hint about finding this treasure
     public String question; //a question that the user can answer and that will bring extra points
-    public String answer;
+    public String answer; //the answer to the previous question
     public int points;
     //to do: add everything needed for treasure: object model, location, isHidden
     //i only vaguely know about how ARCore works, i need to find out how it keeps and describes objects

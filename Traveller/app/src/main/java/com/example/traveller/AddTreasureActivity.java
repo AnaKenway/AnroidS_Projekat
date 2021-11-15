@@ -35,18 +35,20 @@ public class AddTreasureActivity extends AppCompatActivity {
                 EditText editTextTDesc=findViewById(R.id.editTextTreasureDescription);
                 EditText editTextTHint=findViewById(R.id.editTextTreasureHint);
                 EditText editTextTQuestion=findViewById(R.id.editTextTreasureQuestion);
+                EditText editTextTAnswer=findViewById(R.id.editTextTreasureAnswer);
                 EditText editTextTPoints=findViewById(R.id.editTextTreasurePoints);
 
                 t.name=editTextTName.getText().toString();
                 t.description=editTextTDesc.getText().toString();
                 t.hint=editTextTHint.getText().toString();
                 t.question=editTextTQuestion.getText().toString();
+                t.answer=editTextTAnswer.getText().toString();
                 String points=editTextTPoints.getText().toString();
 
                 if(!points.isEmpty())
                     t.points=Integer.parseInt(points);
 
-                if(t.name.isEmpty() || t.description.isEmpty() || t.hint.isEmpty() || t.question.isEmpty()) {
+                if(t.name.isEmpty() || t.description.isEmpty() || t.hint.isEmpty() || t.question.isEmpty() || t.answer.isEmpty()) {
                     Toast.makeText(getApplicationContext(), "Please fill in all the fields", Toast.LENGTH_LONG).show();
                 }
                 else{

@@ -64,27 +64,6 @@ public class EditTreasureHuntActivity extends AppCompatActivity {
             }
         });
 
-       /* myRef.child("treasureHunts").child(thName).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
-            @Override
-            public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
-                Object o=dataSnapshot.getValue(TreasureHunt.class);
-                th=(TreasureHunt) o;
-                //editTextName.setText(th.name);
-                editTextDesc.setText(th.description);
-                if(th.category.equals("local")){
-                    rbLocal.setChecked(true);
-                    rbWorld.setChecked(false);
-                }
-                else{
-                    rbLocal.setChecked(false);
-                    rbWorld.setChecked(true);
-                }
-                ListView listViewTreasures=findViewById(R.id.listViewTreasures_edit_treasure_hunt);
-                listViewTreasures.setAdapter(new ArrayAdapter<String>(EditTreasureHuntActivity.this, android.R.layout.simple_list_item_1,th.treasures));
-                registerForContextMenu(listViewTreasures);
-            }
-        });*/
-
         myRef.child("treasureHunts").child(thName).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

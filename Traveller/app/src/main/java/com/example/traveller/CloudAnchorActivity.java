@@ -203,6 +203,13 @@ public class CloudAnchorActivity extends AppCompatActivity
         resolveButton = findViewById(R.id.resolve_button);
         resolveButton.setOnClickListener((view) -> onResolveButtonPress());
         roomCodeText = findViewById(R.id.room_code_text);
+        Button backButton=findViewById(R.id.btnBack_cloud_anchor);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         // Initialize Cloud Anchor variables.
         firebaseManager = new FirebaseManager(this);
@@ -396,10 +403,10 @@ public class CloudAnchorActivity extends AppCompatActivity
 
             //ovde zameni svoj model, vrv neki treasure chest, ako nadjes
             virtualObject.createOnGlThread(this, "models/andy.obj", "models/andy.png");
-            virtualObject.setMaterialProperties(0.0f, 2.0f, 0.5f, 6.0f);
+            virtualObject.setMaterialProperties(0.0f, 1.0f, 0.5f, 6.0f);
 
             virtualObjectShadow.createOnGlThread(
-                    this, "models/andy_shadow.obj", "models/andy_shadow.png");
+                   this, "models/andy_shadow.obj", "models/andy_shadow.png");
             virtualObjectShadow.setBlendMode(ObjectRenderer.BlendMode.Shadow);
             virtualObjectShadow.setMaterialProperties(1.0f, 0.0f, 0.0f, 1.0f);
         } catch (IOException ex) {

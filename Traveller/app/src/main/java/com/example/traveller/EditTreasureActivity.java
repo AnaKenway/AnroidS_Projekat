@@ -35,6 +35,7 @@ public class EditTreasureActivity extends AppCompatActivity {
         EditText etTreasureDesc=findViewById(R.id.editTextTreasureDescription_edit_treasure);
         EditText etTreasureHint=findViewById(R.id.editTextTreasureHint_edit_treasure);
         EditText etTreasureQuestion=findViewById(R.id.editTextTreasureQuestion_edit_treasure);
+        EditText etTreasureAnswer=findViewById(R.id.editTextTreasureAnswer_edit_treasure);
         EditText etTreasurePoints=findViewById(R.id.editTextTreasurePoints_edit_treasure);
 
         myRef.child("treasures").child(treasureName).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
@@ -47,6 +48,7 @@ public class EditTreasureActivity extends AppCompatActivity {
                 etTreasureDesc.setText(treasure.description);
                 etTreasureHint.setText(treasure.hint);
                 etTreasureQuestion.setText(treasure.question);
+                etTreasureAnswer.setText(treasure.answer);
                 etTreasurePoints.setText(Integer.toString(treasure.points));
             }
         });
@@ -68,6 +70,7 @@ public class EditTreasureActivity extends AppCompatActivity {
             toReturn.description=etTreasureDesc.getText().toString();
             toReturn.hint=etTreasureHint.getText().toString();
             toReturn.question=etTreasureQuestion.getText().toString();
+            toReturn.answer=etTreasureAnswer.getText().toString();
             toReturn.points=Integer.parseInt(etTreasurePoints.getText().toString());
 
             Intent returnIntent = new Intent();

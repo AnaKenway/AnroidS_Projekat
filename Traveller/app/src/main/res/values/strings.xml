@@ -62,6 +62,7 @@
     <string name="Delete">Delete</string>
     <string name="treasureHint">Treasure Hint</string>
     <string name="treasureQuestion">Treasure Question</string>
+    <string name="treasureAnswer">Answer</string>
     <string name="add3DObject">Add 3D Object</string>
     <string name="numberOfPoints">Number of Points</string>
     <string name="treasureOfATreasureHunt">Treasures of this Treasure Hunt are: </string>

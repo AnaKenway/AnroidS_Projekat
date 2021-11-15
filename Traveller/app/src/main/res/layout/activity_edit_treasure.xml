@@ -64,6 +64,19 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputTreasureAnswer_edit_treasure"
+            style="@style/parent"
+            android:layout_marginTop="@dimen/loginViewsMargin">
+
+            <EditText
+                android:id="@+id/editTextTreasureAnswer_edit_treasure"
+                style="@style/modifiedEditProfileText"
+                android:hint="@string/treasureAnswer"
+                android:inputType="textPersonName"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputTreasurePoints_edit_treasure"
             style="@style/parent"
             android:layout_marginTop="@dimen/loginViewsMargin">

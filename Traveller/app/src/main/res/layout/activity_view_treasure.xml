@@ -79,6 +79,17 @@
             android:visibility="gone"/>
 
         <TextView
+            android:id="@+id/textViewTreasureAnswer_view_treasure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:text="Answer"
+            android:textAlignment="viewStart"
+            android:textColor="#131313"
+            android:textSize="20sp"
+            android:visibility="gone"/>
+
+        <TextView
             android:id="@+id/textViewTreasurePoints_view_treasure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
