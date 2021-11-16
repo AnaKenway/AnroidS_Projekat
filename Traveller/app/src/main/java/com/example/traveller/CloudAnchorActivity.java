@@ -68,6 +68,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -137,6 +138,7 @@ public class CloudAnchorActivity extends AppCompatActivity
     private final CloudAnchorManager cloudManager = new CloudAnchorManager();
     private HostResolveMode currentMode;
     private RoomCodeAndCloudAnchorIdListener hostListener;
+    FoundTreasuresAndActiveTHListener ftl=new FoundTreasuresAndActiveTHListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,20 +149,34 @@ public class CloudAnchorActivity extends AppCompatActivity
         isAdmin=i.getBooleanExtra("isAdmin",false);
         isForAddOrEditTreasure=i.getBooleanExtra("isForAddOrEditTreasure",false);
         username=i.getStringExtra("username");
+        Button btnSave=findViewById(R.id.btnSave_cloud_anchor);
         if(!isAdmin){
             Button btnHost=findViewById(R.id.host_button);
             btnHost.setVisibility(View.GONE);
             btnHost.setEnabled(false);
+            btnSave.setVisibility(View.GONE);
+            btnSave.setEnabled(false);
         }
         if(isForAddOrEditTreasure){
             Button btnResolve=findViewById(R.id.resolve_button);
             btnResolve.setEnabled(false);
             btnResolve.setVisibility(View.GONE);
+            btnSave.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("result",treasureToReturn);
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
+                }
+            });
         }
         else{
             Button btnHost=findViewById(R.id.host_button);
             btnHost.setVisibility(View.GONE);
             btnHost.setEnabled(false);
+            btnSave.setVisibility(View.GONE);
+            btnSave.setEnabled(false);
         }
 
         surfaceView = findViewById(R.id.surfaceview);
@@ -207,6 +223,9 @@ public class CloudAnchorActivity extends AppCompatActivity
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_CANCELED, returnIntent);
                 finish();
             }
         });
@@ -215,6 +234,12 @@ public class CloudAnchorActivity extends AppCompatActivity
         firebaseManager = new FirebaseManager(this);
         currentMode = HostResolveMode.NONE;
         sharedPreferences = getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE);
+
+        //pribavljanje podataka koji ce mi trebati unapred
+        //da bi stigli da budu dostupni kada mi budu trebali
+
+        firebaseManager.getActiveTreasureHunt(username,ftl);
+        firebaseManager.getFoundTreasures(username,ftl);
     }
 
     @Override
@@ -571,7 +596,7 @@ public class CloudAnchorActivity extends AppCompatActivity
         hostButton.setEnabled(true);
         resolveButton.setText(R.string.resolve_button_text);
         resolveButton.setEnabled(true);
-        roomCodeText.setText(R.string.initial_room_code);
+        roomCodeText.setText(R.string.initial_treasure_name);
         currentMode = HostResolveMode.NONE;
         firebaseManager.clearRoomListener();
         hostListener = null;
@@ -585,11 +610,30 @@ public class CloudAnchorActivity extends AppCompatActivity
 
         //ovde treba napraviti logiku koja proverava da li je
         //1. taj treasure name postojeci
-        //2. taj treasure name je u okviru aktivnog TH-a za tog korisnika
-        //3. taj treasure nije vec completed
+        //2. taj treasure name je u okviru aktivnog TH-a za tog korisnika (i da li korisnik ima aktivan treasure hunt)
+        //3. taj treasure nije vec found
         //ako je sve u redu, nastavi dalje,
         //ako ne, prikazi odgovarajucu poruku i return
         //moze te funkcije za proveru da idu u okviru firebaseManager klase
+
+        //firebaseManager.getActiveTreasureHunt(username,ftl);
+        //firebaseManager.getFoundTreasures(username,ftl);
+        //firebaseManager.getTreasuresOfATreasureHunt(ftl.activeTH,ftl);
+
+        if(!hasActiveTreasureHunt()){
+            Toast.makeText(getApplicationContext(),"Activate a treasure hunt first, then dig for treasure.",Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if(treasureAlreadyFound(treasureName)) {
+            Toast.makeText(getApplicationContext(),"You have already found this treasure!",Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if(!treasureIsPartOfTreasureHunt(treasureName)){
+            Toast.makeText(getApplicationContext(),"The treasure you entered is not a part of your active treasure hunt.",Toast.LENGTH_LONG).show();
+            return;
+        }
 
         currentMode = HostResolveMode.RESOLVING;
         hostButton.setEnabled(false);
@@ -597,8 +641,7 @@ public class CloudAnchorActivity extends AppCompatActivity
         roomCodeText.setText(String.valueOf(treasureName));
         snackbarHelper.showMessageWithDismiss(this, getString(R.string.snackbar_on_resolve));
 
-        // Register a new listener for the given room.
-        //napraviti da se trazi ne po room code, nego po treasureName
+        // Register a new listener for the given treasure name
         firebaseManager.registerNewListenerForTreasureName(
                 treasureName,
                 cloudAnchorId -> {
@@ -671,10 +714,10 @@ public class CloudAnchorActivity extends AppCompatActivity
             treasureToReturn.updatedAtTimestamp=System.currentTimeMillis();
             snackbarHelper.showMessageWithDismiss(
                     CloudAnchorActivity.this, "Anchor is saved.");
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra("result", treasureToReturn);
-            setResult(Activity.RESULT_OK, returnIntent);
-            finish();
+            //Intent returnIntent = new Intent();
+            //returnIntent.putExtra("result", treasureToReturn);
+            //setResult(Activity.RESULT_OK, returnIntent);
+            //finish();
         }
     }
 
@@ -727,5 +770,51 @@ public class CloudAnchorActivity extends AppCompatActivity
         createSession();
     }
 
+    public boolean treasureAlreadyFound(String tName){
+        for (String treasure : ftl.foundTreasures) {
+            if(treasure.equals(tName))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean hasActiveTreasureHunt(){
+        if(ftl.activeTH==null)
+            return false;
+        return true;
+    }
+    public boolean treasureIsPartOfTreasureHunt(String treasureName){
+        for (String treasure: ftl.treasureOfActiveTH) {
+            if(treasure.equals(treasureName)) return true;
+        }
+        return false;
+    }
+
+    private class FoundTreasuresAndActiveTHListener implements FirebaseManager.FoundTreasuresListener,
+            FirebaseManager.ActiveTreasureHuntListener, FirebaseManager.TreasuresOfATreasureHuntListener {
+
+        public String activeTH;
+        public ArrayList<String> foundTreasures=new ArrayList<>();
+        public ArrayList<String> treasureOfActiveTH=new ArrayList<>();
+        //public String treasureToCheck;
+
+        @Override
+        public void onActiveTreasureHunt(String activeTH) {
+            //activeTH is null if there is no active treasure hunt
+            if(activeTH==null) return;
+            this.activeTH=activeTH;
+            firebaseManager.getTreasuresOfATreasureHunt(this.activeTH,this);
+        }
+
+        @Override
+        public void onFoundTreasures(ArrayList<String> foundTreasures) {
+            this.foundTreasures=foundTreasures;
+        }
+
+        @Override
+        public void onTreasuresOfATreasureHunt(ArrayList<String> thTreasures) {
+            treasureOfActiveTH=thTreasures;
+        }
+    }
 
 }

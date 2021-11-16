@@ -76,6 +76,13 @@ public class FirebaseManager {
     void onFoundTreasures(ArrayList<String> foundTreasures);
   }
 
+  /** Listener for the list of treasures of a treasure hunt*/
+  public interface TreasuresOfATreasureHuntListener{
+
+    /** Invoked when the list of treasures is available*/
+    void onTreasuresOfATreasureHunt(ArrayList<String> thTreasures);
+  }
+
 
   // Names of the nodes used in the Firebase Database
   private static final String ROOT_FIREBASE_HOTSPOTS = "hotspot_list";
@@ -97,6 +104,7 @@ public class FirebaseManager {
   //private final DatabaseReference hotspotListRef;
   //private final DatabaseReference roomCodeRef;
   private DatabaseReference treasuresRef;
+  private DatabaseReference treasureHuntsRef;
   private DatabaseReference usersRef;
   private DatabaseReference currentTreasureRef = null;
   private ValueEventListener currentTreasureListener = null;
@@ -114,6 +122,7 @@ public class FirebaseManager {
       //roomCodeRef = rootRef.child(ROOT_LAST_ROOM_CODE);
       treasuresRef=rootRef.child(ROOT_TREASURES);
       usersRef=rootRef.child(ROOT_USERS);
+      treasureHuntsRef=rootRef.child(ROOT_TREASURE_HUNT);
 
       DatabaseReference.goOnline();
     } else {
@@ -269,12 +278,26 @@ public class FirebaseManager {
     });
   }
 
+  public void getTreasuresOfATreasureHunt(String tHuntName, TreasuresOfATreasureHuntListener listener ){
+    treasureHuntsRef.child(tHuntName).child("treasures").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+      @Override
+      public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
+          Object o=dataSnapshot.getValue();
+          if(o==null) return;
+          ArrayList<String> treasures=new ArrayList<>();
+          treasures=(ArrayList<String>) o;
+          listener.onTreasuresOfATreasureHunt(treasures);
+      }
+    });
+  }
+
   public void ActivateTreasureHunt(String username, String treasureHuntName){
     usersRef.child(username).child(USER_ACTIVE_TREASURE_HUNT).setValue(treasureHuntName);
   }
 
   public void DeactivateTreasureHunt(String username, String treasureHuntName){
     usersRef.child(username).child(USER_ACTIVE_TREASURE_HUNT).setValue("");
+    usersRef.child(username).child(USER_FOUND_TREASURES).setValue(new ArrayList<String>());
   }
 
 }

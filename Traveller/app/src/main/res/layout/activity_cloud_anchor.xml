@@ -79,7 +79,15 @@
             android:layout_height="wrap_content"
             android:text="@string/buttonBack"
             android:layout_gravity="bottom"
-            android:backgroundTint="@color/x_red"/>
+            android:backgroundTint="@color/x_red"
+            android:layout_marginRight="10dp"/>
+        <Button
+            android:id="@+id/btnSave_cloud_anchor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Save"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/positive_green"/>
 
     </LinearLayout>
 
