@@ -83,6 +83,21 @@ public class FirebaseManager {
     void onTreasuresOfATreasureHunt(ArrayList<String> thTreasures);
   }
 
+  /** Listener for the question for a treasure*/
+  public interface TreasureQuestionListener{
+    void onTreasureQuestion(String tQuestion);
+  }
+
+  /** Listener for the answer of a treasure question */
+  public interface TreasureAnswerListener{
+    void onTreasureAnswer(String tAnswer);
+  }
+
+  /** Listener for the points a treasure brings */
+  public interface TreasurePointsListener{
+    void onTreasurePoints(int points);
+  }
+
 
   // Names of the nodes used in the Firebase Database
   private static final String ROOT_FIREBASE_HOTSPOTS = "hotspot_list";
@@ -93,6 +108,9 @@ public class FirebaseManager {
   private static final String USER_COMPLETED_TREASURE_HUNTS="completedTreasureHunts";
   private static final String USER_ACTIVE_TREASURE_HUNT="activeTreasureHunt";
   private static final String USER_FOUND_TREASURES="foundTreasures";
+  private static final String TREASURE_QUESTION="question";
+  private static final String TREASURE_ANSWER="answer";
+  private static final String TREASURE_POINTS="points";
 
   // Some common keys and values used when writing to the Firebase Database.
   private static final String KEY_DISPLAY_NAME = "display_name";
@@ -108,6 +126,7 @@ public class FirebaseManager {
   private DatabaseReference usersRef;
   private DatabaseReference currentTreasureRef = null;
   private ValueEventListener currentTreasureListener = null;
+  private int points=0;
 
   /**
    * Default constructor for the FirebaseManager.
@@ -260,21 +279,22 @@ public class FirebaseManager {
     });
   }
 
-  public void getFoundTreasures(String username, FoundTreasuresListener listener){
+  public void getFoundTreasures(String username, FoundTreasuresListener listener) {
 
-    usersRef.child(username).child(USER_FOUND_TREASURES).addValueEventListener(new ValueEventListener() {
+    usersRef.child(username).child(USER_FOUND_TREASURES).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
       @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        Object o=snapshot.getValue();
-        if(o==null) return;
-        ArrayList<String> foundTreasures=(ArrayList<String>)o;
+      public void onSuccess(@NonNull DataSnapshot snapshot) {
+        Object o = snapshot.getValue();
+        if (o == null) return;
+        ArrayList<String> foundTreasures = (ArrayList<String>) o;
         listener.onFoundTreasures(foundTreasures);
       }
 
-      @Override
+      /*@Override
       public void onCancelled(@NonNull DatabaseError error) {
         Log.w(TAG, "The Firebase operation was cancelled.", error.toException());
       }
+    });*/
     });
   }
 
@@ -297,7 +317,105 @@ public class FirebaseManager {
 
   public void DeactivateTreasureHunt(String username, String treasureHuntName){
     usersRef.child(username).child(USER_ACTIVE_TREASURE_HUNT).setValue("");
-    usersRef.child(username).child(USER_FOUND_TREASURES).setValue(new ArrayList<String>());
+    usersRef.child(username).child(USER_FOUND_TREASURES).removeValue();
+  }
+
+  public void getTreasureQuestion(String tName, TreasureQuestionListener listener){
+    treasuresRef.child(tName).child(TREASURE_QUESTION).addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        Object o=snapshot.getValue();
+        if(o==null) return;
+        String question=(String)o;
+        if(question.equals("")) return;
+        listener.onTreasureQuestion(question);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        Log.w(TAG, "The Firebase operation was cancelled.", error.toException());
+      }
+    });
+  }
+
+  public void getTreasureAnswer(String tName, TreasureAnswerListener listener){
+    treasuresRef.child(tName).child(TREASURE_ANSWER).addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        Object o=snapshot.getValue();
+        if(o==null) return;
+        String answer=(String)o;
+        if(answer.equals("")) return;
+        listener.onTreasureAnswer(answer);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        Log.w(TAG, "The Firebase operation was cancelled.", error.toException());
+      }
+    });
+  }
+
+  public void getTreasurePoints(String tName, TreasurePointsListener listener){
+    treasuresRef.child(tName).child(TREASURE_POINTS).addValueEventListener(new ValueEventListener() {
+      @Override
+      public void onDataChange(@NonNull DataSnapshot snapshot) {
+        Object o=snapshot.getValue();
+        if(o==null) return;
+        Long p=(Long)o;
+        points=p.intValue();
+        listener.onTreasurePoints(points);
+      }
+
+      @Override
+      public void onCancelled(@NonNull DatabaseError error) {
+        Log.w(TAG, "The Firebase operation was cancelled.", error.toException());
+      }
+    });
+  }
+
+  public void addPointsToUser(String username,int pointsToAdd){
+    //first get the number of points the user has now
+    //and then inside that onSuccess, add the pointsToAdd and write back to database
+    usersRef.child(username).child("points").get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+      @Override
+      public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
+        Object o=dataSnapshot.getValue();
+        if(o==null) return;
+        String points=(String)o;
+        if(points.equals("")) return;
+        int numPoints=Integer.parseInt(points);
+        numPoints+=pointsToAdd;
+
+        usersRef.child(username).child("points").setValue(String.valueOf(numPoints));
+      }
+    });
+  }
+
+  public void addTreasureToFoundTreasures(String username, String treasureName){
+    usersRef.child(username).child(USER_FOUND_TREASURES).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+      @Override
+      public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
+        if(dataSnapshot.getValue()==null){
+          //znaci da je ovo prvi treasure iz ovog treasure hunt-a koji je korisnik nasao
+          ArrayList<String> foundTreasures=new ArrayList<>();
+          foundTreasures.add(treasureName);
+          usersRef.child(username).child(USER_FOUND_TREASURES).setValue(foundTreasures);
+        } else{
+          //ako nije null, znaci da vec postoje nadjeni treasures, i treba dodati ovaj u listu
+          Object o=dataSnapshot.getValue();
+          ArrayList<String> foundTreasures=(ArrayList<String>)o;
+          foundTreasures.add(treasureName);
+          usersRef.child(username).child(USER_FOUND_TREASURES).setValue(foundTreasures);
+        }
+      }
+    });
+  }
+
+  public void makeTreasureHuntCompleted(String username, ArrayList<String> listOfAllCompletedTHs){
+    //funkciji prosledimo listu svih completed treasure hunts
+    //a ona samo upise tu listu u bazu
+    usersRef.child(username).child(USER_COMPLETED_TREASURE_HUNTS).setValue(listOfAllCompletedTHs);
   }
 
 }

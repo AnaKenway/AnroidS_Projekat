@@ -99,5 +99,16 @@
             android:textColor="#131313"
             android:textSize="20sp" />
 
+        <TextView
+            android:id="@+id/textViewTreasureFound_view_treasure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:text="@string/snackbar_resolve_success"
+            android:textAlignment="viewStart"
+            android:textColor="#131313"
+            android:textSize="20sp"
+            android:visibility="gone"/>
+
     </LinearLayout>
 </ScrollView >

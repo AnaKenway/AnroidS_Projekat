@@ -139,6 +139,7 @@ public class CloudAnchorActivity extends AppCompatActivity
     private HostResolveMode currentMode;
     private RoomCodeAndCloudAnchorIdListener hostListener;
     FoundTreasuresAndActiveTHListener ftl=new FoundTreasuresAndActiveTHListener();
+    private TreasurePointsQuestionAnswerListener tpqaListener=new TreasurePointsQuestionAnswerListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,12 +151,16 @@ public class CloudAnchorActivity extends AppCompatActivity
         isForAddOrEditTreasure=i.getBooleanExtra("isForAddOrEditTreasure",false);
         username=i.getStringExtra("username");
         Button btnSave=findViewById(R.id.btnSave_cloud_anchor);
+        firebaseManager = new FirebaseManager(this);
         if(!isAdmin){
             Button btnHost=findViewById(R.id.host_button);
             btnHost.setVisibility(View.GONE);
             btnHost.setEnabled(false);
             btnSave.setVisibility(View.GONE);
             btnSave.setEnabled(false);
+            firebaseManager.getActiveTreasureHunt(username,ftl);
+            firebaseManager.getFoundTreasures(username,ftl);
+            firebaseManager.getCompletedTreasureHunts(username,ftl);
         }
         if(isForAddOrEditTreasure){
             Button btnResolve=findViewById(R.id.resolve_button);
@@ -177,6 +182,12 @@ public class CloudAnchorActivity extends AppCompatActivity
             btnHost.setEnabled(false);
             btnSave.setVisibility(View.GONE);
             btnSave.setEnabled(false);
+            //pribavljanje podataka koji ce mi trebati unapred
+            //da bi stigli da budu dostupni kada mi budu trebali
+
+            firebaseManager.getActiveTreasureHunt(username,ftl);
+            firebaseManager.getFoundTreasures(username,ftl);
+            firebaseManager.getCompletedTreasureHunts(username,ftl);
         }
 
         surfaceView = findViewById(R.id.surfaceview);
@@ -231,15 +242,10 @@ public class CloudAnchorActivity extends AppCompatActivity
         });
 
         // Initialize Cloud Anchor variables.
-        firebaseManager = new FirebaseManager(this);
+        //ovde je pre bilo firebaseManager = new FirebaseManager(this);
         currentMode = HostResolveMode.NONE;
         sharedPreferences = getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE);
 
-        //pribavljanje podataka koji ce mi trebati unapred
-        //da bi stigli da budu dostupni kada mi budu trebali
-
-        firebaseManager.getActiveTreasureHunt(username,ftl);
-        firebaseManager.getFoundTreasures(username,ftl);
     }
 
     @Override
@@ -521,6 +527,7 @@ public class CloudAnchorActivity extends AppCompatActivity
                 virtualObjectShadow.updateModelMatrix(anchorMatrix, scaleFactor);
                 virtualObject.draw(viewMatrix, projectionMatrix, colorCorrectionRgba, OBJECT_COLOR);
                 virtualObjectShadow.draw(viewMatrix, projectionMatrix, colorCorrectionRgba, OBJECT_COLOR);
+
             }
         } catch (Throwable t) {
             // Avoid crashing the application due to unhandled exceptions.
@@ -608,18 +615,6 @@ public class CloudAnchorActivity extends AppCompatActivity
     /** Callback function invoked when the user presses the OK button in the Resolve Dialog. */
     private void onRoomCodeEntered(String treasureName) {
 
-        //ovde treba napraviti logiku koja proverava da li je
-        //1. taj treasure name postojeci
-        //2. taj treasure name je u okviru aktivnog TH-a za tog korisnika (i da li korisnik ima aktivan treasure hunt)
-        //3. taj treasure nije vec found
-        //ako je sve u redu, nastavi dalje,
-        //ako ne, prikazi odgovarajucu poruku i return
-        //moze te funkcije za proveru da idu u okviru firebaseManager klase
-
-        //firebaseManager.getActiveTreasureHunt(username,ftl);
-        //firebaseManager.getFoundTreasures(username,ftl);
-        //firebaseManager.getTreasuresOfATreasureHunt(ftl.activeTH,ftl);
-
         if(!hasActiveTreasureHunt()){
             Toast.makeText(getApplicationContext(),"Activate a treasure hunt first, then dig for treasure.",Toast.LENGTH_LONG).show();
             return;
@@ -635,6 +630,9 @@ public class CloudAnchorActivity extends AppCompatActivity
             return;
         }
 
+        firebaseManager.getTreasureQuestion(treasureName, tpqaListener);
+        firebaseManager.getTreasureAnswer(treasureName, tpqaListener);
+        firebaseManager.getTreasurePoints(treasureName, tpqaListener);
         currentMode = HostResolveMode.RESOLVING;
         hostButton.setEnabled(false);
         resolveButton.setText(R.string.cancel);
@@ -747,6 +745,7 @@ public class CloudAnchorActivity extends AppCompatActivity
             snackbarHelper.showMessageWithDismiss(
                     CloudAnchorActivity.this, getString(R.string.snackbar_resolve_success));
             setNewAnchor(anchor);
+            onTreasureFound(treasureName);
         }
 
         @Override
@@ -791,11 +790,13 @@ public class CloudAnchorActivity extends AppCompatActivity
     }
 
     private class FoundTreasuresAndActiveTHListener implements FirebaseManager.FoundTreasuresListener,
-            FirebaseManager.ActiveTreasureHuntListener, FirebaseManager.TreasuresOfATreasureHuntListener {
+            FirebaseManager.ActiveTreasureHuntListener, FirebaseManager.TreasuresOfATreasureHuntListener,
+            FirebaseManager.CompletedTreasureHuntsListener {
 
         public String activeTH;
         public ArrayList<String> foundTreasures=new ArrayList<>();
         public ArrayList<String> treasureOfActiveTH=new ArrayList<>();
+        public ArrayList<String> completedTreasureHunts=new ArrayList<>();
         //public String treasureToCheck;
 
         @Override
@@ -814,6 +815,55 @@ public class CloudAnchorActivity extends AppCompatActivity
         @Override
         public void onTreasuresOfATreasureHunt(ArrayList<String> thTreasures) {
             treasureOfActiveTH=thTreasures;
+        }
+
+        @Override
+        public void onCompletedTreasureHunts(ArrayList<String> completedTHs) {
+            if(completedTHs!=null)
+                this.completedTreasureHunts=completedTHs;
+        }
+    }
+
+    public void onTreasureFound(String treasureName){
+        //otvoriti dijalog sa pitanjem, i cekati da korisnik unese odgovor, vrv neki listener
+
+        firebaseManager.addPointsToUser(username, tpqaListener.treasurePoints);
+        ftl.foundTreasures.add(treasureName);
+
+        if(ftl.foundTreasures.size()==ftl.treasureOfActiveTH.size()){
+            //ako je broj nadjenih treasures jednak ukupnom broju treasures
+            //to znaci da je ovaj TH sad completed
+            ftl.completedTreasureHunts.add(ftl.activeTH);
+            firebaseManager.makeTreasureHuntCompleted(username, ftl.completedTreasureHunts);
+            firebaseManager.DeactivateTreasureHunt(username,ftl.activeTH);
+        }
+        else{
+            firebaseManager.addTreasureToFoundTreasures(username,treasureName);
+        }
+
+
+    }
+
+    private class TreasurePointsQuestionAnswerListener implements FirebaseManager.TreasureQuestionListener,
+            FirebaseManager.TreasureAnswerListener, FirebaseManager.TreasurePointsListener{
+
+        public String treasureQuestion;
+        public String treasureAnswer;
+        public int treasurePoints;
+
+        @Override
+        public void onTreasureQuestion(String tQuestion) {
+            this.treasureQuestion=tQuestion;
+        }
+
+        @Override
+        public void onTreasureAnswer(String tAnswer) {
+            this.treasureAnswer=tAnswer;
+        }
+
+        @Override
+        public void onTreasurePoints(int points) {
+            treasurePoints=points;
         }
     }
 

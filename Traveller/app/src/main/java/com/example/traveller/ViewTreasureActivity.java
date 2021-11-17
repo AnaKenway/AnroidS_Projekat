@@ -9,11 +9,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.traveller.common.cloudanchor.FirebaseManager;
 import com.example.traveller.models.Treasure;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class ViewTreasureActivity extends AppCompatActivity {
 
@@ -21,7 +24,10 @@ public class ViewTreasureActivity extends AppCompatActivity {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference();
     private String treasureName="";
+    private String username;
     private Treasure treasure=new Treasure();
+    private FirebaseManager firebaseManager=new FirebaseManager(this);
+    private FoundTreasuresListener foundTreasuresListener=new FoundTreasuresListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,8 @@ public class ViewTreasureActivity extends AppCompatActivity {
         Intent i=getIntent();
         isAdmin=i.getBooleanExtra("isAdmin",false);
         treasureName=i.getStringExtra("name");
+        username=i.getStringExtra("username");
+        firebaseManager.getFoundTreasures(username,foundTreasuresListener);
 
         myRef.child("treasures").child(treasureName).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
             @Override
@@ -70,6 +78,27 @@ public class ViewTreasureActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private class FoundTreasuresListener implements FirebaseManager.FoundTreasuresListener {
+
+        public ArrayList<String> foundTreasures=new ArrayList<>();
+
+        @Override
+        public void onFoundTreasures(ArrayList<String> foundTreasures) {
+            this.foundTreasures=foundTreasures;
+            showOrHideFoundTreasureText(foundTreasures);
+        }
+    }
+
+    public void showOrHideFoundTreasureText(ArrayList<String> foundTreasures){
+        for (String tName:foundTreasures) {
+            if(tName.equals(treasureName)){
+                TextView txtFoundTreasure=findViewById(R.id.textViewTreasureFound_view_treasure);
+                txtFoundTreasure.setVisibility(View.VISIBLE);
+                return;
+            }
+        }
     }
 
 }

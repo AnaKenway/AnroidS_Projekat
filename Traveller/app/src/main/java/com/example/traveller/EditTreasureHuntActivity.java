@@ -37,6 +37,7 @@ public class EditTreasureHuntActivity extends AppCompatActivity {
     ArrayList<Treasure> newlyAddedTreasures=new ArrayList<>();
     ArrayList<Treasure> editedTreasures=new ArrayList<>();
     ListView listViewTreasures;
+    String username;
 
     int LAUNCH_ADD_TREASURE_ACTIVITY = 1;
     int LAUNCH_EDIT_TREASURE_ACTIVITY=2;
@@ -48,6 +49,7 @@ public class EditTreasureHuntActivity extends AppCompatActivity {
 
         Intent i=getIntent();
         String thName=i.getStringExtra("name");
+        username=i.getStringExtra("username");
         TextView thTitle=findViewById(R.id.textViewEditTreasureHuntTitle);
         thTitle.setText(thName);
         //EditText editTextName=findViewById(R.id.editTextEditTreasureHuntName);
@@ -90,6 +92,7 @@ public class EditTreasureHuntActivity extends AppCompatActivity {
                         Intent i=new Intent(EditTreasureHuntActivity.this,ViewTreasureActivity.class);
                         i.putExtra("name",toView);
                         i.putExtra("isAdmin",true);
+                        i.putExtra("username",username);
                         startActivity(i);
                     }
                 });

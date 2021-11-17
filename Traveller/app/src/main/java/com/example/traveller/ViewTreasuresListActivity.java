@@ -35,6 +35,7 @@ public class ViewTreasuresListActivity extends AppCompatActivity {
     private DatabaseReference myRef = database.getReference();
     private TreasureHunt th=new TreasureHunt();
     private ArrayList<Treasure> newlyAddedTreasures=new ArrayList<>();
+    private String username;
 
     int LAUNCH_SECOND_ACTIVITY = 1;
 
@@ -47,6 +48,7 @@ public class ViewTreasuresListActivity extends AppCompatActivity {
         isAdmin=i.getBooleanExtra("isAdmin",false);
         thName=i.getStringExtra("name");
         fromEdit=i.getBooleanExtra("fromEdit",false);
+        username=i.getStringExtra("username");
         //Button btnAddTreasure=findViewById(R.id.btnAddTreasure_treasures_list);
         //Button btnSave=findViewById(R.id.btnSave_treasures_list);
         Button btnBack=findViewById(R.id.btnBack_treasures_list);
@@ -105,6 +107,7 @@ public class ViewTreasuresListActivity extends AppCompatActivity {
                         Intent i=new Intent(ViewTreasuresListActivity.this,ViewTreasureActivity.class);
                         i.putExtra("name",toView);
                         i.putExtra("isAdmin",isAdmin);
+                        i.putExtra("username",username);
                         startActivity(i);
                     }
                 });

@@ -89,6 +89,7 @@ public class ViewTreasureHuntActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent i=new Intent(ViewTreasureHuntActivity.this,EditTreasureHuntActivity.class);
                     i.putExtra("name",THName);
+                    i.putExtra("username",username);
                     startActivity(i);
                 }
             });
@@ -118,6 +119,7 @@ public class ViewTreasureHuntActivity extends AppCompatActivity {
                 i.putExtra("name",THName);
                 i.putExtra("isAdmin",isAdmin);
                 i.putExtra("fromEdit",false);//ako je iz Treasure Hunt edita, onda treba da mu omogucim context meni za delete i da omogucim add dugme
+                i.putExtra("username",username);
                 startActivity(i);
             }
         });
