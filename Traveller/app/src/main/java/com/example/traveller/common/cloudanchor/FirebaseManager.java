@@ -98,6 +98,10 @@ public class FirebaseManager {
     void onTreasurePoints(int points);
   }
 
+  public interface TreasureWrongAnswersListener {
+    void onTreasureWrongAnswers(ArrayList<String> wrongAnswers);
+  }
+
 
   // Names of the nodes used in the Firebase Database
   private static final String ROOT_FIREBASE_HOTSPOTS = "hotspot_list";
@@ -111,6 +115,7 @@ public class FirebaseManager {
   private static final String TREASURE_QUESTION="question";
   private static final String TREASURE_ANSWER="answer";
   private static final String TREASURE_POINTS="points";
+  private static final String TREASURE_WRONG_ANSWERS="wrongAnswers";
 
   // Some common keys and values used when writing to the Firebase Database.
   private static final String KEY_DISPLAY_NAME = "display_name";
@@ -416,6 +421,18 @@ public class FirebaseManager {
     //funkciji prosledimo listu svih completed treasure hunts
     //a ona samo upise tu listu u bazu
     usersRef.child(username).child(USER_COMPLETED_TREASURE_HUNTS).setValue(listOfAllCompletedTHs);
+  }
+
+  public void getTreasureWrongAnswers(String treasureName, TreasureWrongAnswersListener listener){
+    treasuresRef.child(treasureName).child(TREASURE_WRONG_ANSWERS).get().addOnSuccessListener(new OnSuccessListener<DataSnapshot>() {
+      @Override
+      public void onSuccess(@NonNull DataSnapshot dataSnapshot) {
+        Object o=dataSnapshot.getValue();
+        if(o==null) return;
+        ArrayList<String> wrongAnswers=(ArrayList<String>)o;
+        listener.onTreasureWrongAnswers(wrongAnswers);
+      }
+    });
   }
 
 }

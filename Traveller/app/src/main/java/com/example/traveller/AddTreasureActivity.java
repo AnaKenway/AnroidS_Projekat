@@ -37,6 +37,9 @@ public class AddTreasureActivity extends AppCompatActivity {
                 EditText editTextTQuestion=findViewById(R.id.editTextTreasureQuestion);
                 EditText editTextTAnswer=findViewById(R.id.editTextTreasureAnswer);
                 EditText editTextTPoints=findViewById(R.id.editTextTreasurePoints);
+                EditText editTextTWrongAnswer1=findViewById(R.id.editTextWrongAnswer1);
+                EditText editTextTWrongAnswer2=findViewById(R.id.editTextWrongAnswer2);
+                EditText editTextTWrongAnswer3=findViewById(R.id.editTextWrongAnswer3);
 
                 t.name=editTextTName.getText().toString();
                 t.description=editTextTDesc.getText().toString();
@@ -44,6 +47,9 @@ public class AddTreasureActivity extends AppCompatActivity {
                 t.question=editTextTQuestion.getText().toString();
                 t.answer=editTextTAnswer.getText().toString();
                 String points=editTextTPoints.getText().toString();
+                t.wrongAnswers.add(editTextTWrongAnswer1.getText().toString());
+                t.wrongAnswers.add(editTextTWrongAnswer2.getText().toString());
+                t.wrongAnswers.add(editTextTWrongAnswer3.getText().toString());
 
                 if(!points.isEmpty())
                     t.points=Integer.parseInt(points);

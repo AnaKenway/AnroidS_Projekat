@@ -80,7 +80,46 @@
             <EditText
                 android:id="@+id/editTextTreasureAnswer"
                 style="@style/modifiedEditProfileText"
-                android:hint="@string/treasureAnswer"
+                android:hint="@string/correctAnswer"
+                android:inputType="textPersonName"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputWrongAnswer1"
+            style="@style/parent"
+            android:layout_marginTop="@dimen/loginViewsMargin">
+
+            <EditText
+                android:id="@+id/editTextWrongAnswer1"
+                style="@style/modifiedEditProfileText"
+                android:hint="@string/wrongAnswer"
+                android:inputType="textPersonName"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputWrongAnswer2"
+            style="@style/parent"
+            android:layout_marginTop="@dimen/loginViewsMargin">
+
+            <EditText
+                android:id="@+id/editTextWrongAnswer2"
+                style="@style/modifiedEditProfileText"
+                android:hint="@string/wrongAnswer"
+                android:inputType="textPersonName"
+                android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputWrongAnswer3"
+            style="@style/parent"
+            android:layout_marginTop="@dimen/loginViewsMargin">
+
+            <EditText
+                android:id="@+id/editTextWrongAnswer3"
+                style="@style/modifiedEditProfileText"
+                android:hint="@string/wrongAnswer"
                 android:inputType="textPersonName"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>

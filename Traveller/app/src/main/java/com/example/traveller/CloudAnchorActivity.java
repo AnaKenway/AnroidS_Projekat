@@ -34,6 +34,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.traveller.common.QuestionDialogFragment;
 import com.example.traveller.common.cloudanchor.CloudAnchorManager;
 import com.example.traveller.common.cloudanchor.FirebaseManager;
 import com.example.traveller.common.helpers.DisplayRotationHelper;
@@ -593,7 +594,7 @@ public class CloudAnchorActivity extends AppCompatActivity
 
     private void onPrivacyAcceptedForResolve() {
         ResolveDialogFragment dialogFragment = new ResolveDialogFragment();
-        dialogFragment.setOkListener(this::onRoomCodeEntered);
+        dialogFragment.setOkListener(this::onTreasureNameEntered);
         dialogFragment.show(getSupportFragmentManager(), "ResolveDialog");
     }
 
@@ -613,7 +614,7 @@ public class CloudAnchorActivity extends AppCompatActivity
     }
 
     /** Callback function invoked when the user presses the OK button in the Resolve Dialog. */
-    private void onRoomCodeEntered(String treasureName) {
+    private void onTreasureNameEntered(String treasureName) {
 
         if(!hasActiveTreasureHunt()){
             Toast.makeText(getApplicationContext(),"Activate a treasure hunt first, then dig for treasure.",Toast.LENGTH_LONG).show();
@@ -632,6 +633,7 @@ public class CloudAnchorActivity extends AppCompatActivity
 
         firebaseManager.getTreasureQuestion(treasureName, tpqaListener);
         firebaseManager.getTreasureAnswer(treasureName, tpqaListener);
+        firebaseManager.getTreasureWrongAnswers(treasureName,tpqaListener);
         firebaseManager.getTreasurePoints(treasureName, tpqaListener);
         currentMode = HostResolveMode.RESOLVING;
         hostButton.setEnabled(false);
@@ -711,7 +713,7 @@ public class CloudAnchorActivity extends AppCompatActivity
             //treasureToReturn.roomCode= roomCode.intValue();
             treasureToReturn.updatedAtTimestamp=System.currentTimeMillis();
             snackbarHelper.showMessageWithDismiss(
-                    CloudAnchorActivity.this, "Anchor is saved.");
+                    CloudAnchorActivity.this, "Anchor is placed.");
             //Intent returnIntent = new Intent();
             //returnIntent.putExtra("result", treasureToReturn);
             //setResult(Activity.RESULT_OK, returnIntent);
@@ -825,7 +827,6 @@ public class CloudAnchorActivity extends AppCompatActivity
     }
 
     public void onTreasureFound(String treasureName){
-        //otvoriti dijalog sa pitanjem, i cekati da korisnik unese odgovor, vrv neki listener
 
         firebaseManager.addPointsToUser(username, tpqaListener.treasurePoints);
         ftl.foundTreasures.add(treasureName);
@@ -841,14 +842,27 @@ public class CloudAnchorActivity extends AppCompatActivity
             firebaseManager.addTreasureToFoundTreasures(username,treasureName);
         }
 
+        //otvoriti dijalog sa pitanjem, i cekati da korisnik unese odgovor, vrv neki listener
+        //prvo pribavim iz tpqa pogresne odgovore
+        String wrongAns1,wrongAns2,wrongAns3;
+        wrongAns1=tpqaListener.wrongAnswers.get(0);
+        wrongAns2=tpqaListener.wrongAnswers.get(1);
+        wrongAns3=tpqaListener.wrongAnswers.get(2);
+
+        QuestionDialogFragment newFragment= QuestionDialogFragment.newInstance(tpqaListener.treasureQuestion,
+                tpqaListener.treasureAnswer,wrongAns1,wrongAns2,wrongAns3);
+        newFragment.setOkListener(this::onQuestionAnswered);
+        newFragment.show(getSupportFragmentManager(),"dialog");
 
     }
 
     private class TreasurePointsQuestionAnswerListener implements FirebaseManager.TreasureQuestionListener,
-            FirebaseManager.TreasureAnswerListener, FirebaseManager.TreasurePointsListener{
+            FirebaseManager.TreasureAnswerListener, FirebaseManager.TreasurePointsListener,
+            FirebaseManager.TreasureWrongAnswersListener {
 
         public String treasureQuestion;
         public String treasureAnswer;
+        public ArrayList<String> wrongAnswers=new ArrayList<>();
         public int treasurePoints;
 
         @Override
@@ -864,6 +878,22 @@ public class CloudAnchorActivity extends AppCompatActivity
         @Override
         public void onTreasurePoints(int points) {
             treasurePoints=points;
+        }
+
+        @Override
+        public void onTreasureWrongAnswers(ArrayList<String> wrongAnswers) {
+            this.wrongAnswers=wrongAnswers;
+        }
+    }
+
+    public void onQuestionAnswered(boolean isCorrect){
+        if(isCorrect){
+            //the user picked the right answer
+            firebaseManager.addPointsToUser(username,10);
+            snackbarHelper.showMessageWithDismiss(CloudAnchorActivity.this,getString(R.string.snackbar_correct_answer));
+        }
+        else {
+            snackbarHelper.showMessageWithDismiss(CloudAnchorActivity.this,getString(R.string.snackbar_wrong_answer));
         }
     }
 

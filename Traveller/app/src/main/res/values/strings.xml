@@ -78,6 +78,8 @@
     <string name="treasure_hunt_completed">You have completed this treasure hunt!</string>
     <string name="activate_treasure_hunt">Activate hunt</string>
     <string name="deactivate_treasure_hunt">Deactivate hunt</string>
+    <string name="correctAnswer">Correct Answer</string>
+    <string name="wrongAnswer">Wrong Answer</string>
 
     <!-- Strings used in privacy notice dialog messages. [CHAR_LIMIT=NONE] -->
     <string name="share_experience_title">Experience it together</string>
@@ -113,7 +115,13 @@
     <string name="snackbar_resolve_error">Resolving Error: %1$s</string>
     <string name="snackbar_resolve_success">Congratulations, you found the treasure!</string>
     <string name="snackbar_room_code_available">The room code is now available. Please place an anchor to host.</string>
+    <string name="snackbar_correct_answer">Bravo! You answered correctly and earned 10 bonus points!</string>
+    <string name="snackbar_wrong_answer">The answer you chose was wrong. Better luck next time!</string>
     <!-- Resolve anchor has no result yet. [CHAR_LIMIT=NONE] -->
     <string name="snackbar_resolve_no_result_yet">Still digging. Please make sure you\'re looking at where you think the treasure is hidden. Or, try again.</string>
+
+    <!-- Strings in the Question Dialog Box -->
+    <string name="question_dialog_title">Quiz Time!</string>
+    <string name="question_dialog_message">Answer the following question correctly and win 10 bonus points: </string>
 
 </resources>

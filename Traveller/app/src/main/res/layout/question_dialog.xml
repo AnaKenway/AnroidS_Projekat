@@ -1,0 +1,66 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/question_dialog_message"
+        android:textColor="#0E0E0E"
+        android:textSize="20sp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp">
+    </TextView>
+
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/textViewQuestion_question_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Question placeholder"
+        android:textColor="#0E0E0E"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp">
+
+        <RadioButton
+            android:id="@+id/radioButtonAnswer1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ans1" />
+
+        <RadioButton
+            android:id="@+id/radioButtonAnswer2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ans2" />
+
+        <RadioButton
+            android:id="@+id/radioButtonAnswer3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ans3" />
+
+        <RadioButton
+            android:id="@+id/radioButtonAnswer4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ans4" />
+    </RadioGroup>
+
+</LinearLayout>

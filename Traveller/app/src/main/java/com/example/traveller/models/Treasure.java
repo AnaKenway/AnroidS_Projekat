@@ -1,6 +1,7 @@
 package com.example.traveller.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Treasure implements Serializable {
 
@@ -9,10 +10,8 @@ public class Treasure implements Serializable {
     public String hint; //a hint about finding this treasure
     public String question; //a question that the user can answer and that will bring extra points
     public String answer; //the answer to the previous question
+    public ArrayList<String> wrongAnswers=new ArrayList<>(); //a list of wrong answers that will be on the quiz
     public int points;
-    //to do: add everything needed for treasure: object model, location, isHidden
-    //i only vaguely know about how ARCore works, i need to find out how it keeps and describes objects
-    //in order to know what other attributes to put here
     public String hostedAnchorID;
     public long updatedAtTimestamp;
     public int roomCode;
@@ -29,6 +28,7 @@ public class Treasure implements Serializable {
         hostedAnchorID=id;
         updatedAtTimestamp=timestamp;
         roomCode=code;
+        wrongAnswers=new ArrayList<>();
     }
 
     public Treasure(String name, String hint, String question,String answer, int points){
@@ -38,5 +38,6 @@ public class Treasure implements Serializable {
         this.answer=answer;
         this.points=points;
         this.hostedAnchorID="";
+        wrongAnswers=new ArrayList<>();
     }
 }
