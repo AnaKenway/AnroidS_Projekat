@@ -78,7 +78,9 @@ public class CloudAnchorActivity extends AppCompatActivity
         implements GLSurfaceView.Renderer, PrivacyNoticeDialogFragment.NoticeDialogListener {
 
     private static final String TAG = CloudAnchorActivity.class.getSimpleName();
-    private static final float[] OBJECT_COLOR = new float[] {139.0f, 195.0f, 74.0f, 255.0f};
+    // the color of some parts of the object, depending on the .obj model
+    //this color is a pretty brown called Driftwood (Threepwood would be good as well)
+    private static final float[] OBJECT_COLOR = new float[] {162.0f, 123.0f, 77.0f, 255.0f};
     private boolean isAdmin=false;
     private boolean isForAddOrEditTreasure=false;
     private String username="";
@@ -434,13 +436,13 @@ public class CloudAnchorActivity extends AppCompatActivity
             pointCloudRenderer.createOnGlThread(this);
 
             //ovde zameni svoj model, vrv neki treasure chest, ako nadjes
-            virtualObject.createOnGlThread(this, "models/andy.obj", "models/andy.png");
-            virtualObject.setMaterialProperties(0.0f, 1.0f, 0.5f, 6.0f);
+            virtualObject.createOnGlThread(this, "models/chest_obj.obj", "models/chest.png");
+            virtualObject.setMaterialProperties(0.5f, 1.0f, 0.5f, 6.0f);
 
-            virtualObjectShadow.createOnGlThread(
-                   this, "models/andy_shadow.obj", "models/andy_shadow.png");
-            virtualObjectShadow.setBlendMode(ObjectRenderer.BlendMode.Shadow);
-            virtualObjectShadow.setMaterialProperties(1.0f, 0.0f, 0.0f, 1.0f);
+            //virtualObjectShadow.createOnGlThread(
+                  // this, "models/andy_shadow.obj", "models/andy_shadow.png");
+            //virtualObjectShadow.setBlendMode(ObjectRenderer.BlendMode.Shadow);
+            //virtualObjectShadow.setMaterialProperties(1.0f, 0.0f, 0.0f, 1.0f);
         } catch (IOException ex) {
             Log.e(TAG, "Failed to read an asset file", ex);
         }
@@ -525,9 +527,9 @@ public class CloudAnchorActivity extends AppCompatActivity
                 // Update and draw the model and its shadow.
                 float scaleFactor = 1.0f;
                 virtualObject.updateModelMatrix(anchorMatrix, scaleFactor);
-                virtualObjectShadow.updateModelMatrix(anchorMatrix, scaleFactor);
+                //virtualObjectShadow.updateModelMatrix(anchorMatrix, scaleFactor);
                 virtualObject.draw(viewMatrix, projectionMatrix, colorCorrectionRgba, OBJECT_COLOR);
-                virtualObjectShadow.draw(viewMatrix, projectionMatrix, colorCorrectionRgba, OBJECT_COLOR);
+                //virtualObjectShadow.draw(viewMatrix, projectionMatrix, colorCorrectionRgba, OBJECT_COLOR);
 
             }
         } catch (Throwable t) {

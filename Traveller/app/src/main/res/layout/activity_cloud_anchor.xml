@@ -62,7 +62,7 @@
                 android:text="@string/initial_treasure_name"
                 android:textSize="20sp"
                 android:gravity="center_vertical"
-                android:background="#001337"/>
+                android:background="@color/sand"/>
 
         </RelativeLayout>
 
