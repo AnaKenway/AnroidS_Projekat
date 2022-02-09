@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ViewTreasureHuntActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewTreasureHuntName"
+            style="@style/loginHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:foregroundGravity="right|center_horizontal"
+            android:gravity="center"
+            android:text="THName"
+            android:textColor="@color/sand" />
+
+        <TextView
+            android:id="@+id/textViewTHCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/signup_text_margin_top"
+            android:text="Category"
+            android:textAlignment="center"
+            android:textColor="#222020"
+            android:textSize="20sp" />
+
+        <CheckedTextView
+            android:id="@+id/checkedTextViewActiveTH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/signup_text_margin_top"
+            android:checkMark="@drawable/outline_check_circle_green_48dp"
+            android:checked="true"
+            android:clickable="false"
+            android:paddingTop="3dp"
+            android:paddingRight="0dp"
+            android:text="This treasure hunt is active"
+            android:textAlignment="gravity"
+            android:textSize="18sp" />
+
+
+        <ImageView
+            android:id="@+id/imgViewTreasureMap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/signup_text_margin_top"
+            android:layout_marginTop="@dimen/signup_text_margin_top"
+            android:layout_marginRight="@dimen/signup_text_margin_top"
+            android:layout_marginBottom="@dimen/signup_text_margin_top"
+            app:srcCompat="@drawable/tri_island_area_cropped" />
+
+        <TextView
+            android:id="@+id/textViewTHDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="@string/description"
+            android:textAlignment="center"
+            android:textColor="#131313"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textViewTHCompleted"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:text="@string/treasure_hunt_completed"
+            android:textAlignment="center"
+            android:textColor="@color/sand"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|end"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnActivateDeactivate_view_treasure_hunt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:text="@string/activate_treasure_hunt"
+                app:backgroundTint="@color/positive_green"
+                android:layout_weight="1"
+                android:insetLeft="6dp"
+                android:insetRight="6dp"/>
+
+            <Button
+                android:id="@+id/btnViewTreasures_view_treasure_hunt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="15dp"
+                android:text="@string/viewTreasures"
+                app:backgroundTint="@color/positive_green"
+                android:layout_weight="1"
+                android:insetLeft="6dp"
+                android:insetRight="6dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom|end"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnDeleteTHInView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:insetLeft="6dp"
+                android:insetRight="6dp"
+                android:text="@string/Delete"
+                app:backgroundTint="@color/x_red" />
+
+            <Button
+                android:id="@+id/btnEditTHnView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:insetLeft="6dp"
+                android:insetRight="6dp"
+                android:text="@string/Edit"
+                app:backgroundTint="@color/sand" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>

@@ -24,4 +24,9 @@
     <color name="silverChariot">#d2d3d6</color>
     <color name="bronze">#cd7f32</color>
     <color name="roseGold">#b76e79</color>
+
+    <!-- colors for Treasure Hunt-->
+    <color name="sand">#c2a780 </color>
+    <color name="x_red">#b1000f</color>
+    <color name="positive_green">#69f0ae</color>
 </resources>

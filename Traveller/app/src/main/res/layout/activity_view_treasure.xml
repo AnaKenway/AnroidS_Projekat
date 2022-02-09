@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerVertical="true"
+    tools:context=".ViewTreasureActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewTreasureName_view_treasure"
+            style="@style/loginHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:foregroundGravity="right|center_horizontal"
+            android:gravity="center"
+            android:text="Treasure Name"
+            android:textColor="@color/sand" />
+
+
+        <pl.droidsonroids.gif.GifImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/treasure_chest_opening_gif"
+            />
+        <TextView
+            android:id="@+id/textViewTreasureDesc_view_treasure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:text="@string/description"
+            android:textAlignment="viewStart"
+            android:textColor="#131313"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/textViewTreasureHint_view_treasure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/treasureHint"
+                android:textAlignment="viewStart"
+                android:textColor="#131313"
+                android:textSize="20sp"
+                android:layout_weight="3"/>
+
+            <Button
+                android:id="@+id/btnShowHint_view_treasure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:text="@string/showHint"
+                app:backgroundTint="@color/positive_green" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewTreasureQuestion_view_treasure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:text="@string/treasureQuestion"
+            android:textAlignment="viewStart"
+            android:textColor="#131313"
+            android:textSize="20sp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/textViewTreasureAnswer_view_treasure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:text="Answer"
+            android:textAlignment="viewStart"
+            android:textColor="#131313"
+            android:textSize="20sp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/textViewTreasurePoints_view_treasure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:text="@string/treasurePoints"
+            android:textAlignment="viewStart"
+            android:textColor="#131313"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/textViewTreasureFound_view_treasure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/loginViewsMargin"
+            android:text="@string/snackbar_resolve_success"
+            android:textAlignment="viewStart"
+            android:textColor="#131313"
+            android:textSize="20sp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+</ScrollView >

@@ -55,4 +55,73 @@
     <string name="rateDoctor">Rate this doctor</string>
     <string name="rateTravelAgency">Rate this travel agency</string>
     <string name="rate">Rate</string>
+    <string name="treasureHunt">Treasure Hunt</string>
+    <string name="addTreasureHunt">Add Treasure Hunt</string>
+    <string name="addTreasure">Add Treasure</string>
+    <string name="Edit">Edit</string>
+    <string name="Delete">Delete</string>
+    <string name="treasureHint">Treasure Hint</string>
+    <string name="treasureQuestion">Treasure Question</string>
+    <string name="treasureAnswer">Answer</string>
+    <string name="add3DObject">Add 3D Object</string>
+    <string name="numberOfPoints">Number of Points</string>
+    <string name="treasureOfATreasureHunt">Treasures of this Treasure Hunt are: </string>
+    <string name="viewTreasures">View Treasures</string>
+    <string name="treasurePoints">If found, this treasure brings you </string>
+    <string name="showHint">Show Hint</string>
+    <string name="edit3DObject">Edit 3D Object</string>
+    <string name="host_button_text">Host</string>
+    <string name="resolve_button_text">Resolve</string>
+    <string name="dig">Dig</string>
+    <string name="initial_room_code">0000</string>
+    <string name="initial_treasure_name">Treasure name</string>
+    <string name="treasure_hunt_completed">You have completed this treasure hunt!</string>
+    <string name="activate_treasure_hunt">Activate hunt</string>
+    <string name="deactivate_treasure_hunt">Deactivate hunt</string>
+    <string name="correctAnswer">Correct Answer</string>
+    <string name="wrongAnswer">Wrong Answer</string>
+
+    <!-- Strings used in privacy notice dialog messages. [CHAR_LIMIT=NONE] -->
+    <string name="share_experience_title">Experience it together</string>
+    <!-- Privacy notice message. [CHAR_LIMIT=NONE] -->
+    <string name="share_experience_message">To power this session, Google will process visual data from your camera.</string>
+    <!-- Privacy notice accept. [CHAR_LIMIT=NONE] -->
+    <string name="agree_to_share">Start now</string>
+    <!-- Privacy notice learn more. [CHAR_LIMIT=NONE] -->
+    <string name="learn_more">Learn more</string>
+    <!-- Cloud anchor privacy website. [CHAR_LIMIT=NONE] -->
+    <string name="cloud_anchor_website">https://developers.google.com/ar/cloud-anchors-privacy</string>
+
+    <!-- Strings in the Resolve Dialog Box -->
+    <string name="resolve_dialog_ok">Dig</string>
+    <string name="resolve_dialog_title">For which treasure are you searching?</string>
+    <string name="resolve_dialog_text_hint">Enter Treasure Name</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- Strings used in Snackbar messages -->
+    <string name="snackbar_anchor_placed">Now hosting anchor...</string>
+    <string name="snackbar_arcore_unavailable">Please install ARCore.</string>
+    <string name="snackbar_arcore_too_old">Please update ARCore.</string>
+    <string name="snackbar_arcore_sdk_too_old">Please update the app with a newer version of the ARCore SDK.</string>
+    <string name="snackbar_arcore_exception">This device does not support ARCore.</string>
+    <string name="snackbar_camera_unavailable">Camera unavailable. Try restarting the app.</string>
+    <string name="snackbar_cloud_id_shared">The anchor ID was shared via Firebase.</string>
+    <string name="snackbar_dismiss">Dismiss</string>
+    <string name="snackbar_firebase_error">There was a Firebase Error. Please check Logcat for more details.</string>
+    <string name="snackbar_host_error">Hosting Error: %1$s</string>
+    <string name="snackbar_initial_message">Please select Host or Resolve to continue.</string>
+    <string name="snackbar_on_host">Now in Hosting Mode. Press Cancel to Exit.</string>
+    <string name="snackbar_on_resolve">Now digging. Press Cancel to Exit.</string>
+    <string name="snackbar_resolve_error">Resolving Error: %1$s</string>
+    <string name="snackbar_resolve_success">Congratulations, you found the treasure!</string>
+    <string name="snackbar_room_code_available">The room code is now available. Please place an anchor to host.</string>
+    <string name="snackbar_correct_answer">Bravo! You answered correctly and earned 10 bonus points!</string>
+    <string name="snackbar_wrong_answer">The answer you chose was wrong. Better luck next time!</string>
+    <!-- Resolve anchor has no result yet. [CHAR_LIMIT=NONE] -->
+    <string name="snackbar_resolve_no_result_yet">Still digging. Please make sure you\'re looking at where you think the treasure is hidden. Or, try again.</string>
+
+    <!-- Strings in the Question Dialog Box -->
+    <string name="question_dialog_title">Quiz Time!</string>
+    <string name="question_dialog_message">Answer the following question correctly and win 10 bonus points: </string>
+
 </resources>

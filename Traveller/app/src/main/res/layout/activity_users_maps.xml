@@ -31,15 +31,38 @@
 
     <Button
         android:id="@+id/buttonAddPlace"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="80dp"
-        android:layout_gravity="bottom"
+        android:layout_gravity="bottom|start"
+        android:layout_marginStart="12dp"
         android:fontFamily="casual"
         android:text="@string/buttonAddPlace"
         android:textColor="#FFFFFF"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:typeface="normal"
         app:backgroundTint="@color/colorAccent"
         app:iconTint="#2196F3" />
+
+    <Button
+        android:id="@+id/buttonTreasureHunt"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="casual"
+        android:text="@string/treasureHunt"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:backgroundTint="@color/colorAccent"
+        app:layout_anchorGravity="bottom" />
+
+    <Button
+        android:id="@+id/buttonOpenCamera"
+        android:layout_width="59dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal|center_vertical"
+        app:backgroundTint="#33F8F2F2"
+        app:icon="@android:drawable/ic_menu_camera"
+        app:iconTint="#171616" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

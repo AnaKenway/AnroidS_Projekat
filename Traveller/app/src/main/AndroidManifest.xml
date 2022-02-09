@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.traveller">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -15,7 +14,8 @@
         android:required="true" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- ARCore -->
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -24,10 +24,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Traveller">
+        <activity android:name=".CloudAnchorActivity"></activity>
+        <activity android:name=".ViewTreasureActivity" />
+        <activity android:name=".EditTreasureActivity" />
+        <activity android:name=".ViewTreasuresListActivity" />
+        <activity android:name=".EditTreasureHuntActivity" />
+        <activity android:name=".AddTreasureActivity" />
+        <activity android:name=".ViewTreasureHuntActivity" />
+        <activity android:name=".AddTreasureHuntActivity" />
+        <activity android:name=".TreasureHuntListActivity" />
+
         <service
             android:name=".NearbyLocationsService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity android:name=".VisitedOrFaveLocationsActivity" />
         <activity android:name=".RankingsActivity" />
@@ -48,6 +58,19 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <!--
+ "AR Optional" app, contains non-AR features that can be used when
+         "Google Play Services for AR" (ARCore) is not available.
+        -->
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="optional" />
+
+
+        <!--Vidi ovde ako APi opet ne daje dozvolu-->
+        <meta-data
+            android:name="com.google.android.ar.API_KEY"
+            android:value="AIzaSyCTEOG6OzqEZh7aDa5h_jCIdn5hchFO8cQ"/>
 
         <activity
             android:name=".UsersMapsActivity"
