@@ -435,14 +435,9 @@ public class CloudAnchorActivity extends AppCompatActivity
             planeRenderer.createOnGlThread(this, "models/trigrid.png");
             pointCloudRenderer.createOnGlThread(this);
 
-            //ovde zameni svoj model, vrv neki treasure chest, ako nadjes
             virtualObject.createOnGlThread(this, "models/chest_obj.obj", "models/chest.png");
             virtualObject.setMaterialProperties(0.5f, 1.0f, 0.5f, 6.0f);
 
-            //virtualObjectShadow.createOnGlThread(
-                  // this, "models/andy_shadow.obj", "models/andy_shadow.png");
-            //virtualObjectShadow.setBlendMode(ObjectRenderer.BlendMode.Shadow);
-            //virtualObjectShadow.setMaterialProperties(1.0f, 0.0f, 0.0f, 1.0f);
         } catch (IOException ex) {
             Log.e(TAG, "Failed to read an asset file", ex);
         }
@@ -838,7 +833,7 @@ public class CloudAnchorActivity extends AppCompatActivity
             //to znaci da je ovaj TH sad completed
             ftl.completedTreasureHunts.add(ftl.activeTH);
             firebaseManager.makeTreasureHuntCompleted(username, ftl.completedTreasureHunts);
-            firebaseManager.DeactivateTreasureHunt(username,ftl.activeTH);
+            firebaseManager.DeactivateTreasureHunt(username);
         }
         else{
             firebaseManager.addTreasureToFoundTreasures(username,treasureName);

@@ -65,7 +65,7 @@ public class FirebaseManager {
   /** Listener for an Active Treasure Hunt*/
   public interface ActiveTreasureHuntListener{
 
-    /** Invoked when the list of completed treasure hunts is available*/
+    /** Invoked when the active treasure hunt is available*/
     void onActiveTreasureHunt(String activeTH);
   }
 
@@ -320,7 +320,7 @@ public class FirebaseManager {
     usersRef.child(username).child(USER_ACTIVE_TREASURE_HUNT).setValue(treasureHuntName);
   }
 
-  public void DeactivateTreasureHunt(String username, String treasureHuntName){
+  public void DeactivateTreasureHunt(String username){
     usersRef.child(username).child(USER_ACTIVE_TREASURE_HUNT).setValue("");
     usersRef.child(username).child(USER_FOUND_TREASURES).removeValue();
   }

@@ -149,7 +149,7 @@ public class ViewTreasureHuntActivity extends AppCompatActivity {
             btnActivateDeactivate.setText(R.string.deactivate_treasure_hunt);
             btnActivateDeactivate.setBackgroundColor(getResources().getColor(R.color.x_red));
             btnActivateDeactivate.setOnClickListener(v -> {
-                firebaseManager.DeactivateTreasureHunt(username,THName);
+                firebaseManager.DeactivateTreasureHunt(username);
             });
         }
         else{
